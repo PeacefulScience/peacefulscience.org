@@ -1,6 +1,7 @@
 ---
 title: Paul Louis Metzger
 twitter: paulouismetzger
+orcid: 0000-0003-4145-6998 
 same as: 
 - http://www.new-wineskins.org/bio-paul-louis-metzger
 - https://www.multnomah.edu/faculty-and-staff/paul-louis-metzger/
