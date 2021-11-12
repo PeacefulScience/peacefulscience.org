@@ -2,7 +2,7 @@
 title: Greg Cootsona
 orcid: 0000-0002-2782-2544  
 twitter: GregCootsona
-same as:
+sameas:
 - http://www.gregcootsona.com
 - https://www.csuchico.edu/corh/people/faculty/gregory-cootsona.shtml
 ---
