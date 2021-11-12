@@ -1,6 +1,6 @@
 ---
 title: Darrel Falk
-same as:
+sameas:
 - https://en.wikipedia.org/wiki/Darrel_R._Falk
 - https://www.pointloma.edu/faculty/darrel-r-falk-phd
 ---
