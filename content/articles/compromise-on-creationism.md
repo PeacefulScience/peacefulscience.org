@@ -12,6 +12,7 @@ description: Mainstream scientists shouldn't completely shun organizations frien
 headerimage:
   src: /img/2021/03/compromise-creationism.png
 title: A Compromise on Creationism
+canonical: https://www.wsj.com/articles/a-compromise-on-creationism-11614901537
 ---
 
 This article was [originally published in *The Wall Street Journal*](https://www.wsj.com/articles/a-compromise-on-creationism-11614901537) on March 5, 2021. See [the Q&A on this article](https://peacefulscience.org/qa-wsj-compromise-on-creationism/) to learn more.

@@ -1,1 +1,10 @@
-{{ return .Page.Permalink }}
+{{ $out := default nil }}
+
+{{ with index .Input 0 }}
+  {{ $out = printf "%s#%s" $.Page.Permalink  . }}
+{{ else }}
+
+ {{ $out = .Page.Permalink }}
+{{ end }}
+
+{{ return $out }}

@@ -1,0 +1,15 @@
+{{ $jsonld :=  (dict ) }}
+
+{{ with index .Params "jsonld-template" }}
+  {{ with (site.GetPage  .).Params.cascade.jsonld | default nil }}
+    {{ $jsonld = . }}
+  {{ else }}  
+    {{ warnf "LDJSON-TEMPLATE\t%s\t%v" $.Page.RelPermalink . }}
+  {{ end }}
+{{ end }}
+
+{{ with .Params.jsonld }}
+  {{ $jsonld = merge $jsonld  . }}
+{{ end }}
+
+{{ return $jsonld }}

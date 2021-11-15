@@ -1,6 +1,12 @@
 {{ $alltime := getJSON "https://raw.githubusercontent.com/PeacefulScience/analytics/master/mostread.json" }}
 {{ $trending := getJSON "https://raw.githubusercontent.com/PeacefulScience/analytics/master/trending.json" }}
 
+{{- with getenv "HUGO_BYVIEWS" -}}
+  {{ $seed := "foo" }}
+  {{ $random := delimit (shuffle (split (md5 $seed) "" )) "" }}
+  {{- warnf "BYVIEWS:ID\t%s" $random -}}
+{{- end -}}
+
 {{ range .Site.Pages }}
   {{ .Scratch.Set "Views" 0 }}
   {{ .Scratch.Set "Sessions" 0 }}

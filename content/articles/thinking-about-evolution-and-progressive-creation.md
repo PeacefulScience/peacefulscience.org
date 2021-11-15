@@ -1,6 +1,7 @@
 ---
 aliases:
 - /thinking-about-evolution-and-progressive-creation/
+series: rtb
 authors:
 - jh
 categories:

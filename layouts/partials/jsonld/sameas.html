@@ -20,7 +20,7 @@
   {{ $out = $out | append ( . | absURL )  }} 
 {{ end }}
 
-{{ with .Page.Params.cannonical }}
+{{ with .Page.Params.canonical }}
   {{ $out = $out | append .  }} 
 {{ end }}
 

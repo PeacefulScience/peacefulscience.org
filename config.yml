@@ -22,8 +22,6 @@ related:
     weight: 100
   - name: authors
     weight: 50
-  - name: series
-    weight: 100
   - name: section
     weight: 50
   threshold: 80
@@ -61,9 +59,15 @@ outputformats:
     baseName: _redirects
     isPlainText: true
     notAlternative: true
-    
+  precompute:
+    basename: precomptute.txt
+    notAlternative: true
+    weight: 1
+  HTML:
+    weight: 2 
+   
 outputs:
-  home: ["HTML", "RSS", "redir"]
+  home: ["precompute", "HTML", "RSS", "redir"]
 
 params:
   baseGitHub: "https://github.com/PeacefulScience/peacefulscience.org/"

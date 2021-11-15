@@ -1,0 +1,7 @@
+{{ $out := (slice ) }}
+
+{{ range  (partial "listpages" .Page) }}
+    {{ $out = $out | append ( partial "jsonld/id" (dict "Page" . "Input" (slice .Path)) "Resolved" (slice .) )}}
+{{ end }}
+
+{{ return  $out  }}

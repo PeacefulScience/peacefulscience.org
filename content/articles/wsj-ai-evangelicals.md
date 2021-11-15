@@ -9,15 +9,18 @@ categories:
 commenturl: "http://discourse.peacefulscience.org/t/evangelicals-take-on-artificial-intelligence/7898"
 date: "2019-09-21T18:53:50"
 description: Can a computer house a mind? How would we construct a computational mind? How would they know if they succeeded? These questions welcome all of us.
-
+canonical: https://www.wsj.com/articles/evangelicals-take-on-artificial-intelligence-11557442994
 headerimage:
   src: /img/2019/09/wsj-ai-swamidass.png
 title: Evangelicals Take on Artificial Intelligence
+canonical: https://www.wsj.com/articles/evangelicals-take-on-artificial-intelligence-11557442994
 ---
 
-*Appeared in the [May 10, 2019 print edition](https://www.wsj.com/articles/evangelicals-take-on-artificial-intelligence-11557442994) of the Wall Street Journal. The title was chosen by the editor.*
+Appeared in the [May 10, 2019 print edition](https://www.wsj.com/articles/evangelicals-take-on-artificial-intelligence-11557442994) of the Wall Street Journal. The title was chosen by the editor.
+{.editor-note}
 
 Science fiction often depicts artificial intelligence as technical minds embodied in humanlike bodies. Think [Commander Data](https://en.wikipedia.org/wiki/Data_(Star_Trek)) of "Star Trek: The Next Generation." In reality, AI is mindless and usually disembodied. Yet it's still important, and scientists shouldn't be the only ones with a say in its future.
+{.dropcap}
 
 [The Ethics and Religious Liberty Commission](https://erlc.com) of the Southern Baptist Convention recently laid a marker down with "[Artificial Intelligence: An Evangelical Statement of Principles](https://erlc.com/resource-library/statements/artificial-intelligence-an-evangelical-statement-of-principles)." The document addresses topics from sex and medicine to accountability and the image of God. The common theme: What does it mean to be human?
 

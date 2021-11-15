@@ -19,15 +19,19 @@
      {{ range $interviewer }}
       
        {{ $author := site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize .)) }}
-        <a href="{{ $author.Permalink }}" class="author {{ $class }}">{{ $author.Title }}</a>
+        <a href="{{ $author.Permalink }}" property="author" class="author {{ $class }}">{{ $author.Title }}</a>
+        {{ with .Params.orcid }}
+          <a target="_blank" href="https://orcid.org/{{ . }}"><i class="pl-1 fab fa-orcid" style="color: black;"></i></a>
+        {{ end }}
         <span class="text-muted">interviews </span>
+
      {{ end }}
      
     {{ $html := (slice) }}
     {{- range $authors }}
       {{- with site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize .)) }}
         
-        {{ $myhtml := printf `<a class="author %s" href="%s">%s</a>` $class .Permalink  .Title }}
+        {{ $myhtml := printf `<a class="author %s"  property="author" href="%s">%s</a>` $class .Permalink  .Title }}
         {{ with .Params.orcid }}
           {{ $myhtml =  printf `%s<a target="_blank" href="https://orcid.org/%s"><i class="pl-1 fab fa-orcid" style="color: black;"></i></a>` $myhtml  . }}
         {{ end }}

@@ -2,7 +2,7 @@
 
 
 {{ with .Page.Params.headerimage.src }}
-  {{ $out = .  | absURL }}
+  {{ $out = .   | partial "imgcdn" }}
 {{ end }}
 
 {{ return $out }}

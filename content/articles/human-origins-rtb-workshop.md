@@ -11,10 +11,10 @@ commenturl: http://discourse.peacefulscience.org/t/human-origins-workshop-with-r
 date: '2019-12-28T06:28:08'
 description: The dialogue between PS and RTB is live streamed on January 18th, as
   we consider The Genealogical Adam and Eve alongside their model of human origins.
-
+series: rtb
 headerimage:
   src: /img/2018/05/swamidass_ross-e1525575082139.jpg
-title: Human Origins Workshop With Reasons to Believe
+title: Human Origins Workshop With *Reasons to Believe*
 ---
 
 Human origins brings us to grand questions that everyone asks. *[Reasons to Believe](http://reasons.org)* (RTB) is an organization founded by Dr. Hugh Ross, an astrophysicist, author, and pastor. Scientists at RTB believe the earth is old, but are skeptical about evolution. Still, around the questions of human origins, we are finding common ground.

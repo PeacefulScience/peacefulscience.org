@@ -4,6 +4,7 @@ aliases:
 - /rtb-thinking-about-evolution/
 authors:
 - swamidass
+series: rtb
 categories:
 - dialogue
 - evolution
@@ -19,6 +20,8 @@ title: "Fazale Rana: Thinking About Evolution"
 
 The dialogue about human origins continues with Hugh Ross's organization, *Reasons to Believe* (RTB). Last year, we participated in a workshop with [RTB on Human Origins](https://peacefulscience.org/human-origins-rtb-workshop/). More recently, Dr. [Fazale Rana and I were interviewed by Sean McDowell](https://discourse.peacefulscience.org/t/mcdowell-rana-and-swamidass-livestreamed-on-sunday/10289). Today we discuss the new book, *[Thinking About Evolution: 25 Questions Christians Want Answered](https://www.amazon.com/Thinking-about-Evolution-Questions-Christians-ebook/dp/B08MYF1SL5/?tag=swamidass-20)*.
 
+{{< amazon `B08MYF1SL5` >}}
+
 This old earth creationist book is co-authored by four scholars at RTB: Fazale Rana, AJ Roberts, [the late Sue Dykes](https://reasons.org/about/sue-dykes), and Mark Perez.
 
 Perhaps the most interesting chapter of the book is the last one, written by AJ Roberts. She asks the question, "*What if Big 'E' Evolution is True?*" Her answer is thoughtful, surprising, and moves the conversation forward. [RTB generously made this chapter available to us](https://www.patreon.com/posts/46389196), and I hope you take a moment to read it.
@@ -29,4 +32,3 @@ I highly recommend this book, so much so that I am proud to endorse it. This end
 >
 > S. Joshua Swamidass, Washington University in St. Louis, founder of Peaceful Science, author of *The Genealogical Adam and Eve*
 
-{{< amazon `B08MYF1SL5` >}}

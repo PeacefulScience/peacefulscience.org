@@ -1,10 +1,10 @@
+{{ $jsonld := partial "jsonld-template" . }}
 
-{{ with .Params.jsonld }}
-{{ with (partial "jsonld/jsonld" (dict "Page" $ "Input" . ) ) }}
+{{ with (partial "jsonld/jsonld" (dict "Page" $ "Input" $jsonld  ) ) }}
+
 <script type="application/ld+json"> 
   {{  merge . (dict "@context" "https://schema.org" ) 
        | jsonify (dict "indent" "  ") 
        | safeJS }}
 </script>
-{{ end }}
 {{ end }}

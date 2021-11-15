@@ -2,7 +2,7 @@
 
 {{ $out := default nil }}
 {{ $partial := default nil }}
-
+{{ $split := default nil }} 
 
 {{ if lt .Depth  0 }}
   {{ errorf "Recursion depth exceeded." }}
@@ -34,9 +34,10 @@
   {{ else }}
 
     {{ if hasPrefix .Input "= " }}
-    
-      {{ $partial = ( printf "jsonld/%s" (index (split .Input " ") 1 )) }}
-      {{ $out = partial $partial (dict "Page" .Page "Input" .Input )  }}
+      {{ $split = split .Input " " }}
+      
+      {{ $partial = printf "jsonld/%s" (index $split 1 ) }}
+      {{ $out = partial $partial (dict "Page" .Page "Input" ( after 2 $split) ) }}
 
     {{ else }}  
       

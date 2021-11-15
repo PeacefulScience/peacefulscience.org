@@ -12,6 +12,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="theme-color" content="#000">
 
+  <link
+    rel="canonical"
+    href="{{ .Params.canonical | default .Permalink }}"
+  />
+  
 <!-- Site Title, Description, Author, and Favicon -->
 {{- with ($.Scratch.Get "Title") }}
 <title>{{ print . }}</title>
@@ -40,7 +45,6 @@
 
 <meta name="citation_article_type" content="Article"/>
 
-        
 {{ with .Params.pdf }}
     <meta name="citation_pdf_url" content="{{ . }}"/>
 {{ end }}    
@@ -59,24 +63,23 @@
 
 
 {{ with .Params.DOI }}
-{{- $doi := replaceRE "https://doi.org/" "" . -}}
-{{- $url := printf "https://doi.org/%s" $doi -}}
-<meta property="doi" content="{{- $doi -}}"/>
-<dc:identifier id="doi">doi:{{ $doi }}</dc:identifier>
-<meta name="prism.doi" content="doi:{{ $doi  }}"/>
- <meta name="citation_doi" content="{{ $doi  }}"/>
+  {{- $doi := replaceRE "https://doi.org/" "" . -}}
+  {{- $url := printf "https://doi.org/%s" $doi -}}
+  <meta property="doi" content="{{- $doi -}}"/>
+  <dc:identifier id="doi">doi:{{ $doi }}</dc:identifier>
+  <meta name="prism.doi" content="doi:{{ $doi  }}"/>
+   <meta name="citation_doi" content="{{ $doi  }}"/>
 {{ end }}
 
 
 {{ with .Params.authors }}
     {{- range . }}
       {{- with site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize .)) }}
-<meta property="author" content="{{ .Title | markdownify |  plainify }}"/>
+        <meta property="author" content="{{ .Title | markdownify |  plainify }}"/>
+        <meta name="citation_author" content="{{ .Title | markdownify |  plainify }}"/>
       {{- end }}
     {{- end }}
 {{ end }}
-    
-
 
 <link rel="preconnect" href="https://{{ site.Params.imagecdn }}">
 
@@ -90,14 +93,7 @@
 {{ $style.Content | safeCSS }}
 </style>
 
-  <link
-    rel="canonical"
-    href="{{ with .Params.cannonical }}
-      {{ . }}
-    {{ else }}
-      {{ .Permalink }}
-    {{ end }}"
-  />
+
 
 {{ if not site.IsServer }}
 {{ with .Site.GoogleAnalytics }}

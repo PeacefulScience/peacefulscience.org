@@ -1,0 +1,24 @@
+{{ $args := default nil }}
+{{ $jsonld := default nil }}
+{{ $page := .Page }}
+{{ $resolved :=   default nil }}
+
+
+{{ with .Resolved }}
+  {{ $resolved = index . 0 }}
+{{ else }}
+  {{ $resolved = site.GetPage (index .Input  0) }}
+{{ end }}
+
+{{ with $resolved }}
+    {{ $jsonldtemp := partial "jsonld-template" . }}
+  {{ with  index $jsonldtemp "@id"  }}
+     {{ $args = dict "Page" $page "Input" (dict "@id" .) }}
+     {{ $jsonld = (partial "jsonld/jsonld" $args ) }}
+  {{ else }}
+       {{ warnf "JSONLD-ID-NoID: %s" (index $.Input 0) }}
+  {{ end }}      
+{{ else }}
+  {{ warnf "JSONLD-ID-NoPage: %s" (index .Input 0) }}
+{{ end }}
+{{ return $jsonld }}

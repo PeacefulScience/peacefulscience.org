@@ -6,9 +6,13 @@
 
 {{- $hide := split (index . "Hide" | default "") " "  -}}
 
-{{- $layout := index . "Layout" | default "col-6 col-md-3" -}}
+{{- $layout := .Layout | default "col-6 col-md-3" -}}
 
-{{- $style := index . "Style" | default "horizontal" -}}
+{{- $style := .Style | default "horizontal" -}}
+
+{{- $id := .Id | default nil }}
+
+{{- $cstyle := .CStyle | default nil }}
 
 {{- $containerclass := "p-3 text-smaller" -}}
 {{- $imageclass := "mb-1 rounded d-print-none d-block" -}}
@@ -23,7 +27,7 @@
 {{- end -}}
 
 
-<article class="{{ $layout }} {{ $containerclass }}">
+<article {{with $cstyle }}style="{{ . | safeCSS }}"{{ end }} {{with $id }}id="{{ . }}"{{ end }} class="{{ $layout }} {{ $containerclass }}" resource="{{ $page.Permalink }}">
 
 {{ $rendered := false }}
 
@@ -40,7 +44,7 @@
 
 {{ if not $rendered }}
   <a href="{{$page.Permalink}}">   
-  <img class="{{- $imageclass -}}" style="{{ $imagestyle | safeCSS }}" 
+  <img class="{{- $imageclass -}}" property="image" style="{{ $imagestyle | safeCSS }}" 
   src="{{ $src  | partial `imgcdn` }}{{ $imgeng }}" alt="{{ .Title | htmlEscape }}"
   {{- if not (in $hide "lazy") }} loading="lazy" {{- end }}>
 
@@ -54,13 +58,13 @@
 
 <header>
 
-    <a class="title d-block" href="{{$page.Permalink}}">{{ $page.Params.page_title | default $page.Title  | markdownify }} </a>
+    <a class="title d-block" property="title"  href="{{$page.Permalink}}">{{ $page.Params.page_title | default $page.Title  | markdownify }} </a>
 
 {{ if not (in $hide "author") -}}
     <span class="text-smaller pr-2 text-muted">
     {{- with $page.Params.authors }}
       {{- with site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize (index . 0))) }}
-        <a class="author text-muted" href="{{ .Permalink }}"> {{ .Title }}</a>
+        <a class="author text-muted" property="author" href="{{ .Permalink }}">{{ .Title }}</a>
       {{- end }}
         {{- with index . 1 }}, et al.{{- end }} 
     {{- end }}
@@ -75,7 +79,7 @@
     <br>
     
 {{- if not (in $hide "excerpt") -}}
-    <span class="d-block excerpt text-smaller"> {{ $page.Params.description | markdownify }} </span>
+    <span property="description" class="d-block excerpt text-smaller"> {{ $page.Params.description | markdownify }} </span>
 {{- end -}}
     
 {{- if not (in $hide "categories") -}}

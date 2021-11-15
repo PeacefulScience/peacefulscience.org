@@ -1,0 +1,8 @@
+{{ $out := default nil }}
+{{ $args := default nil }}
+
+{{ with .Page.Params.series }}
+    {{ $out = partial "jsonld/copy" (dict "Page" $.Page  "Input" (slice (printf "/series/%s/" . )) )  }}
+{{ end }} 
+
+{{ return $out }}

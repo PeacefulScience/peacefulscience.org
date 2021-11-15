@@ -1,0 +1,17 @@
+{{ $out := .Data.Pages.ByDate }}
+{{ $reversed := .Params.reverse  | default true }}
+
+{{ if $reversed }}
+  {{ $out = $out.Reverse }}
+{{ end }}
+
+{{ $page := (slice ) }}
+{{ range .Params.pages }}
+   {{ with site.GetPage . }}
+     {{ $page = $page | append (slice .) }}
+   {{ end }}
+{{ end }}
+
+{{ $out = union $page $out }}
+
+{{ return $out }}

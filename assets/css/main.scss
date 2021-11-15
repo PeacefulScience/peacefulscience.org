@@ -575,7 +575,7 @@ article p:last-child {
   @extend .py-1;
 }
 
-article > p:not(.editor-note):first-of-type::first-letter,
+main > p:not(.editor-note):first-of-type::first-letter,
 .dropcap::first-letter {
   @extend .font-special;
 
@@ -594,8 +594,7 @@ label {
   @extend .pt-3;
 }
 
-.article-question > p:first-of-type::first-letter,
-dropcap:first-of-type::first-letter {
+.article-question > p:first-of-type::first-letter {
   @extend .font-special;
 
   margin: 0;
@@ -1005,7 +1004,7 @@ li a.footnote-backref {
   grid-column: 1;
   grid-row: 2;
  
-  & a {text-decoration: underline;}
+  main a {text-decoration: underline;}
 
   p, aside, figure {
 	display: block;
