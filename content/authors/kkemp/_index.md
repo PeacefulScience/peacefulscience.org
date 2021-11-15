@@ -1,5 +1,5 @@
 ---
-title: Kenneth Kemp
+title: Kenneth W. Kemp
 orcid: 0000-0001-7436-8746
 sameas:
 - https://cas.stthomas.edu/departments/faculty/kenneth-kemp/
