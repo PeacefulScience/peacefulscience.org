@@ -1,5 +1,5 @@
 ---
-title: Walter A Rogero II
+title: Walter A. Rogero II
 ---
 Dr. Walter A. Rogero II holds ordination with the Assemblies of God and has more than 22 years of pastoral experience. He has three degrees from Oral Roberts University, Tulsa, OK: a Doctor of Ministry, a Masters of Divinity, and a Masters of Arts in Missions. Additionally, he holds an undergraduate degree in Music Education from Stetson University in Deland, FL.
 
