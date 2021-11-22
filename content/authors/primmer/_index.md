@@ -1,6 +1,7 @@
 ---
 title: Paul B. Rimmer
 orcid: 0000-0002-7180-081X  
+gscholar: BBcDP-0AAAAJ
 sameas: 
 - https://www.esc.cam.ac.uk/directory/paul-rimmer
 ---
