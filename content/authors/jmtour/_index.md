@@ -2,6 +2,7 @@
 Title: James M. Tour
 orcid: 0000-0002-8479-9328 
 twitter: DrJamesTour
+gscholar: YwoecRMAAAAJ
 sameas:
 - https://www.jmtour.com
 - https://profiles.rice.edu/faculty/james-tour
