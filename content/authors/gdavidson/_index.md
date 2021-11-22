@@ -1,6 +1,7 @@
 ---
 title: Gregg Davidson
 orcid: 0000-0002-5461-1160
+gscholar: Qw0ymasAAAAJ
 sameas: 
 - https://gge.olemiss.edu/people-gregg-davidson/
 ---
