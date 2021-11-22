@@ -2,6 +2,7 @@
 title: Jordan Mantha
 twitter: jordanmantha
 orcid: 0000-0002-4351-3696 
+gscholar: 1R8R9yoAAAAJ
 sameas:
 - https://www.mnu.edu/academics/faculty/jordan-mantha
 ---
