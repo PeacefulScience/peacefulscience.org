@@ -1,0 +1,89 @@
+
+{{- $page := .Page -}}
+{{ $height := 90 }}
+{{ $width := 160 }}
+
+{{- $src :=  $page.Params.headerImage.Src | default site.Params.logo -}}
+
+{{- $layout := .Layout | default "col-6 col-md-3" -}}
+
+{{- $style := .Style | default "horizontal" -}}
+
+{{- $containerclass := "p-3 text-smaller" -}}
+{{- $imageclass := "mb-1  d-print-none d-block" -}}
+{{- $imagestyle := "width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover;" }}
+{{- $imgeng:= "?imgeng=/w_640/h_360/m_cropbox" }}
+
+{{- if eq  $style  "horizontal" -}}
+  {{- $containerclass = printf "%s %s" "d-flex" $containerclass -}}
+  {{- $imageclass = "flex-shrink-0 mr-3  mb-1 d-print-none rounded" -}}
+  {{- $imagestyle = "width: 160px; height: 90px; object-fit: cover;" | safeCSS  -}}
+  {{- $imgeng = "?imgeng=/w_320/h_180/" }}
+{{- end -}}
+
+<article {{with .CStyle }}style="{{ . | safeCSS }}"{{ end }} {{with .Id }}id="{{ . }}"{{ end }} class="{{ $layout }} {{ $containerclass }}" resource="{{ $page.Permalink }}">
+
+{{ $rendered := false }}
+
+{{ if not (in .Elements "image") }}
+{{ $rendered := true }}
+{{ else }}
+
+{{ with $page.Params.Headerimage.Youtube }}
+  {{ if eq $style "vertical"  }}
+  {{ partial `youtube` (dict `Image` ($src | partial `imgcdn` )  `Youtube` . `Class` $imageclass   `Style` $imagestyle  ) }}
+  {{ $rendered = true }}
+  {{ end }}
+{{ end }}
+
+{{ if not $rendered }}
+  <a href="{{$page.Permalink}}">   
+  <img class="{{- $imageclass -}}" property="image" style="{{ $imagestyle | safeCSS }}" 
+  src="{{ $src  | partial `imgcdn` }}{{ $imgeng }}" alt="{{ .Title | htmlEscape }}"
+  {{- if not (in .Elements "lazy") }} loading="lazy" {{- end }}>
+
+  </a>
+{{ end }} 
+
+{{ end }}
+
+
+<header>
+
+    <a class="title d-block" property="title"  href="{{$page.Permalink}}">{{ $page.Params.page_title | default $page.Title  | markdownify }} </a>
+
+{{ if in .Elements "authors" -}}
+    <span class="text-smaller pr-2 text-muted">
+    {{- with $page.Params.authors }}
+      {{- with site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize (index . 0))) }}
+        <a class="author text-muted" property="author" href="{{ .Permalink }}">{{ .Title }}</a>
+      {{- end }}
+        {{- with index . 1 }}, et al.{{- end }} 
+    {{- end }}
+    </span>
+{{- end -}}
+
+{{- if in .Elements "date" -}}
+  {{- with $page.PublishDate -}}
+    <span class="text-muted article-date text-smaller"> {{ .Format "January 2, 2006" }}</span>
+  {{- end -}}
+{{- end -}}
+    <br>
+    
+{{- if in .Elements "excerpt" -}}
+    <span property="description" class="d-block excerpt text-smaller"> {{ $page.Params.description | markdownify }} </span>
+{{- end -}}
+    
+{{- if in .Elements "categories" -}}
+    {{- range $page.Params.categories -}}
+      {{- with site.GetPage "taxonomyTerm" (printf "categories/%s" (urlize .)) }}
+        {{- if not (.Params.hidden | default false ) -}} 
+          <a class="tag-link" href="{{ .Permalink }}">{{ .Title }}</a>
+        {{ end -}}
+      {{ end -}}
+    {{- end -}}
+{{- end -}}
+
+</header>
+
+</article>

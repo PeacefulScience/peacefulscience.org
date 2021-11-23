@@ -31,10 +31,9 @@ $body-color-inverse: #000;
 }
 
 @page {
-  size: auto;   /* auto is the initial value */ 
+  size: A4;   /* auto is the initial value */ 
 
-    /* this affects the margin in the printer settings */
-  margin: 3cm 3.8cm 3cm 3.8cm;
+
 }
 
 a.doi-badge {
@@ -708,7 +707,7 @@ article  *:target {
     width: 100%;
     clear: both;
     position: relative;
-    border-left: 3px solid #dfdfdf;
+//    border-left: 3px solid #dfdfdf;
     @extend .p-2;
 
     ol,
@@ -745,7 +744,6 @@ article  *:target {
 
 .amazon-xl-right {
   display: block;
-  border-left: 3px solid #dfdfdf;
   iframe,
   img {
     @extend .pl-2;
@@ -755,7 +753,7 @@ article  *:target {
   margin: $spacer auto $spacer auto;
   float: none;
   position: relative;
-  width: 336px;
+  width: 200px;
   z-index: 11;
   clear: both;
 
@@ -936,6 +934,10 @@ li a.footnote-backref {
 
 
 
+  @include media-breakpoint-up(md) {
+    .float-md-right {float: right}
+  }
+
 .article-grid {
 
   display: grid;
@@ -996,7 +998,13 @@ li a.footnote-backref {
 }
 
 
-
+.fa-gscholar {
+  content: url('/img/design/google-scholar.svg');
+  height: 1em;
+  line-height: 1;
+  width: auto;
+  top: .125em;
+  position: relative;}
 
 .article-body {
   @extend .px-3;
@@ -1004,7 +1012,8 @@ li a.footnote-backref {
   grid-column: 1;
   grid-row: 2;
  
-  main a {text-decoration: underline;}
+.article-text a {text-decoration: underline;}
+.article-text sup a {text-decoration: none;}
 
   p, aside, figure {
 	display: block;
@@ -1024,20 +1033,17 @@ li a.footnote-backref {
   }
 
   @media print {
-    width: 60%;
+    width: 100%;
 
-//	a[href^=http]:after {
-//		content: '<' attr(href) '>';
-//	    margin-right: $spacer;
-//	    white-space: pre-wrap; 
-//	   overflow-wrap: break-all;
-//	}
+	a:after {
+		content: "";
+	}
   }
-
-
 }
 
-
+html {
+	font-size: 16px
+}
 
 
 blockquote {

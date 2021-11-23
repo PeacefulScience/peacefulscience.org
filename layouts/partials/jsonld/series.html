@@ -1,8 +1,26 @@
-{{ $out := default nil }}
+{{ $out := slice  }}
 {{ $args := default nil }}
 
 {{ with .Page.Params.series }}
-    {{ $out = partial "jsonld/copy" (dict "Page" $.Page  "Input" (slice (printf "/series/%s/" . )) )  }}
+    {{ $out = $out | append  ( partial "jsonld/copy" (dict "Page" $.Page  "Input" (slice (printf "/series/%s/" . )) ) ) }}
 {{ end }} 
+
+{{ with .Page.Params.partof }}
+  {{ range . }}
+    {{ if hasPrefix . "/"}}
+      {{ $out = $out | append (dict "@id"  ( printf "https://peacefulscience.org%s" . )) }}
+    {{ else }}
+      {{ $out = $out | append  . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if eq (len $out) 1 }}
+  {{ $out = index $out 0 }}
+{{ end }}
+
+{{ if eq (len $out) 0}}
+  {{ $out = default nil }}
+{{ end }}
 
 {{ return $out }}

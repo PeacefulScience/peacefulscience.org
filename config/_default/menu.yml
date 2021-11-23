@@ -3,8 +3,8 @@ main:
   - name: Articles
     url: /articles/
     weight: -115  
-  - name: Book
-    url: /genealogical-adam-eve/
+  - name: Books
+    url: /books/
     weight: -109
   - name: Forum
     url: /forum/

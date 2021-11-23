@@ -1,5 +1,6 @@
 {{ $alltime := getJSON "https://raw.githubusercontent.com/PeacefulScience/analytics/master/mostread.json" }}
 {{ $trending := getJSON "https://raw.githubusercontent.com/PeacefulScience/analytics/master/trending.json" }}
+{{ $scratch := newScratch }}
 
 {{- with getenv "HUGO_BYVIEWS" -}}
   {{ $seed := "foo" }}
@@ -8,53 +9,37 @@
 {{- end -}}
 
 {{ range .Site.Pages }}
-  {{ .Scratch.Set "Views" 0 }}
-  {{ .Scratch.Set "Sessions" 0 }}
-  {{ .Scratch.Set "Trending" 0 }}
+  {{ $scratch.SetInMap .RelPermalink "Views" 0 }}
+  {{ $scratch.SetInMap .RelPermalink "Sessions" 0 }}
+  {{ $scratch.SetInMap .RelPermalink "Trending" 0 }}
+  {{ $scratch.SetInMap .RelPermalink "Page" . }}
 {{ end }}
 
 {{ range $alltime }}
   {{ $data := . }}
   {{ with site.GetPage (index . 0) }}
-    {{ .Scratch.Add "Views" (int (index $data 1))  }}
-    {{ .Scratch.Add "Sessions" (int (index $data 2)) }}
+    {{ $scratch.SetInMap .RelPermalink "Views" 
+        (add (index $scratch.Values .RelPermalink "Views") (int (index $data 1))) }}
+    {{ $scratch.SetInMap .RelPermalink "Sessions" 
+        (add (index $scratch.Values .RelPermalink "Sessions") (int (index $data 2))) }}
   {{ end }}
 {{ end }}
 
 {{ range $trending }}
   {{ $data := . }}
   {{ with site.GetPage (index . 0) }}
-    {{ .Scratch.Add "Trending" (index $data 1) }}
-    {{ .Scratch.Add "Trending" (mul 2 (index $data 2)) }}
+    {{ $score := add (index $data 1) (mul 2 (index $data 2)) }}
+    {{ $scratch.SetInMap .RelPermalink "Trending" 
+        (add (index $scratch.Values .RelPermalink "Trending") $score) }}
   {{ end }}
 {{ end }}
 
-{{ $collection := (slice ) }}
-{{ range .Site.Pages }}
-    {{ $item := (dict "Page" .) }}
-    {{ $item = merge $item (dict "Views"  ( .Scratch.Get "Views" )) }}
-    {{ $item = merge $item (dict "Sessions"  ( .Scratch.Get "Sessions" )) }}
-    {{ $item = merge $item (dict "Trending"  ( .Scratch.Get "Trending" )) }}
-    
-    {{ $collection = $collection | append (slice $item)  }}
-{{ end }}
+{{ $collection := $scratch.Values }}
 
-{{ $out := (slice )}}
-{{ range sort $collection "Views" "desc" }}
-  {{ $out = $out | append .Page }}
-{{ end }}
-{{ $byviews := $out }}
+{{ $byviews := partial "sanitize_pages" ( apply (sort $collection "Views" "desc") "index" "." "Page" ) }}
 
-{{ $out := (slice )}}
-{{ range sort $collection "Sessions" "desc" }}
-  {{ $out = $out | append .Page }}
-{{ end }}
-{{ $bysessions := $out }}
+{{ $bysessions := partial "sanitize_pages" ( apply (sort $collection "Sessions" "desc") "index" "." "Page" ) }}
 
-{{ $out := (slice )}}
-{{ range sort $collection "Trending" "desc" }}
-  {{ $out = $out | append .Page }}
-{{ end }}
-{{ $bytrending := $out }}
+{{ $bytrending := partial "sanitize_pages" ( apply (sort $collection "Trending" "desc") "index" "." "Page" ) }}
 
-{{ return (dict "ByTrending" $bytrending "ByViews" $byviews "BySessions" $bysessions) }}
+{{ return (dict "ByTrending" $bytrending "ByViews" $byviews "BySessions" $bysessions "Lookup" $collection) }}

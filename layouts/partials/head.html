@@ -43,8 +43,6 @@
 <meta name="prism.publicationName" content="Peaceful Science"/>
 <meta name="citation_journal_title" content="Peaceful Science"/>
 
-<meta name="citation_article_type" content="Article"/>
-
 {{ with .Params.pdf }}
     <meta name="citation_pdf_url" content="{{ . }}"/>
 {{ end }}    
@@ -55,7 +53,13 @@
     <meta name="citation_online_date" content="{{ .Format "2006/01/02" }}"/>
 {{ end }}
 
-{{ with .Params.headerimage.src | default site.Params.logo -}}
+
+{{ $amazonimg := default nil }}
+{{ with .Params.amazon }}
+ {{ $amazonimg = partial `imgcdn`  ( printf `http://images.amazon.com/images/P/%s.LZZZZZZZ.jpg`  (index . 0) )  }}
+{{ end }}
+
+{{ with .Params.headerimage.src | default $amazonimg | default site.Params.logo -}}
 <meta property="og:image" content="{{- . | partial `imgcdn` -}}"/>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{{-  . | partial `imgcdn` -}}">
@@ -64,10 +68,11 @@
 
 {{ with .Params.DOI }}
   {{- $doi := replaceRE "https://doi.org/" "" . -}}
+  {{- $doi := replaceRE "http://doi.org/" "" $doi -}}
   {{- $url := printf "https://doi.org/%s" $doi -}}
-  <meta property="doi" content="{{- $doi -}}"/>
-  <dc:identifier id="doi">doi:{{ $doi }}</dc:identifier>
-  <meta name="prism.doi" content="doi:{{ $doi  }}"/>
+  <meta name="doi" content="{{- $doi -}}"/>
+  <meta name="dc.identifier" content="doi:{{ $doi }}"/>
+  <meta name="prism.doi" content="{{ $doi  }}"/>
    <meta name="citation_doi" content="{{ $doi  }}"/>
 {{ end }}
 

@@ -29,9 +29,9 @@
   {{ $latest := first 9 $ALL }}
   {{ $used := $latest }}
 
-  {{ $featured := first 6 (where ( intersect $PAGES.ByViews  $ALL ) ".Params.categories" "intersect" (slice "featured")  | complement $used) }}
-  {{ $used := union $used $featured }}
-
+  {{ $featured := first 6 (where $PAGES.ByViews ".Params.categories" "intersect" (slice "featured")  | complement $used) }}
+  {{ $used := union $featured $used }}
+  
   {{ $race := first 2 (where $ALL ".Params.categories" "intersect" (slice "race" "ancestry") | complement $used) }}
   {{ $used := union $used $race }}
 
@@ -72,7 +72,27 @@
               src="{{ `/img/design/PS-logo-stacked-white.svg`  |  partial `imgcdn` }}"
             />
           </div>
+                      <div class="col-12 text-center text-white text-larger">
+              <h1 class="text-white ">What Does It Mean To Be Human?</h1>
+            </div>
+  
         </div>
+
+      <div style="background: #1119">
+
+
+        <section class="container pt-3 pb-3">
+          <div class="row justify-content-center ">
+            {{ partial "heading" (dict "Text" "Discussing These Books" "Link" "/books/" "Class" "heading-green") }}
+  
+                {{ range first 6 (partial "listpages" (.GetPage "/books") ) }}
+                  {{ partial "render" (dict "Page" .  "Style" "vertical" "Layout"  "col-6 col-md-3 col-lg-2" "Hide" "excerpt categories lazy date author"  ) }}
+
+                {{ end }}
+
+          </div>
+        </section>
+      </div>
       </div>
 
       <div
@@ -127,45 +147,6 @@
         </div>
       </div>
 
-      <div style="background: #111d">
-        <div class="container">
-          <div class="row pt-5">
-            <div class="col-12 text-center text-white text-larger">
-              <h1 class="text-white ">What Does It Mean To Be Human?</h1>
-            </div>
-          </div>
-        </div>
-
-        <section class="container pt-3 pb-5" style="opacity: .8">
-          <div class="row justify-content-center ">
-            {{ partial "heading" (dict "Text" "The Genealogical Adam and Eve" "Link" "/genealogical-adam-eve/" "Class" "heading-green") }}
-            <div class="col pt-3">
-              <a href="{{ "/genealogical-adam-eve/" | absURL }}">
-                <img
-                  style="opacity: 1"
-                  class="gae-cover mr-lg-auto mx-auto d-block"
-                  src="{{ partial "imgcdn" `/img/design/gae-cover-swamidass.jpg` }}?imgeng=/w_auto,240/"
-                  alt="The Genealogical Adam and Eve"
-                  width="120"
-                  height="180"
-                />
-              </a>
-            </div>
-
-            <div
-              class="col-lg-10  col-print-8 dark"
-              style="filter: grayscale(80%);"
-            >
-              <div class="row justify-content-center">
-                {{ range $gae }}
-                  {{ partial "render" (dict "Page" .  "Style" "vertical" "Layout"  "col-6 col-md-3" "Hide" "excerpt categories lazy date author"  ) }}
-
-                {{ end }}
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
     </header>
 
     <section id="articles" style="background-color: #dfdfdf">

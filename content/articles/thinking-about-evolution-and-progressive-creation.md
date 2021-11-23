@@ -7,7 +7,6 @@ authors:
 categories:
 - dialogue
 - evolution
-- reasons-to-believe
 commenturl: http://discourse.peacefulscience.org/t/thinking-about-evolution-and-progressive-creation/14027
 date: '2021-07-26T03:13:53'
 description: John Harshman, a secular biologist, took up our invitation to dialogue

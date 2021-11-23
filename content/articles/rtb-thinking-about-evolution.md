@@ -8,7 +8,6 @@ series: rtb
 categories:
 - dialogue
 - evolution
-- reasons-to-believe
 commenturl: "http://discourse.peacefulscience.org/t/fazale-rana-thinking-about-evolution/13048"
 date: "2021-01-19T07:02:55"
 description: Creationists ask in one chapter of the book, What if Big 'E' Evolution is True? The answer moves the conversation forward.

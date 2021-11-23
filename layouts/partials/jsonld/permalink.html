@@ -1,10 +1,9 @@
 {{ $out := default nil }}
 
-{{ with index .Input 0 }}
-  {{ $out = printf "%s#%s" $.Page.Permalink  . }}
-{{ else }}
+{{ $out = printf "https://peacefulscience.org%s"  $.Page.RelPermalink }} 
 
- {{ $out = .Page.Permalink }}
+{{ with index .Input 0 }}
+  {{ $out = printf "%s#%s" $out  . }}
 {{ end }}
 
 {{ return $out }}

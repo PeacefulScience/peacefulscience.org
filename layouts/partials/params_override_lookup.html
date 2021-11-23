@@ -1,0 +1,13 @@
+{{ $out := newScratch }}
+
+{{ range $key, $value := site.Data.overrides }}
+  {{ with site.GetPage $key }}
+    {{ $ref := .RelPermalink }}
+    {{ with $out.Get $ref }}
+      {{ $value = merge . $value }}
+    {{ end }}
+    {{ $out.Set $ref $value }}
+  {{ end }} 
+{{ end }}
+
+{{ return $out.Values }}

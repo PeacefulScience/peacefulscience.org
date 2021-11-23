@@ -39,7 +39,7 @@
           {{- warnf "BROKEN.PDF:\t%s\t%s\t%s" $.Page.Path $pdf $pdffile -}}      
        {{- end -}}
     {{- else -}}
-      {{- if not (in $dest "#") -}}
+      {{- if not (eq (substr $dest 0 1) "#") -}}
         {{- warnf "BROKEN.LINK:\t%s\t%s" $.Page.Path $dest -}}
       {{- end -}}
     {{- end -}}
@@ -50,13 +50,9 @@
   {{- $target = "_blank" -}}
 {{- end -}}
 
-
-
 {{- if eq $url.Host "discourse.peacefulscience.org" -}}
   {{- $class = "forum-link" -}}
 {{- end -}}
-
-
 
 {{- if not .Text -}}
   {{- warnf "EMPTY.LINK:\t%s" $.Page.Path -}}
@@ -66,42 +62,53 @@
   {{- warnf "AMZN.LINK:\t%s\t%s" $dest $.Page.Path -}}
 {{- end -}}
 
+{{- $scratch := $.Page.Scratch -}}
 
-{{ $tag := "" }}
+{{- if eq (substr .Destination 0 1) "#" -}}
+  {{ warnf "%v" .Destination }}
+  {{- $dest = .Destination }}
+  {{- $target = default nil -}}
+  {{- $class := default nil -}}
+  {{- $rel := default nil -}}
+{{- else -}}
+  {{- $dest = $dest | absURL -}}
+{{- end -}}
 
+{{- $tag := "" }}
+{{- $asin := default nil }}
 {{- if in $url.Host "amazon.com" -}}
   {{- $tag = "?tag=swamidass-20" -}}
   {{- $dest = printf "https://amazon.com%s/" $url.Path -}}
- 
   {{- $rel = "sponsored" -}}  
-  {{- $asin :=  replaceRE  `.*/dp/(.*?)/.*`  "${1}" $dest  -}}
+  {{- $asin =  replaceRE  `.*/dp/(.*?)/.*`  "${1}" $dest  -}}
   {{- if eq $asin $dest }}
     {{- $asin = replaceRE  `.*/dp/(.*?)\?.*`  "${1}" $dest  -}}
-  {{ end }}
+  {{- end }}
   {{- if eq $asin $dest }}
     {{- $asin = replaceRE  `.*/gp/product/(.*?)/.*`  "${1}" $dest  -}}
-  {{ end }}
+  {{- end }}
   {{- if eq $asin $dest }}
     {{- $asin = replaceRE  `.*/gp/product/(.*?)\?.*`  "${1}" $dest  -}}
-  {{ end }}
+  {{- end }}
   
-  {{ if eq $asin $dest }}
+  {{- if eq $asin $dest }}
     {{- warnf "PARSE.ASIN\t%s\t%s" $dest -}}
-  {{ else }}
+  {{- else }}
     {{- $dest = printf "https://amazon.com/dp/%s/" $asin -}}
-    {{ $tag = "?tag=swamidass-20" }}
-  {{ end }}
+    {{- $tag = "?tag=swamidass-20" }}
+  {{- end }}
+  {{- $scratch.Add "Amazon" (slice $asin) -}}
 {{- end -}}
 
-{{- $scratch := $.Page.Scratch -}}
 {{- $scratch.Add "Links" (slice $dest) -}}
 {{- $num :=   ( $scratch.Get "Links" | len ) -}}
+
 
 {{- with getenv "HUGO_LINKS" -}}
   {{- warnf "LINK\t%s\t%s"  $.Page.RelPermalink $dest -}}
 {{- end -}}
 
-<a href="{{- $dest | absURL -}}{{ $tag }}"
+<a href="{{- $dest -}}{{- $tag }}"
 {{-  with $data }} data-toggle="tooltip" data-placement="bottom" data-html="true" title="{{- $data -}}" {{- end -}}
 {{- with $target }} target='{{- $target -}}'{{- end -}}
 {{- with $rel }} rel='{{- $rel -}}'{{- end -}}

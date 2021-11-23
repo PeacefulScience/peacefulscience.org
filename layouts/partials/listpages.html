@@ -1,17 +1,58 @@
-{{ $out := .Data.Pages.ByDate }}
+{{ $out := .Data.Pages }}
 {{ $reversed := .Params.reverse  | default true }}
+
+{{ $page := (slice ) }}
+{{ range .Params.pages }}
+   {{ with site.GetPage . }}
+     {{ $page = $page | append  . }}
+   {{ end }}
+{{ end }}
+
+{{ $pages := (slice ) }}
+{{ with .Params.amazon }}
+  {{ $asin := . }}
+  {{ range site.RegularPages }}
+      {{ if gt (len (intersect (.Scratch.Get "Amazon") $asin)) 0 }}
+      {{ $pages = $pages | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ with .Params.internalref }}
+  {{ $link := . }}
+  {{ range site.RegularPages }}
+      {{ if gt (len (intersect (.Scratch.Get "Links") $link)) 0 }}
+      {{ $pages = $pages | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $out = union $out $pages }}
+
+{{ $out = uniq (sort $out "Date")  }}
+
+{{ if eq .Params.design.sort "most-pages" }}
+	{{ $sorter := (slice) }}
+	{{ range $out}} 
+	  {{ $p := partial "listpages" . }}
+	  {{ $sorter = $sorter | append (dict "Page" . "Sort" (len $p) ) }}  
+	{{ end }}
+	
+	{{ with $sorter }}
+	  {{ $out =  apply (sort $sorter "Sort" "desc") "index" "." "Page" }}
+	{{ end }} 
+	
+	{{ $out = partial "sanitize_pages" $out }}
+{{ end }}
+
 
 {{ if $reversed }}
   {{ $out = $out.Reverse }}
 {{ end }}
 
-{{ $page := (slice ) }}
-{{ range .Params.pages }}
-   {{ with site.GetPage . }}
-     {{ $page = $page | append (slice .) }}
-   {{ end }}
-{{ end }}
-
 {{ $out = union $page $out }}
+
+{{ with $out }}
+{{ $out = partial "sanitize_pages" $out }}
+{{ end}}
 
 {{ return $out }}

@@ -1,0 +1,3 @@
+{{ $p := (slice ) }}
+{{ range . }}{{  $p = $p | append .}}{{ end }}
+{{ return $p }}

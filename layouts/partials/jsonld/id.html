@@ -13,7 +13,7 @@
 {{ with $resolved }}
     {{ $jsonldtemp := partial "jsonld-template" . }}
   {{ with  index $jsonldtemp "@id"  }}
-     {{ $args = dict "Page" $page "Input" (dict "@id" .) }}
+     {{ $args = dict "Page" $page "Input" . }}
      {{ $jsonld = (partial "jsonld/jsonld" $args ) }}
   {{ else }}
        {{ warnf "JSONLD-ID-NoID: %s" (index $.Input 0) }}

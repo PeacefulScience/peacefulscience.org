@@ -13,7 +13,7 @@ description: The dialogue between PS and RTB is live streamed on January 18th, a
   we consider The Genealogical Adam and Eve alongside their model of human origins.
 series: rtb
 headerimage:
-  src: /img/2018/05/swamidass_ross-e1525575082139.jpg
+  src: /img/2019/12/rtb-lents-human-origins.jpg 
 title: Human Origins Workshop With *Reasons to Believe*
 ---
 

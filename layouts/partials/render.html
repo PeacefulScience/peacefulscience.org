@@ -1,97 +1,27 @@
 
-{{- $page := .Page -}}
-{{ $height := 90 }}
-{{ $width := 160 }}
-{{- $src :=  $page.Params.headerImage.Src | default site.Params.logo -}}
+{{- $partial := "render/_default.html" }}
 
-{{- $hide := split (index . "Hide" | default "") " "  -}}
-
-{{- $layout := .Layout | default "col-6 col-md-3" -}}
-
-{{- $style := .Style | default "horizontal" -}}
-
-{{- $id := .Id | default nil }}
-
-{{- $cstyle := .CStyle | default nil }}
-
-{{- $containerclass := "p-3 text-smaller" -}}
-{{- $imageclass := "mb-1 rounded d-print-none d-block" -}}
-{{- $imagestyle := "width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover;" }}
-{{- $imgeng:= "?imgeng=/w_640/h_360/m_cropbox" }}
-
-{{- if eq  $style  "horizontal" -}}
-  {{- $containerclass = printf "%s %s" "d-flex" $containerclass -}}
-  {{- $imageclass = "flex-shrink-0 mr-3 rounded mb-1 d-print-none rounded" -}}
-  {{- $imagestyle = "width: 160px; height: 90px; object-fit: cover;" | safeCSS  -}}
-  {{- $imgeng = "?imgeng=/w_320/h_180/" }}
-{{- end -}}
+{{- if fileExists (printf "layouts/partials/render/%s.html" .Page.Type ) }}
+  {{- $partial = printf "render/%s.html" .Page.Type  }}
+  
+{{- end }}
 
 
-<article {{with $cstyle }}style="{{ . | safeCSS }}"{{ end }} {{with $id }}id="{{ . }}"{{ end }} class="{{ $layout }} {{ $containerclass }}" resource="{{ $page.Permalink }}">
+{{ $elem := split "title lazy description categories date excerpt authors image" " " }}
 
-{{ $rendered := false }}
-
-{{ if (in $hide "image") }}
-{{ $rendered := true }}
-{{ else }}
-
-{{ with $page.Params.Headerimage.Youtube }}
-  {{ if eq $style "vertical"  }}
-  {{ partial `youtube` (dict `Image` ($src | partial `imgcdn` )  `Youtube` . `Class` $imageclass   `Style` $imagestyle  ) }}
-  {{ $rendered = true }}
-  {{ end }}
+{{ with .Hide }}
+  {{ $elem = $elem | complement (split . " ") }}
 {{ end }}
 
-{{ if not $rendered }}
-  <a href="{{$page.Permalink}}">   
-  <img class="{{- $imageclass -}}" property="image" style="{{ $imagestyle | safeCSS }}" 
-  src="{{ $src  | partial `imgcdn` }}{{ $imgeng }}" alt="{{ .Title | htmlEscape }}"
-  {{- if not (in $hide "lazy") }} loading="lazy" {{- end }}>
-
-  </a>
-{{ end }} 
-
+{{ with .Show }}
+  {{ $elem =  union $elem (split . " ") }}
 {{ end }}
 
+{{ with .Toggle }}
+  {{ $elem = $elem | symdiff (split . " ") }}
+{{ end }}
 
- 
+{{ $config :=  merge (dict "Layout" "col-6 col-md-3" "Style" "horizontal" "Elements" $elem) . }}
 
-<header>
 
-    <a class="title d-block" property="title"  href="{{$page.Permalink}}">{{ $page.Params.page_title | default $page.Title  | markdownify }} </a>
-
-{{ if not (in $hide "author") -}}
-    <span class="text-smaller pr-2 text-muted">
-    {{- with $page.Params.authors }}
-      {{- with site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize (index . 0))) }}
-        <a class="author text-muted" property="author" href="{{ .Permalink }}">{{ .Title }}</a>
-      {{- end }}
-        {{- with index . 1 }}, et al.{{- end }} 
-    {{- end }}
-    </span>
-{{- end -}}
-
-{{- if not (in $hide "date") -}}
-  {{- with $page.PublishDate -}}
-    <span class="text-muted article-date text-smaller"> {{ .Format "January 2, 2006" }}</span>
-  {{- end -}}
-{{- end -}}
-    <br>
-    
-{{- if not (in $hide "excerpt") -}}
-    <span property="description" class="d-block excerpt text-smaller"> {{ $page.Params.description | markdownify }} </span>
-{{- end -}}
-    
-{{- if not (in $hide "categories") -}}
-    {{- range $page.Params.categories -}}
-      {{- with site.GetPage "taxonomyTerm" (printf "categories/%s" (urlize .)) }}
-        {{- if not (.Params.hidden | default false ) -}} 
-          <a class="tag-link" href="{{ .Permalink }}">{{ .Title }}</a>
-        {{ end -}}
-      {{ end -}}
-    {{- end -}}
-{{- end -}}
-
-</header>
-
-</article>
+{{- partial $partial $config -}}

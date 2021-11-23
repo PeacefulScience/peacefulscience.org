@@ -3,7 +3,9 @@
 {{ end }}
 
 {{ define "main" }}
-  {{ $PAGES := partialCached "byviews" . }}
+  {{ $vlookup := index (partialCached "byviews" .).Lookup }}
+  {{ $views := index $vlookup .RelPermalink "Views" }}
+  
 
   {{ with .Description }}
     {{ if in . "..." }}
@@ -27,9 +29,9 @@
  
   <div class="bg-white">
     <div class="d-print-none" style="height: 80px; width: 100%"></div>
-
-    <article class="article-grid pb-5">
-      <header class="article-header"  id="pageHeader">
+    <main>
+    <article class="article-grid pb-5 ">
+      <header class="article-header mb-5"  id="pageHeader">
         <div class="d-print-block d-none mb-5 font-special" style="font-size: 2em" property="publisher">
           Peaceful Science
         </div>
@@ -51,7 +53,7 @@
               {{ end }}
           </a>
 
-          {{ with $.Scratch.Get "Views" }}
+          {{ with $views }}
             <div
               class="view-count d-inline d-print-none float-right text-right"
             >
@@ -63,14 +65,15 @@
         <h1 id="title" property="title" class="article-title mt-2">
           {{- .Params.page_title | default .Title | markdownify -}}
         </h1>
-
-        <div property="description" class="d-print-none  article-description mb-3">
+        
+        <div property="description" class="d-print-none  article-description mb-2">
           {{- .Description | markdownify -}}
         </div>
-
+        
         <div class="mb-2 pr-1">
           {{- partial "authors" (dict "page" . "class" "text-decoration-none") -}}
-        </div>
+
+         </div>
 
         {{- if eq "main" $headerpos -}}
           <div class="pb-2">
@@ -101,19 +104,7 @@
         {{- end -}}
 
 
-        <div class="mb-5">
-          {{ with .Params.doi }}
-            {{ $doi := . }}
-            {{ with $.Params.pdf }}
-               {{ partial "doiurl" (slice $doi ( . | absURL ) ) }}
-            {{ else }}          
-              {{ partial "doi" $doi }}
-            {{ end }}
-          {{ else }}
-            {{ with $.Params.pdf }}
-            
-            {{ end }}
-          {{ end }}
+        <div class="float-right">
           {{- range .Params.categories }}
             {{- with site.GetPage "taxonomyTerm" (printf "categories/%s" (urlize .)) }}
               {{- if not (.Params.hidden | default false ) -}} 
@@ -121,28 +112,42 @@
               {{ end }}
             {{- end }}
           {{- end }}
-
+          
+        </span>
         </div>
+        
+         <div>
+          {{ with .Params.pdf }}
+            <a href='{{ . | absURL }}' target=_blank class="text-smaller badge badge-secondary rounded mr-2">PDF</a>
+          {{ end }}
+          {{ with .Params.doi }}
+          <span class="text-smaller  font-bold">
+            {{ $doi := . }}
+            <a id="doi"  target=_blank  href="https://doi.org/{{ $doi }}">https://doi.org/{{ . }}</a>
+          </span>
+          {{ end }}
+        </div>
+        
       </header>
       <div class="article-body pb-5">
-      <main style="position:relative">
+      <div class="article-text" style="position:relative">
         {{ with  .Params.series }}
           {{ with site.GetPage ( printf "/series/%s" . ) }}
-            <aside class="d-print-none series aside-xl-right bg-white text-smaller">
+            <aside class="d-print-none series aside-xl-right bg-white text-smaller text-right">
               {{ $page := default nil }}
               
                 {{- range (partial "listpages" . ) }}
                   {{ if eq $ $page }}
-                    <p> Next in series:
+                    <p> <span class="font-weight-bold"> Next in series: </span>
                     <a  class="font-special d-block" href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
                   {{ end }}
                   {{ if and (eq $ .) $page }}
-                    <p> Previous in series: 
+                    <p> <span class="font-weight-bold"> Previous  in series:</span>
                     <a class="font-special d-block" href="{{ $page.Permalink }}">{{ $page.Title | markdownify }}</a>
                   {{ end }}
                   {{ $page = . }}
                 {{ end }}  
-                <p> The full series: <a  class="font-special d-block" href="#article-series-this">{{ .Title | markdownify }}</a>
+                <p> <span class="font-weight-bold">Full series:</span> <a  class="font-special d-block" href="#article-series-this">{{ .Title | markdownify }}</a>
                 
 
             </aside>
@@ -174,7 +179,7 @@
             {{ . | markdownify }}
 		  </div>
         {{ end }}
-        </main>        
+        </div>        
         
         {{ with  .Params.series }}
           {{ with site.GetPage ( printf "/series/%s" . ) }}              <p>
@@ -202,6 +207,7 @@
             
           {{ end }}
         {{ end }}
+        
         <aside class="mt-5 d-none d-print-block text-center expand-right editor-note">
             
             This article is available at: <br><a href="{{ .Permalink }}">{{ .Permalink }}</a>
@@ -250,10 +256,11 @@
         ></div>
       </div>
     </article>
+    </main>
 
     {{ if not (in  .Params.design.hide "joinconversation" ) }}
 
-      <aside
+      <section
         class="mt-5 py-5 comment-block d-print-none bg-white"
         style="z-index:4"
       >
@@ -306,11 +313,11 @@
             </div>
           </div>
         </div>
-      </aside>
+      </section>
     {{ end }}
 
     {{ with .Site.RegularPages.Related . }}
-      <aside
+      <section
         class="d-print-none"
         style="background-color: white; min-height:1000"
       >
@@ -334,11 +341,11 @@
 
           </div>
         </div>
-      </aside>
+      </section>
     {{ end }}
   </div>
   
-<div id="footer" class="d-none" >
+<section id="footer" class="d-none" >
 <div style="border-top: 1px solid; font-size: 10px; text-align: center;">
 <div>           
          <img
@@ -352,5 +359,6 @@
 <div style="float: right; font-size: smaller;">{{with .Params.doi }}doi:{{ . }}{{ else }}.Permalink{{ end }}</div>
 
 </div>
-</div>
+</section>
+
 {{- end }}

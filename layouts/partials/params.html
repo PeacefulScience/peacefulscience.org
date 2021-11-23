@@ -1,0 +1,9 @@
+{{ $overrides := partialCached "params_override" }}
+{{ $ref := .RelPermalink }}
+{{ $params := .Params }}
+
+{{ with $overrides.Get $ref }}
+  {{ $params = merge . $params }}
+{{ end }}
+
+{{ return $params }}

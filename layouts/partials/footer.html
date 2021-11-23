@@ -1,21 +1,5 @@
 
 
-{{ partial "modal-subscribe" . }} 
-
-{{ if site.IsServer }}
-  {{ range ( .Scratch.Get "js" | uniq ) }}
-    <script defer src="{{ (resources.Get . | js.Build (dict "sourcemap" "inline" ) ).Permalink }}"> </script>
-  {{ end }}
-
-{{ else }}
-  {{ partial "onesignal" . }}
- 
-  {{ range ( .Scratch.Get "js" | uniq ) }}
-    <script defer src="{{ (resources.Get . | js.Build (dict "minify" true ) | fingerprint ).Permalink }}"> </script>
-  {{ end }}
-     
-{{ end }}
-
 
 
 <footer class="d-print-none py-5 text-white" >
@@ -63,3 +47,20 @@ Peaceful Science recieves commissions for purchases made through links on this w
 
 </footer>
 
+
+
+{{ partial "modal-subscribe" . }} 
+
+{{ if site.IsServer }}
+  {{ range ( .Scratch.Get "js" | uniq ) }}
+    <script defer src="{{ (resources.Get . | js.Build (dict "sourcemap" "inline" ) ).Permalink }}"> </script>
+  {{ end }}
+
+{{ else }}
+  {{ partial "onesignal" . }}
+ 
+  {{ range ( .Scratch.Get "js" | uniq ) }}
+    <script defer src="{{ (resources.Get . | js.Build (dict "minify" true ) | fingerprint ).Permalink }}"> </script>
+  {{ end }}
+     
+{{ end }}

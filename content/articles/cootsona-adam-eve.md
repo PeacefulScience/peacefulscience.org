@@ -2,7 +2,7 @@
 aliases:
 - /cootsona-adam-eve/
 authors:
-- swamidass
+- cootsona
 categories:
 - adam-eve
 - theology
@@ -11,14 +11,15 @@ date: "2019-05-16T17:10:10"
 description: With important questions before, us how should we approach origins? Let's keep working at this with our eyes focused, not on Adam and Eve, but on Jesus.
 headerimage:
   src: /img/2019/05/cootsona.jpg
-title: "Greg Cootsona: The Typology of Adam and Eve"
+title: "The Typology of Adam and Eve"
 ---
 
 <div class="editor-note aside-xl-right">
 
-Greg Cootsona is Lecturer in Religious Studies and Humanities at California State University at Chico and directs [Science and Theology for Emerging Adult Ministries](http://thesteamproject.org/) (or STEAM). I came to know Cootsona through STEAM, which awarded us a grant, "Inquiry Into Common Ground." Over the last couple years, Cootsona has been a consistent friend and support, especially of our work on [the Genealogical Adam and Eve.](https://peacefulscience.org/genealogical-rapprochement/) A [forum discussion](https://discourse.peacefulscience.org/t/greg-cootsona-mere-science-and-adams-empty-chair/591) with him last year about his new book [*Mere Science and Christian Faith*](https://www.amazon.com/Mere-Science-Christian-Faith-Bridging/dp/0830838147?tag=swamidass-20) was enlightening, and I recommend his book to students all the time. Though Cootsona himself does not affirm a historical Adam and Eve, he has been a friend and supporter of *Peaceful Science*. He has not read [my book](https://discourse.peacefulscience.org/t/the-cover-of-the-geneaological-adam-and-eve/6106) yet (coming out 12/10/2019 from IVP). When he does read it, the conversation will be interesting! I'm not sure what to expect. That is the beauty of disagreement in community, and I'm very pleased to have Cootsona as part of the *Peaceful Science* community. Now, I am honored to present this article from him on Adam and Eve.
-
 *This article is adapted from* [*Mere Science and Christian Faith*](https://www.amazon.com/Mere-Science-Christian-Faith-Bridging/dp/0830838147?tag=swamidass-20) *(InterVarsity Press, 2018).*
+
+Greg Cootsona is Lecturer in Religious Studies and Humanities at California State University at Chico and directs [Science and Theology for Emerging Adult Ministries](http://thesteamproject.org/) (or STEAM). I came to know Cootsona through STEAM, which awarded us a grant, "Inquiry Into Common Ground." Over the last couple years, Cootsona has been a consistent friend and support, especially of our work on [the Genealogical Adam and Eve.](https://peacefulscience.org/genealogical-rapprochement/) A [forum discussion](https://discourse.peacefulscience.org/t/greg-cootsona-mere-science-and-adams-empty-chair/591) with him last year about his new book [*Mere Science and Christian Faith*](https://www.amazon.com/Mere-Science-Christian-Faith-Bridging/dp/0830838147?tag=swamidass-20) was enlightening, and I recommend his book to students all the time. Though Cootsona himself does not affirm a historical Adam and Eve, he has been a friend and supporter of *Peaceful Science*. He has not read [my book](/genealogical-adam-eve) yet (coming out 12/10/2019 from IVP). When he does read it, the conversation will be interesting! I'm not sure what to expect. That is the beauty of disagreement in community, and I'm very pleased to have Cootsona as part of the *Peaceful Science* community. Now, I am honored to present this article from him on Adam and Eve.
+
 
 </div>
 

@@ -3,14 +3,11 @@
 {{ end }}
 
 
-
 {{ define "main" }}
 {{ $layout := .Params.design.layout | default "col-6 col-md-4"  }}
 {{ $style := .Params.design.style | default "vertical" }}
 
-{{ $pages := partial "listpages" . }}
-
-{{ $paginator := .Paginate $pages }}
+{{ $page := partial "listpages" . }}
 
   <div class="bg-white">
     <div style="height: 40px; width: 100%"></div>
@@ -47,20 +44,6 @@
           {{- partial "authors" (dict "page" . "class" "text-decoration-none") -}}
         </div>
 
-        
-          <div class="mb-3 ">
-            {{ with .Params.orcid}} 
-               <a href="https://orcid.org/{{ . }}" target=_blank rel=nofollow class="text-decoration-none"><i class="ml-3 mr-3 text-dark fab fa-orcid"></i> </a>
-            {{ end}}
-            {{ with .Params.gscholar}} 
-               <a href="https://scholar.google.com/citations?user={{ . }}&hl=en" target=_blank rel=nofollow class="text-decoration-none">
-                 <i class="mr-3  text-dark fab  fa-google"></i>
-                </a>
-            {{ end}}
-            {{ with .Params.twitter}} 
-               <a href="https://twitter.com/{{ . }}" target=_blank rel=nofollow class="text-decoration-none"><i class="text-dark fab fa-twitter"></i> </a>
-            {{ end}}
-           </div>
            
           <div style="max-width: 600px">
             {{- .Content -}}
@@ -73,15 +56,12 @@
         
         
           
-        {{ if  $paginator.Pages }}
-
-        <div class="col-12 justify-content-center mt-3 d-none">
-          {{ template "_internal/pagination.html" . }}
-        </div>        
+        {{ if  $page }}
+        {{ partial "heading" (dict "Text" "Related Articles" "Class" "heading-black") }}
 
         {{ end }}
 
-        {{- range $paginator.Pages  -}}
+        {{- range $page  -}}
           {{ partial "render" (dict "Page" .  "Style" $style "Layout"  $layout  ) }}
         {{ end -}}
 
@@ -89,11 +69,4 @@
     </div>
   </div>
 
-  <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
-  <script>
-    let infScroll = new InfiniteScroll("#post-list", {
-      append: "article",
-      path: "[aria-label=Next]",
-    });
-  </script>
 {{ end }}

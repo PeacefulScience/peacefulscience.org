@@ -1,0 +1,31 @@
+---
+title: Books
+reverse: false
+design:
+  style: vertical
+  layout: "col-6 col-md-4 col-lg-3"
+  sort: most-pages
+cascade:
+  rss: false
+  design:
+    style: horizontal
+    layout: "col-12 col-lg-6"
+  jsonld:
+    "@type": Book
+    "@id": = permalink 
+    headline: = title   
+    name: = title
+    description: = description
+    author: = authors
+    datePublished: = date
+    image: = headerimage
+    sameas: = sameas
+    about: = about
+    isAccessibleForFree: true
+    mainEntityOfPage: 
+      "@type": WebPage
+      "@id": = permalink webpage
+      url: = permalink
+---
+
+These are some of the books we thinking about and discussing. Each book's page lists articles were you can learn more.

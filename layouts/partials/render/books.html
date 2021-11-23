@@ -1,0 +1,65 @@
+
+{{- $page := .Page -}}
+{{ $height := 90 }}
+{{ $width := 160 }}
+
+{{ $src := partial `imgcdn`  ( printf `http://images.amazon.com/images/P/%s.LZZZZZZZ.jpg`  (index $page.Params.amazon 0) )  }}
+
+{{- $hide := split (index . "Hide" | default "") " "  -}}
+
+{{- $layout := .Layout -}}
+
+{{- $style := .Style  -}}
+
+{{- $id := .Id  }}
+
+{{- $cstyle := .CStyle | default nil }}
+
+{{- $containerclass := "p-3 text-smaller" -}}
+{{- $imageclass := "mb-1  d-print-none d-block mx-auto" -}}
+{{- $imagestyle := "width: 100%; height: auto; aspect-ratio: 6 / 9;  max-width: 300px; object-fit: contain;" }}
+{{- $imgeng:= "?imgeng=/h_auto,360/" }}
+
+{{- if eq  $style  "horizontal" -}}
+  {{- $containerclass = printf "%s %s" "d-flex" $containerclass -}}
+  {{- $imageclass = "flex-shrink-0 mr-3  mb-1 d-print-none" -}}
+  {{- $imagestyle = "width: auto; height: 180px; object-fit: contain;" }}
+  {{- $imgeng = "?imgeng=/h_auto,360/" }}
+{{- end -}}
+
+<article
+  {{with $cstyle }}style="{{ . | safeCSS }}"{{ end }}
+  {{with $id }}id="{{ . }}"{{ end }}
+  class="{{ $layout }} {{ $containerclass }}"
+  resource="{{ $page.Permalink }}"
+ >
+
+
+{{ $rendered := false }}
+
+{{ if (in $hide "image") }}
+
+	  <a href="{{$page.Permalink}}">   
+	  {{ .Title | markdownify }}
+	  </a>
+	  	
+{{ else }}
+
+	{{ with $page.Params.Headerimage.Youtube }}
+	  {{ if eq $style "vertical"  }}
+	  {{ partial `youtube` (dict `Image` ($src | partial `imgcdn` )  `Youtube` . `Class` $imageclass   `Style` $imagestyle  ) }}
+	  {{ $rendered = true }}
+	  {{ end }}
+	{{ end }}
+	
+	{{ if not $rendered }}
+	  <a href="{{$page.Permalink}}">   
+	  <img class="{{- $imageclass -}}" property="image" style="{{ $imagestyle | safeCSS }}" 
+	  src="{{ $src  | partial `imgcdn` }}{{ $imgeng }}" alt="{{ .Title | htmlEscape }}"
+	  {{- if not (in $hide "lazy") }} loading="lazy" {{- end }}>
+	  </a>
+	{{ end }} 
+
+{{ end }}
+
+</article>

@@ -29,15 +29,21 @@
      
     {{ $html := (slice) }}
     {{- range $authors }}
+      {{ $myhtml := "" }}
       {{- with site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize .)) }}
         
-        {{ $myhtml := printf `<a class="author %s"  property="author" href="%s">%s</a>` $class .Permalink  .Title }}
+        {{ $myhtml = printf `<a class="author %s"  property="author" href="%s">%s</a>` $class .Permalink  .Title }}
         {{ with .Params.orcid }}
           {{ $myhtml =  printf `%s<a target="_blank" href="https://orcid.org/%s"><i class="pl-1 fab fa-orcid" style="color: black;"></i></a>` $myhtml  . }}
         {{ end }}
-        
-        {{- $html = $html | append $myhtml -}}        
+       
+       {{ else }}
+         {{ warnf "AUTHOR.MISSING:\t%s\t%s" $page.RelPermalink . }}     
+        {{ $myhtml = printf `<span class="author %s"  property="author">%s</span>` $class  . }}         
        {{- end }}
+       
+        {{- $html = $html | append $myhtml -}}   
+       
      {{- end -}}
      {{ delimit $html ", "  " and "}}
     
