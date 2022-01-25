@@ -1,6 +1,6 @@
 ---
 title: Do Christians Need to Reconcile Evolutionary Theory and Doctrines of Divine Providence and Creation?
-description: 'Many Christian scholars have argued that standard versions of evolutionary theory and orthodox theological commitments can be reconciled. Some theistic evolutionists or "evolutionary creationists" have argued that evolutionary mechanisms such as random mutation and natural selection are nothing less than God''s way of creating. Though I dispute the logical coherence of these attempted reconciliations elsewhere, I argue here that there is little reason for Christians to attempt them, since an accumulating body of evidence from multiple subdisciplines of biology casts doubt on the creative power of the main evolutionary mechanisms. Thus, rather than addressing the question, "Can a meaningful doctrine of divine providence or creation be reconciled with mainstream evolutionary theory?" this essay will address the question of whether Christians should, or need to, attempt such a reconciliation at all.'
+description: '"So rather than ask, ''_Can_ we reconcile orthodox evolutionary theory with orthodox theological commitments?'' I want instead ask: ''_Should_ we, or need we, affect such a reconciliation?''"'
 sameas:
 - https://doi.org/10.5840/pc20202215
 - https://www.pdcnet.org/pc/content/pc_2020_0022_0001_0007_0040
@@ -15,6 +15,12 @@ series: ets-mte
 
 This article was first presented in a session of *The 71st Annual Meeting of the Evangelical Theological Society.* It was then published, closed access, in [*Philosophia Christi*](https://doi.org/10.5840/pc20202215).
 {.editor-note}
+
+### Abstract
+
+Many Christian scholars have argued that standard versions of evolutionary theory and orthodox theological commitments can be reconciled. Some theistic evolutionists or "evolutionary creationists" have argued that evolutionary mechanisms such as random mutation and natural selection are nothing less than God's way of creating. Though I dispute the logical coherence of these attempted reconciliations elsewhere, I argue here that there is little reason for Christians to attempt them, since an accumulating body of evidence from multiple subdisciplines of biology casts doubt on the creative power of the main evolutionary mechanisms. Thus, rather than addressing the question, "Can a meaningful doctrine of divine providence or creation be reconciled with mainstream evolutionary theory?" this essay will address the question of whether Christians should, or need to, attempt such a reconciliation at all.
+
+***
 
 I appreciate, first of all, the invitation to be part of this panel, and the interest that Michael Murray and John Churchill have shown in our book. I designed and helped edit the scientific and philosophical sections of the book and wrote a scientific and philosophical introduction to it. I also appreciate the irenic tone of Murray and Churchill's opening remarks, as well as those of William Lane Craig and Tom McCall. I am looking forward to the conversation afterward. There is a lot to build on, especially in the previous remarks. Two important questions are either stated, or implied, in the introduction to Murray and Churchill's paper: could, or by implication should, Christians with traditional doctrinal commitments accept theistic evolution—what they call "mere theistic evolution"?
 
