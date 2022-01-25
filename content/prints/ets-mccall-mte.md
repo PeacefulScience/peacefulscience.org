@@ -1,6 +1,6 @@
 ---
 title: 'On Mere Theistic Evolution'
-description: 'What Michael J. Murray and John Ross Churchill offer as "Mere Theistic Evolution" is an intriguing proposal that should be taken seriously by Christians who are convinced of the truth of classical Christian theology while also engaged in respectful and appreciative dialogue with the natural sciences. In this essay, I argue that the main theological arguments against theistic evolution put forth in the influential volume _Theistic Evolution: A Scientific, Philosophical, and Theological Critique_ are not decisive against mere theistic evolution. The proposal raises many interesting and important issues, and it deserves further engagement.'
+description: TODO
 sameas:
 - https://doi.org/10.5840/pc20202212
 - https://www.pdcnet.org/pc/content/pc_2020_0022_0001_0007_0040
@@ -15,6 +15,10 @@ series: ets-mte
 
 This article was first presented in a session of *The 71st Annual Meeting of the Evangelical Theological Society.* It was then published, closed access, in [*Philosophia Christi*](https://doi.org/10.5840/pc20202212).
 {.editor-note}
+
+### Abstract
+
+What Michael J. Murray and John Ross Churchill offer as "Mere Theistic Evolution" is an intriguing proposal that should be taken seriously by Christians who are convinced of the truth of classical Christian theology while also engaged in respectful and appreciative dialogue with the natural sciences. In this essay, I argue that the main theological arguments against theistic evolution put forth in the influential volume _Theistic Evolution: A Scientific, Philosophical, and Theological Critique_ are not decisive against mere theistic evolution. The proposal raises many interesting and important issues, and it deserves further engagement.
 
 ## In Appreciation: Important Apologetic and Pastoral Elements
 
