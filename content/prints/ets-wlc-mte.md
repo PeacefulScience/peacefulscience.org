@@ -28,7 +28,9 @@ One of the things I appreciate about Michael J. Murray and John Ross Churchill's
 
 [^1]:  Murray, Michael J. and Churchill, John Ross. "Mere Theistic Evolution" in  _The 71st Annual Meeting of the Evangelical Theological Society_, 2019. [https://doi.org/10.54739/6qip](https://doi.org/10.54739/6qip)
 
-It will be helpful at the outset to note the very limited scope of Murray and Churchill's response to the volume, _Theistic Evolution: A Scientic, Philosophical, and Theological Critique (SPTC)_. They state that the volume as a whole conveys "the message that _for Christians with traditional doctrinal commitments, no version of theistic evolution that adheres largely to consensus views in biology will be a plausible option_."[^2]  They maintain to the contrary that it is "incontrovertible" that there are versions of theistic evolution that are "immune to many of the key criticisms advanced" in the book.[^3] More specifically, they argue that "there are versions of theistic evolution ... that are consistent with traditional doctrinal commitments" concerning divine providence, miracles, evidence for theism, and nonphysical souls. It is evident, then, that their concern is with _doctrinal_ criticisms of theistic evolution.[^4]
+{{< amazon `1433552868` >}}
+
+It will be helpful at the outset to note the very limited scope of Murray and Churchill's response to the volume, [_Theistic Evolution: A Scientific, Philosophical, and Theological Critique (SPTC)_](/books/theistic-evolution/). They state that the volume as a whole conveys "the message that _for Christians with traditional doctrinal commitments, no version of theistic evolution that adheres largely to consensus views in biology will be a plausible option_."[^2]  They maintain to the contrary that it is "incontrovertible" that there are versions of theistic evolution that are "immune to many of the key criticisms advanced" in the book.[^3] More specifically, they argue that "there are versions of theistic evolution ... that are consistent with traditional doctrinal commitments" concerning divine providence, miracles, evidence for theism, and nonphysical souls. It is evident, then, that their concern is with _doctrinal_ criticisms of theistic evolution.[^4]
 
 [^2]: Ibid., 8.
 [^3]: Ibid., 9.
@@ -38,7 +40,7 @@ Now immediately I felt myself rather left out of the conversation. For I am a Ch
 
 [^5]: Ibid., 9.
 
-So I find Murray and Churchill's statement of the third plank of theistic evolution problematic due to its ambivalence. Initially, they state, "all versions of theistic evolution arm that the complexity and diversity of life are best explained by appeal to evolutionary processes that have been operative over long periods of time, where the relevant processes include those that constitute what is often called 'the modern evolutionary synthesis.'"[^6] Notice, the relevant explanatory processes include but are not limited to those of the modern synthesis. This is "mere" indeed! Even a Michael Behe, who thinks that the mechanisms of random mutation and natural selection explain very little of the origin of biological complexity, counts as a theistic evolutionist on this characterization, since he would agree that the mechanisms of the modern synthesis are included in the evolutionary processes. So would a classical progressive creationist like Bernard Ramm, who posits sequential miraculous intervention on God's part to drive evolutionary advance.
+So I find Murray and Churchill's statement of the third plank of theistic evolution problematic due to its ambivalence. Initially, they state, "all versions of theistic evolution affirm that the complexity and diversity of life are best explained by appeal to evolutionary processes that have been operative over long periods of time, where the relevant processes include those that constitute what is often called 'the modern evolutionary synthesis.'"[^6] Notice, the relevant explanatory processes include but are not limited to those of the modern synthesis. This is "mere" indeed! Even a Michael Behe, who thinks that the mechanisms of random mutation and natural selection explain very little of the origin of biological complexity, counts as a theistic evolutionist on this characterization, since he would agree that the mechanisms of the modern synthesis are included in the evolutionary processes. So would a classical progressive creationist like Bernard Ramm, who posits sequential miraculous intervention on God's part to drive evolutionary advance.
 
 [^6]: Ibid.
 
@@ -57,10 +59,12 @@ This fact became clear to me in the course of my preparation for my debate with 
 
 [^8]: The debate can be accessed at ReasonableFaith.org, http://bit.ly/CraigAyala
 
-Alvin Plantinga has made this same point in his book, _Where the Conflict Really Lies_.[^9] Plantinga chastises scientists who have recklessly asserted that according to evolutionary biology the evolutionary process is undirected or purposeless. Such claims are not, he says, properly part of the biological theory itself but are a philosophical add-on, an extrascientific assertion. In support, Plantinga quotes the eminent evolutionary biologist Ernst Mayr, who wrote: "When it is said that mutation or variation is random, the statement simply means that there is no correlation between the production of new genotypes and the adaptational needs of an organism in a given environment."10 This is the same definition given by Ayala.
+Alvin Plantinga has made this same point in his book, _Where the Conflict Really Lies_.[^9] Plantinga chastises scientists who have recklessly asserted that according to evolutionary biology the evolutionary process is undirected or purposeless. Such claims are not, he says, properly part of the biological theory itself but are a philosophical add-on, an extrascientific assertion. In support, Plantinga quotes the eminent evolutionary biologist Ernst Mayr, who wrote: "When it is said that mutation or variation is random, the statement simply means that there is no correlation between the production of new genotypes and the adaptational needs of an organism in a given environment."[^10] This is the same definition given by Ayala.
 
 [^9]: Alvin Plantinga, _Where the Conflict Really Lies_ (New York: Oxford University Press, 2011).
-[^10]: Mayr, quoted in Plantinga, Where the Conflict Really Lies, 11.
+[^10]: Mayr, quoted in Plantinga, _Where the Conflict Really Lies_, 11.
+
+{{< amazon `0199812098` >}}
 
 Such a definition of "random" is wholly compatible with God's causing mutations to occur with a certain end in view. For example, suppose that God in His providence causes a mutation to occur in an organism, not for the benefit of the organism, but for some other reason (say, because it will produce easy prey for other organisms that He wants to flourish). In such a case, the mutation is both purposeful and random.
 
@@ -76,14 +80,16 @@ The second doctrinal commitment Murray and Churchill discuss is God's miraculous
 
 [^12]: Murray and Churchill, "Mere Theistic Evolution," 19.
 
-The question, then, is the degree to which theistic evolution precludes postulating divine interventions in the evolutionary development of life. Murray and Churchill stipulate that any miracle claims must be "consistent with the armation that the complexity and diversity of life are best explained by appeal to evolutionary processes over long periods of time."[^13] Theistic evolution, they state, is not "consistent with any ... position on which miraculous activity is deemed crucial to explaining much of the world's biological complexity and diversity in light of alleged explanatory deficiencies in evolutionary theory."[^14] That still leaves me wondering. Suppose the postulated miracles are infrequent but nonetheless occur at pivotal junctures in the evolutionary development of life forms. I suspect that in order to distinguish theistic evolution from progressive creationism, Murray and Churchill will want to preclude such a view as counting as theistic evolution.
+The question, then, is the degree to which theistic evolution precludes postulating divine interventions in the evolutionary development of life. Murray and Churchill stipulate that any miracle claims must be "consistent with the affirmation that the complexity and diversity of life are best explained by appeal to evolutionary processes over long periods of time."[^13] Theistic evolution, they state, is not "consistent with any ... position on which miraculous activity is deemed crucial to explaining much of the world's biological complexity and diversity in light of alleged explanatory deficiencies in evolutionary theory."[^14] That still leaves me wondering. Suppose the postulated miracles are infrequent but nonetheless occur at pivotal junctures in the evolutionary development of life forms. I suspect that in order to distinguish theistic evolution from progressive creationism, Murray and Churchill will want to preclude such a view as counting as theistic evolution.
 
 [^13]: Ibid., 20.
 [^14]: Ibid.
 
-But then later they say, "theistic evolutionists can arm that God acted miraculously in order to bring forth various species, without having to deny any of the principles essential to theistic evolution. Indeed, as noted in sections above, theistic evolution is even compatible with at least some sets of claims that arm that God acted miraculously _outside of evolutionary processes_ to bring about changes in the biological domain."[^15]
+But then later they say, "theistic evolutionists can affirm that God acted miraculously in order to bring forth various species, without having to deny any of the principles essential to theistic evolution. Indeed, as noted in sections above, theistic evolution is even compatible with at least some sets of claims that affirm that God acted miraculously _outside of evolutionary processes_ to bring about changes in the biological domain."[^15]
 
 [^15]: Ibid., 31.
+
+{{< amazon `0830851879` >}}
 
 This leaves me confused as to the degree of miraculous activity mere theistic evolution permits. Again, I see nothing doctrinally objectionable in a view that postulates very little divine miraculous activity in the course of the evolution of biological complexity. We have no theological grounds for requiring that God's interventions must be frequent or pivotal. Rather the question is again scientific: is an account of the development of biological complexity which appeals to practically purely naturalistic causes explanatorily adequate?
 
@@ -92,7 +98,9 @@ This leaves me confused as to the degree of miraculous activity mere theistic ev
 The third doctrinal commitment concerns the viability of natural theology. Murray and Churchill point out that the resources for a robust natural theology are much broader than the development of biological complexity. In my own work I have defended at least six arguments for the existence of God, none of which appeals to biological complexity as a basis for inferring God's existence.[^16] Indeed, the cutting edge of design arguments these days concerns the fine-tuning of the fundamental constants and quantities of nature which must be in place before the origin of life and the evolution of biological complexity can even take place.[^17] Theistic evolutionists can be strong proponents of arguments for an intelligent designer of the cosmos based on fine tuning.
 
 [^16]: See William Lane Craig and J. P. Moreland, eds., _Philosophical Foundations for a Christian Worldview_, 2nd ed. (Downers Grove, IL: InterVarsity, 2017), chaps. 25–6; and "Is There Evidence for God?," https://www.youtube.com/watch?v=8KMd_eS2J7o
-[^17]: Robin Collins, "The Teleological Argument: An Exploration of the Fine Tuning of the Universe," in _The Blackwell Companion to Natural Theology_, ed. William Lane Craig and J. P. Moreland (Oxford: Wiley-Blackwell, 2009), 202–81; Geraint F. Lewis and Luke A. Barnes, _A Fortunate Universe: Life in a Finely Tuned Cosmos_ (New York: Cambridge University Press, 2016).
+[^17]: Robin Collins, "The Teleological Argument: An Exploration of the Fine Tuning of the Universe," in [_The Blackwell Companion to Natural Theology_](/books/blackwell-companion-natural-theology/), ed. William Lane Craig and J. P. Moreland (Oxford: Wiley-Blackwell, 2009), 202–81; Geraint F. Lewis and Luke A. Barnes, [_A Fortunate Universe: Life in a Finely Tuned Cosmos_](/books/fortunate-universe/) (New York: Cambridge University Press, 2016).
+
+{{< amazon `1405176571` >}}
 
 Here Murray and Churchill make what is in my opinion perhaps the most important point of their paper: theistic evolution is not offered as a scientific theory. Rather it is a way of integrating a scientific theory with a theological perspective. They explain, "_the epistemic value of theistic evolution lies primarily in its power to unify or synthesize two sets of claims_. On the one hand, we have a set of theological claims concerning the God who created the world and providentially governs His creatures; on the other, we have a set of scientific claims that posit evolutionary explanations for the complexity and diversity we see in biology. Theistic evolution provides a coherent synthesis of these two sets of claims, and this is its primary epistemic value."[^18]
 
@@ -102,11 +110,13 @@ I think that because Intelligent Design _is_ offered as a scientific theory, ID 
 
 ### 4. Nonphysical Souls
 
-The fourth and final doctrinal commitment is to the reality of nonphysical souls. While I think that it is true that nonphysical souls fit much better within a theistic worldview than within a naturalistic worldview, I see no reason to think that the theist cannot maintain that at some point in hominid evolution, once the brain had suciently evolved, God created a soul and incarnated it in a hominin he had prepared to become the first human being.
+The fourth and final doctrinal commitment is to the reality of nonphysical souls. While I think that it is true that nonphysical souls fit much better within a theistic worldview than within a naturalistic worldview, I see no reason to think that the theist cannot maintain that at some point in hominid evolution, once the brain had sufficiently evolved, God created a soul and incarnated it in a hominin he had prepared to become the first human being.
 
 So I agree with Murray and Churchill that theistic evolution is compatible with the four Christian doctrinal commitments they mention.
 
 ## ID and Theistic Evolution
+
+{{< amazon `1107156610` >}}
 
 Murray and Churchill go on to contrast ID and theistic evolution in various ways. I realize that they are presenting just sample versions of ID and theistic evolution. Nonetheless, I think that their presentation serves to foster the false image of ID that is as much an obstacle to mutual understanding as is the false image of theistic evolution as a scientific theory.
 
@@ -126,20 +136,18 @@ I have good friends and colleagues on both sides of the debate, and I hope that 
 
 Murray, Michael J. and Churchill, John Ross. "Mere Theistic Evolution" in  _The 71st Annual Meeting of the Evangelical Theological Society_, 2019. [https://doi.org/10.54739/6qip](https://doi.org/10.54739/6qip)
 
-Tom McCall, "On Mere Theistic Evolution" in  _The 71st Annual Meeting of the Evangelical Theological Society_, 2019. [https://doi.org/10.54739/mt3a](https://doi.org/10.54739/mt3a)
+Moreland, J. P., Meyer, Stephen C., Shaw, Christopher, Gauger, Ann K., and Grudem, Wayne, eds. [_Theistic Evolution: A Scientific, Philosophical, and Theological Critique_](books/theistic-evolution/). (Wheaton, IL: Crossway, 2017)
 
 Craig, William Lane and Ayala, Francisco. "Is Intelligent Design Viable?" http://bit.ly/CraigAyala, published November 2009, accessed January 24, 2022
 
 Plantinga, Alvin. _Where the Conflict Really Lies_. (New York: Oxford University Press, 2011)
 
-Moreland, J. P., Meyer, Stephen C., Shaw, Christopher, Gauger, Ann K., and Grudem, Wayne, eds. _Theistic Evolution: A Scientific, Philosophical, and Theological Critique_. (Wheaton, IL: Crossway, 2017)
-
 Craig, William Lane and Moreland, J. P. eds. _Philosophical Foundations for a Christian Worldview_, 2nd ed. (Downers Grove, IL: InterVarsity, 2017)
 
 Craig, William Lane and Sharp, Kevin. "Is There Evidence for God?" https://www.youtube.com/watch?v=8KMd_eS2J7o, published March 31, 2016, accessed January 24, 2022
 
-Collins, Robin. "The Teleological Argument: An Exploration of the Fine Tuning of the Universe," in _The Blackwell Companion to Natural Theology_, ed. William Lane Craig and J. P. Moreland (Oxford: Wiley-Blackwell, 2009)
+Collins, Robin. "The Teleological Argument: An Exploration of the Fine Tuning of the Universe," in [_The Blackwell Companion to Natural Theology_](/books/blackwell-companion-natural-theology/), ed. William Lane Craig and J. P. Moreland (Oxford: Wiley-Blackwell, 2009)
 
-Lewis, Geraint F. and Barnes, Luke A. _A Fortunate Universe: Life in a Finely Tuned Cosmos_. (New York: Cambridge University Press, 2016)
+Lewis, Geraint F. and Barnes, Luke A. [_A Fortunate Universe: Life in a Finely Tuned Cosmos_](/books/fortunate-universe/). (New York: Cambridge University Press, 2016)
 
 </div>
