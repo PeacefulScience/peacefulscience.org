@@ -3,9 +3,6 @@ title: Prints
 pages_filter_rss: true
 cascade:
   rss: true
-  outputs:
-  - HTML
-  - print
   jsonld-template: /articles
   jsonld:
     "@type": ScholarlyArticle

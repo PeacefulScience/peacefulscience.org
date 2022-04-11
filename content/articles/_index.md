@@ -2,9 +2,6 @@
 title: Articles
 cascade:
   rss: true
-  outputs:
-  - HTML
-  - print
   jsonld:
     "@type": Article
     "@id": = permalink 
