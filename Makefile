@@ -10,6 +10,7 @@ all: imginfo pdfinfo production
 s3:
 	rm -rf public
 	hugo
+	node code/render.js 
 	aws s3 sync --delete --exclude "*" --include "*.json"  public ${S3_BUCKET}/json
 	aws s3 sync --delete public/_prince ${S3_BUCKET}/_prince
 
