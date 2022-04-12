@@ -1,1 +1,74 @@
-{}
+{{- range site.Pages }}
+  {{- $c := .Content }}
+{{- end }}
+
+{{- $dict := newScratch }}
+
+
+{{- range $key, $value := .Params }}
+  {{- $dict.Set  $key $value }}
+{{- end }}
+
+{{- $jsonld := partial "jsonld-template" . }}
+
+{{- with partial "jsonld/jsonld.html" (dict "Page" . "Input" $jsonld ) }}
+  {{- $dict.Set  "jsonld" . }}
+{{- end }}
+
+{{- with partial "getdoi.html" .}}
+  {{- $dict.Set "doi" . }}
+{{- end }}
+
+{{- with partial "lastmod.html" . }}
+  {{- $dict.Set "lastmod" . }}
+{{- end }}
+
+{{- $dict.Set "publishdate" .PublishDate }}
+
+{{- $dict.Set "title" (.Title | markdownify) }}
+
+{{- $dict.Set "description" (.Description | markdownify) }}
+
+{{- $dict.Set "linktitle"  (.LinkTitle | markdownify) }}
+
+{{- $dict.Set "date" .Date }}
+
+{{- $dict.Set "path" (.RelPermalink |  path.Clean) }}
+
+{{- $dict.Set "kind" .Kind }}
+
+{{- $dict.Set "html" .Content }}
+
+{{- $dict.Set "toc" .TableOfContents }}
+
+{{- $dict.Set "authors" slice }}
+{{- range .Params.authors }}
+  {{- with site.GetPage (. | urlize | printf "authors/%s" | path.Clean ) }}
+    {{- $dict.Add "authors" (slice (slice .Title  ( .RelPermalink | path.Clean ) ))}}
+  {{- end }}
+{{- end }}
+
+{{- $dict.Set "pages" slice }}
+{{- range partial "listpages" . }}
+    {{- $dict.Add "pages" ( .RelPermalink | path.Clean ) }}
+{{- end }}
+
+{{- $dict.Set "editors" slice }}
+{{- range .Params.editors }}
+  {{- with site.GetPage (. | urlize | printf "authors/%s" | path.Clean ) }}
+    {{- $dict.Add "editors" (slice (slice .Title  ( .RelPermalink | path.Clean ) ))}}
+  {{- end }}
+{{- end }}
+
+{{- $dict.Set "aliases" slice }}
+{{- range .Params.aliases }}
+    {{- $dict.Add "aliases" (. | path.Clean ) }}
+{{- end }}
+
+{{- with .Params.series }}
+  {{- with site.GetPage (. | urlize | printf "series/%s" | path.Clean ) }}
+    {{- $dict.Set "series" (.RelPermalink | path.Clean ) }}
+  {{- end }}
+{{- end }}
+
+{{-   jsonify  $dict.Values }}

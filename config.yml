@@ -70,7 +70,6 @@ outputformats:
     permalinkable: False
     mediaType: "application/json"
     isPlainText: true
-    path: JSON
   xrefposted:
     mediaType: "application/xml"
     basename: posted
