@@ -64,6 +64,13 @@ outputformats:
     permalinkable: False
   HTML:
     weight: 2 
+  JSON:
+    weight: 3
+    notAlternative: true
+    permalinkable: False
+    mediaType: "application/json"
+    isPlainText: true
+    path: JSON
   xrefposted:
     mediaType: "application/xml"
     basename: posted
@@ -86,12 +93,14 @@ outputformats:
     isPlainText: false
     isHTML: true
     isUgly: true
-    path: _prince
     permalinkable: false
    
 outputs:
   home: ["HTML", "algolia", "RSS", "redir", "xrefconf", "xrefposted", "xrefbook"]
-  page: ["HTML", "print"]
+  page: ["HTML", "print", "JSON"]
+  section: ["HTML", "JSON"]
+  taxonomy: ["HTML", "JSON"]
+  term: ["HTML", "JSON"]
 
 params:
   baseGitHub: "https://github.com/PeacefulScience/peacefulscience.org/"
