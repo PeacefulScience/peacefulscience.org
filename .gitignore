@@ -36,3 +36,5 @@ migrate.ipynb
 
 # Local Netlify folder
 .netlify
+json/
+*.tgz

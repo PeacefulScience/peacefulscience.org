@@ -4,7 +4,6 @@
 
 {{- $dict := newScratch }}
 
-
 {{- range $key, $value := .Params }}
   {{- $dict.Set  $key $value }}
 {{- end }}
@@ -15,12 +14,20 @@
   {{- $dict.Set  "jsonld" . }}
 {{- end }}
 
+{{- with partial "getpdf.html" . }}
+  {{- $dict.Set  "pdf" . }}
+{{- end }}
+
 {{- with partial "getdoi.html" .}}
   {{- $dict.Set "doi" . }}
 {{- end }}
 
 {{- with partial "lastmod.html" . }}
   {{- $dict.Set "lastmod" . }}
+{{- end }}
+
+{{- with partial "getcontainertitle.html" . }}
+  {{- $dict.Set "container" (slice .Title ( .Page.RelPermalink | path.Clean  )) }}
 {{- end }}
 
 {{- $dict.Set "publishdate" .PublishDate }}
@@ -41,10 +48,20 @@
 
 {{- $dict.Set "toc" .TableOfContents }}
 
+{{- $dict.Set "sections" slice }}
+{{- $page := .Parent }}
+{{- range  (seq 5)  }}
+  {{- with $page }}
+    {{- $dict.Add "sections" (slice (slice .LinkTitle  (  .RelPermalink | path.Clean ))) }}
+    {{- $page = .Parent }}
+  {{- end }}
+{{- end }}
+
+
 {{- $dict.Set "authors" slice }}
 {{- range .Params.authors }}
   {{- with site.GetPage (. | urlize | printf "authors/%s" | path.Clean ) }}
-    {{- $dict.Add "authors" (slice (slice .Title  ( .RelPermalink | path.Clean ) ))}}
+    {{- $dict.Add "authors" (slice (slice .Title  ( .RelPermalink | path.Clean ) (.Params.orcid | default "") )) }}
   {{- end }}
 {{- end }}
 
@@ -71,4 +88,4 @@
   {{- end }}
 {{- end }}
 
-{{-   jsonify  $dict.Values }}
+{{-  jsonify  $dict.Values }}

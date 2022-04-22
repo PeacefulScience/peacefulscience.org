@@ -8,11 +8,11 @@ endif
 all: imginfo pdfinfo production
 
 s3:
-	rm -rf public
+	rm -rf public json
 	hugo
-	node code/render.js 
-	aws s3 sync --delete --exclude "*" --include "*.json"  public ${S3_BUCKET}/json
-	aws s3 sync --delete public/_prince ${S3_BUCKET}/_prince
+	node render.js 
+	aws s3 sync --delete json ${S3_BUCKET}/json
+#	aws s3 sync --delete public/_prince ${S3_BUCKET}/_prince
 
 algolia: 
 	hugo -e index
