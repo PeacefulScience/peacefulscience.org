@@ -35,7 +35,7 @@
         {{- $html = $html | append $myhtml -}}   
        
      {{- end -}}
-     {{ delimit $html ", "  " and "}}
+     {{ delimit $html ", "  " and " | safeHTML }}
     
     
 
