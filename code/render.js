@@ -75,7 +75,7 @@ function render_mathjax(html) {
 
 async function render(path) {
  
- return fs.readFile(path)
+ return fs.readFile(path,  {encoding: 'utf8'})
    .then(parsedom)
    .then((dom) => {
      has_mathjax = dom.document.querySelector("[mathjax]");
