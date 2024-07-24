@@ -9,7 +9,7 @@ included_files = ["prince", "prince-engine/**", "contrib/**", "fonts/**", "lib/*
 [build]
 command = "hugo -b $URL"
 publish = "public/"
-NODE_VERSION = "16.13.1"
+NODE_VERSION = "20.15.1"
 
 [context.production]
 command = "make production"
