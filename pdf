@@ -3,7 +3,7 @@
 hugo -DF | tee hugo.log
 
 node code/render.js
-
+mkdir -p proofs
 
 for i in $*
 do
@@ -11,7 +11,7 @@ do
   i=${i%.md}
   src=public/_prince${i}/index.html
   
-  pdf=${i##*/}.pdf
+  pdf=proofs/${i##*/}.pdf
   
   prince $src -o $pdf --fileroot=public/
   open $pdf
