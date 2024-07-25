@@ -17,7 +17,7 @@ command = "make production"
 [build.environment]
 HUGO_VERSION = "0.97.3"
 HUGO_ENV = "development"
-AWS_LAMBDA_JS_RUNTIME = "nodejs12.x"
+AWS_LAMBDA_JS_RUNTIME = "nodejs20.x"
 
 [context.production.environment]
 HUGO_ENV = "production"
