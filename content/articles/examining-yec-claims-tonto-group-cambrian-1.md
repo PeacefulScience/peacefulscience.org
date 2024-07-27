@@ -5,8 +5,10 @@ description: Assessing whether the geology of the Grand Canyon is consistent wit
 authors:
 - Stephen Mitchell and Kennen Tillman
 date: 2023-10-19
-publishdate: 2024-06-18
+publishdate: 2024-08-06
 draft: true
+headerimage:
+  src: /img/2024/07/tonto1/01_Grand_Canyon_Mferbfriske.jpg
 ---
 
 ## Plain Language Summary
@@ -16,8 +18,6 @@ In the papers reviewed here, Dr. Andrew Snelling proposes that the Cambrian aged
 Here we will describe features that indicate that the Tonto Group sediments were deposited by many different events at much slower rates, with many significant pauses in sedimentation. Such pauses are evidenced by herringbone cross-stratification, mudcracks, trace fossils and stromatolites. When we look at the folding in the Tonto Group, we find that the rocks are clearly fractured and many of these fractures were associated with deformation. We find that the observations at both outcrop and microscopic scales are consistent with low pressure / low temperature deformation over long periods of time. The data indicate a diverse geologic history over deep time. Our geologic understanding has grown over time and many models have been proposed.  Even so, we do not find support for a catastrophic flood interpretation either in the Cambrian rocks of the Grand Canyon or in other sedimentary basins around the world.
 
 ## Introduction
-
-{{< amazon `1946246255` >}}
 
 Most lists of the “seven wonders of the natural world” include the Grand Canyon in Arizona. It is spectacular visually but also geologically. This is not just because of the canyon that is carved there but because it exposes so much rock. The modern understanding of the vast majority of geologists is that the rocks were formed over many millions of years. Can they be explained in a much shorter timeframe? Young Earth Creationism (YEC)[^1] proposes that the entire universe is approximately 6,000 to 10,000 years old and its proponents have often declared that the rocks along the Grand Canyon and Colorado Plateau can be scientifically interpreted in ways that fit this interpretation. One key component of YEC explanations is the claim that approximately 4350 years ago, the earth experienced a global catastrophic flood, the biblical Noah’s flood, that included many unique events and effects that together comprise an interpretation called “flood geology” (FG).
 
@@ -38,9 +38,13 @@ Contradictions with the geologic understanding developed for the formations of t
 
 The differences between these two models are major and as a result, both cannot be true.  One or the other is false. In this case, if any of these four questions can be demonstrated not to be reconcilable with FG, then YEC should not consider these Cambrian units as “flood deposits” and it makes the entire YEC proposal questionable. In this current report, we will address primarily the first three questions. We believe that the general age model developed using radiometric dating is sound, but we will leave that question for future reports.
 
+{{% image `/img/2024/07/tonto1/Fig_1_geologic_column.png` `aside-xl-wide` /%}}
+
 *Figure 1*[^2] shows two current contrasting YEC interpretations for the timing of Noah’s flood in the geologic record from separate leading YEC organizations. Both groups recognize that, regardless of their differences with the accepted timescale, the accepted geologic column is a valid summary of many, many observations around the world. The relative order of sediment deposition is recognizable. The key difference in the two interpretations is in the top of the flood interval. Snelling interprets the top of the flood interval as the top of the Mesozoic section and that gives him very limited time for the deposition of the Tonto Group. Dr Tim Clarey of the Institute for Creation Research (ICR) places the top of the flood deposits at the top of the Pliocene and therefore, leaves even less time available for each system of rocks to be deposited, including the Tonto Group as illustrated on the figure. In many places around the world, the differences between these views involves literally miles of sediment thickness.
 
 [^2]: Clarey 2020; Mitchell, Stephen 2018; Snelling 2009; Vail, Mitchum Jr, and Thompson III 1977
+
+{{% image `/img/2024/07/tonto1/Table_1_Stoplight.png` `aside-xl-wide` /%}}
 
 *Table 1* is a summary of our findings in the form of a “stoplight chart”, such as is commonly used in the oil industry to convey risks and uncertainties associated with particular plays[^3] or prospects. Green signals show that the data support the proposed model, while red signals reflect potentially fatal flaws that would need to be addressed in order for the model to be considered viable. The column for Old Age Models reflects not one single model, but whether or not concerns have been identified that would make depositional processes acting over deep time doubtful. The column for FG also does not reflect a particular FG model, but whether concerns are recognized that would invalidate the general explanation for the Cambrian rocks being deposited by a global catastrophic flood. The colors are subjective appraisals of the evidence but provide a quick visual assessment of what we have found.
 
@@ -54,7 +58,7 @@ Part Two will concentrate on how long it took for the Cambrian sediments to be d
 
 {{< amazon `164349421X` >}}
 
-We will look at several examples that don’t fit the flood models.  The published interpretations tell us approximately how many days YEC models propose were available to deposit rocks in each of the geologic periods, regardless of how long these periods actually were. The duration of each of these periods, including the Cambrian period provide reality checks that we can use to see if the YEC models are viable. (See Figure 1).
+We will look at several examples that don’t fit the flood models.  The published interpretations tell us approximately how many days YEC models propose were available to deposit rocks in each of the geologic periods, regardless of how long these periods actually were. The duration of each of these periods, including the Cambrian period provide reality checks that we can use to see if the YEC models are viable. (See **Figure 1**).
 
 We can also look at the rocks to see if the depositional clues in them are consistent with the proposal of catastrophic flood deposition. Naturally the range of processes recognized in the Tonto Group is more limited than what we would find in the entire rock record, but if these were, as Snelling asserts, deposited by a catastrophic flood, we can be confident that some processes will not be recognized.
 

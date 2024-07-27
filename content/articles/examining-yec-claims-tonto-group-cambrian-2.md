@@ -5,8 +5,10 @@ description: Assessing whether the geology of the Grand Canyon is consistent wit
 authors:
 - Stephen Mitchell and Kennen Tillman
 date: 2023-10-19
-publishdate: 2024-06-19
+publishdate: 2024-08-07
 draft: true
+headerimage:
+  src: /img/2024/07/tonto2/01_Part_2_Strat_image.png
 ---
 
 Young Earth Creation (YEC) models propose that geologic units like the formations of the Tonto Group were deposited in a few days or weeks. In Part Two, we will look at two of the four ways that we listed in Part One that the Snelling articles contrast with the consensus geologic understandings developed for these formations. These are:
@@ -50,13 +52,15 @@ Another challenge to FG models comes from the sheer amount of sediment deposited
 [^11]: Baumgardner 2018a; 2018b.
 [^12]: Tim Helbe (personal communication) points out that among the problems are: 1. the fact that Baumgardner’s estimate of the sediment to be accounted for is less than half that of most recent estimates and 2. it does not account for the compaction of the sediments and this also sharply increases the amount of sediment to be accounted for. The model seems to include key arbitrary parameters. It includes a number of sub-models with no explanation for how parameters were chosen. He doesn’t demonstrate the impact of changing the values as is typically done in defending of models.
 
-If we use some of the measured thicknesses provided by Middleton and Elliott[^13] and estimate the duration for Tonto deposition reported by Snelling (Figure 1), we can determine the average sedimentation rates predicted by Snelling’s model. The Tapeats Sandstone would have averaged approximately 9-30 m/day (28-100 ft/day). When we include the Bright Angel and Muav formations, the average increases a bit to 11-34 m/day (36-111 ft/day). These are enormous rates of deposition. These rates can actually be expressed as averaging 0.5 to 1.4 m/hour (1.5-4.6 ft/hour)! This proposal is that a lot of sediment was deposited in a hurry. What if the sedimentation wasn’t continuous over the predicted time?  That would mean the rates were even faster when the deposition was active!
+If we use some of the measured thicknesses provided by Middleton and Elliott[^13] and estimate the duration for Tonto deposition reported by Snelling (**Figure 1**), we can determine the average sedimentation rates predicted by Snelling’s model. The Tapeats Sandstone would have averaged approximately 9-30 m/day (28-100 ft/day). When we include the Bright Angel and Muav formations, the average increases a bit to 11-34 m/day (36-111 ft/day). These are enormous rates of deposition. These rates can actually be expressed as averaging 0.5 to 1.4 m/hour (1.5-4.6 ft/hour)! This proposal is that a lot of sediment was deposited in a hurry. What if the sedimentation wasn’t continuous over the predicted time?  That would mean the rates were even faster when the deposition was active!
 
 [^13]: Middleton and Elliott 1990.
 
 In order to get the sediment moving, Snelling proposes that flow rates “ranged from 1.5 m/sec in the lower parts to 1 m/sec in cross-bedded units”.[^14] Such rates sustained over a broad area would have meant enormous discharge rates. Discharge rates and depositional rates like these are vastly beyond normal rates, but we do have exceptional examples where such flow and depositional rates occurred. These provide us examples of what to expect if processes were much bigger than what we see in the present. Let’s briefly look at examples.
 
 [^14]: Snelling 2021b.
+
+{{% image `/img/2024/07/tonto2/Fig_1_geologic_column.png` `aside-xl-wide` /%}}
 
 *Figure 1.* Comparison for interpretations of the geologic column by leading flood geology advocates. This does not include any time for initial erosion. Snelling (2023) proposes a “prolonged period (days or more) in which there was a significant amount of continental-scale erosion to bevel the Precambrian (pre-Flood) land surface to produce the Great Unconformity”.
 
@@ -69,11 +73,13 @@ This study of megafloods provides evidence for what we should expect in terms of
 
 [^17]: Snelling 2021b, 243.
 
-Megaflood deposits, however, are not the only option for rapid deposition. Deposits in Spain described as “megaturbidites” or “megabeds” can be up to 656 feet (200 m) thick.[^18] Such units are recognized in many basins and are recognized as “event deposits”, such as might result from major earthquakes.[^19] Geologists recognize that such catastrophic events have occurred in the past and resulted in thick depositional units that were formed quickly. YEC demands that all of the Tonto unit was formed by such events. Are they comparable? Figure 2[^20] shows that the scale of Tapeats channels and beds is much finer. The Tapeats Sandstone resulted from hundreds and probably thousands of separate depositional events of many types. The megabeds show what happens when something, such as a major earthquake, hits an area with a large amount of unstable sediment, generally associated with a sea level drop. Such resulting deposits are normally deposited over limited areas (i.e., doesn’t cover a basin as the Tonto sediments do) and has several stages of development even though it results from a single event. The depositional rate for such a limited deposit may be comparable in terms of the depositional rate in Snelling's model, but it likely did not involve the flow rates that Snelling postulated. So again, the Tonto Group sediments do not have characteristics such as would be formed by megaturbidites.
+Megaflood deposits, however, are not the only option for rapid deposition. Deposits in Spain described as “megaturbidites” or “megabeds” can be up to 656 feet (200 m) thick.[^18] Such units are recognized in many basins and are recognized as “event deposits”, such as might result from major earthquakes.[^19] Geologists recognize that such catastrophic events have occurred in the past and resulted in thick depositional units that were formed quickly. YEC demands that all of the Tonto unit was formed by such events. Are they comparable? **Figure 2**[^20] shows that the scale of Tapeats channels and beds is much finer. The Tapeats Sandstone resulted from hundreds and probably thousands of separate depositional events of many types. The megabeds show what happens when something, such as a major earthquake, hits an area with a large amount of unstable sediment, generally associated with a sea level drop. Such resulting deposits are normally deposited over limited areas (i.e., doesn’t cover a basin as the Tonto sediments do) and has several stages of development even though it results from a single event. The depositional rate for such a limited deposit may be comparable in terms of the depositional rate in Snelling's model, but it likely did not involve the flow rates that Snelling postulated. So again, the Tonto Group sediments do not have characteristics such as would be formed by megaturbidites.
 
 [^18]: Seguret, Labaume, and Madariaga 1984.
 [^19]: Bozetti et al. 2018.
 [^20]: Rose 2006; Bozetti et al. 2018.
+
+{{% image `/img/2024/07/tonto2/Fig_2_Megabeds.png` `aside-xl-wide` /%}}
 
 *Figure 2.* Idealized Tapeats lithology modified from Rose 2006 compared to three megabed deposits (Bozeti, et al. 2018). The figure from Rose has been squeezed to approximate the grain size through the Tapeats, making the channels look disproportionately steep.
 
@@ -110,11 +116,15 @@ It is true that sedimentologists normally consider HCS to be indicative of storm
 
 ## Mudcracks
 
-The next key sedimentary structure that studies of the Tonto Group have observed is polygonal fractures interpreted as desiccation features known as mudcracks. These are commonly observed all around the world in areas where exposed sediments become wet and then dry out. (Figure 3). Rose, Hagadorn et al., Hill and Mosier, Hardy, and Wanless[^28] (in the presence of polygonal features BAS) all report the interpreted as desiccation cracks or mud cracks in the Tonto Group.
+The next key sedimentary structure that studies of the Tonto Group have observed is polygonal fractures interpreted as desiccation features known as mudcracks. These are commonly observed all around the world in areas where exposed sediments become wet and then dry out. (**Figure 3**). Rose, Hagadorn et al., Hill and Mosier, Hardy, and Wanless[^28] (in the presence of polygonal features BAS) all report the interpreted as desiccation cracks or mud cracks in the Tonto Group.
 
 [^28]: Rose (2006), Hagadorn et al. (2011), Hill and Mosier (2016), Hardy (1986), Wanless (1973).
 
+{{% image `/img/2024/07/tonto2/Fig_3_Mudcracks_1.jpg` `aside-xl-wide` /%}}
+
 *Figure 3.* Recent mudcracks with dog prints. Cambrian examples don’t have dog prints or plant debris because they weren’t around at that time. However, tracks and debris are found later all around the world in rocks of all ages.
+
+{{% image `/img/2024/07/tonto2/Fig_4_mudcracks_2.jpg` `aside-xl-wide` /%}}
 
 *Figure 4.* Mudcracks filled with calcite from the Tapeats Sandstone Used with permission (Hill and Mosier, 2016)
 
@@ -122,7 +132,7 @@ These polygonal features are common indicators of at least some time of exposure
 
 {{< amazon `0825444217` >}}
 
-Hill and Moshier[^29] published a photograph of mud cracks from the Tapeats (Figure 4). Snelling argues that “these cannot possibly be “mud” cracks because these features are in a clay-poor sandstone, not mud. And as seen in their photograph of modern mud cracks, when the mud dries the polygonal shapes become concavely arched, whereas the claimed fossilized “mud” cracks are flat”.[^30]
+Hill and Moshier[^29] published a photograph of mud cracks from the Tapeats (**Figure 4**). Snelling argues that “these cannot possibly be “mud” cracks because these features are in a clay-poor sandstone, not mud. And as seen in their photograph of modern mud cracks, when the mud dries the polygonal shapes become concavely arched, whereas the claimed fossilized “mud” cracks are flat”.[^30]
 
 [^29]: Hill and Moshier (2016) in “The Grand Canyon: Monument to an Ancient Earth” p. 68
 [^30]: Snelling 2021b, 245.
@@ -155,7 +165,7 @@ Regardless of how the Muav conglomerates formed, the demand that sedimentation p
 ## Biologic Evidence
 ### Fossil Occurrence
 
-One important clue used to learn how rocks were laid down is to look at the fossils preserved in them. Fossils from the Tonto Group include brachiopods (eleven species), trilobites (fifteen species) (Figure 5), other arthropods species including ostracod-like species of the order Bradoriida (eight species) and two early echinoid species.[^42] These show that a variety of fauna were present.  In addition, trace fossils demonstrate that soft-bodied animals were there as well.
+One important clue used to learn how rocks were laid down is to look at the fossils preserved in them. Fossils from the Tonto Group include brachiopods (eleven species), trilobites (fifteen species) (**Figure 5**), other arthropods species including ostracod-like species of the order Bradoriida (eight species) and two early echinoid species.[^42] These show that a variety of fauna were present.  In addition, trace fossils demonstrate that soft-bodied animals were there as well.
 
 [^42]: Ressner, Charles E. 1945; Foster 2011.
 
@@ -165,6 +175,8 @@ Assessing flood geology on the whole, it is difficult to understand why we do no
 
 [^43]: Strother and Beck 2000.
 
+{{% image `/img/2024/07/tonto2/Fig_5_trilobite.jpg` `aside-xl-wide` /%}}
+
 *Figure 5.* [Trilobite from BAS (_Dolichometoppus productus_ and _Alokistocare althea_)](https://commons.wikimedia.org/wiki/File:11570_Grand_Canyon_Fossil_Trilobite_in_Bright_Angel_Shale_(4749628242).jpg)
 
 ### Trace Fossils (Ichnofossils)
@@ -173,7 +185,11 @@ The most common evidence for biologic activity that is found is in the form of t
 
 [^44]: Miller et al. 2020.
 
+{{% image `/img/2024/07/tonto2/Fig_6_trilobite_trail.png` `aside-xl-wide` /%}}
+
 *Figure 6.* Trilobite trail (_Cruziana_ sp.) from the Bright Angel Shale preserved in negative relief in bed that covered the trail (hyporelief) (Miller, et al., 2020). Similar fossils are also shown from the Tapeats by McKee (1945).
+
+{{% image `/img/2024/07/tonto2/Fig_7_burrows.png` `aside-xl-wide` /%}}
 
 *Figure 7.* Burrows by unknown invertebrate animals (_Palaeophycus_ sp.) from the Bright Angel Shale preserved in negative relief (hyporelief) (Miller, et al., 2020). Similar fossils are also shown from the Tapeats by McKee (1945).
 
@@ -190,7 +206,7 @@ The Muav Limestone in at least some places, includes banded units known as strom
 [^47]: Wise and Snelling 2005.
 [^48]: Snelling 2022, 170
 
-Should we doubt the reports of stromatolites in the Muav until this work is done? If these were the only Cambrian stromatolites in the region, this would be a real concern. In fact, stromatolite development is extensive above the Tapeats in the Cambrian Carrara Formation in Nevada.[^49] Cambrian and earlier stromatolitic reefs are present in many parts of the world. YEC geologist, Dr. Ken Coulson documented Late Cambrian stromatolitic reefs in the Notch Peak Formation in Utah in great detail.[^50] These thick intervals of stromatolitic reefs that clearly grew in place over long periods of time are stratigraphically younger than the Muav limestone and well above the GU. Coulson recounts Cambrian stromatolitic reef development in many parts of North America. (Figure 8).[^51] He recognizes that reef development, including stromatolites, where they are developed, are incompatible with a flood interpretation. Based on this, he rejects considering the GU as the base of global flood deposits. Reefs of many types are found throughout the Phanerozoic rock record making it difficult to include any significant section as a result of such a flood.
+Should we doubt the reports of stromatolites in the Muav until this work is done? If these were the only Cambrian stromatolites in the region, this would be a real concern. In fact, stromatolite development is extensive above the Tapeats in the Cambrian Carrara Formation in Nevada.[^49] Cambrian and earlier stromatolitic reefs are present in many parts of the world. YEC geologist, Dr. Ken Coulson documented Late Cambrian stromatolitic reefs in the Notch Peak Formation in Utah in great detail.[^50] These thick intervals of stromatolitic reefs that clearly grew in place over long periods of time are stratigraphically younger than the Muav limestone and well above the GU. Coulson recounts Cambrian stromatolitic reef development in many parts of North America. (**Figure 8**).[^51] He recognizes that reef development, including stromatolites, where they are developed, are incompatible with a flood interpretation. Based on this, he rejects considering the GU as the base of global flood deposits. Reefs of many types are found throughout the Phanerozoic rock record making it difficult to include any significant section as a result of such a flood.
 
 [^49]: Palmer and Halley, 1979.
 [^50]: Coulson 2021.
