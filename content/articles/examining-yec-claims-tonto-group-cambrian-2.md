@@ -1,9 +1,10 @@
 ---
-series: examining-yec-claims-tonto-group-cambrian
-title: "Examining Young Earth Creation Claims for Tonto Group, Cambrian, Colorado Plateau: Depositional processes and rates"
+series: tonto
+title: "Tonto Depositional Processes and Rates"
 description: Assessing whether the geology of the Grand Canyon is consistent with rapid formation under a young Earth, global flood model.
 authors:
-- Stephen Mitchell and Kennen Tillman
+- Stephen Mitchell
+- Kennen Tillman
 date: 2023-10-19
 publishdate: 2024-08-07
 draft: true
