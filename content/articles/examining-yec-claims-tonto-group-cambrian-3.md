@@ -123,15 +123,12 @@ We will look at a series of questions to determine which model fits the data.
 
 
 
-{{% image `/img/2024/07/tonto3/Fig_16_Monument_fold.png` /%}}
-{{% image `/img/2024/07/tonto3/Fig_16a_Monument_fold.png`  %}}
+{{% image `/img/2024/07/tonto3/Fig_16.png` %}}
 **Figure 16.** Monument fold, Tapeats Sandstone with and without interpreted faults and fractures that cross multiple beds. Fold sampled by Snelling and reported on his Tapeats reports (Snelling, 2021, 2021c) So far photos do not document clearly where much of the sampling was done. (Photo from: Billingsley, et al., 2019, CF04. View toward western part of Monument Fold in Tapeats Sandstone - ScienceBase-Catalog)
 {{% /image %}}
 
 
-{{% image `/img/2024/07/tonto3/Fig_17_Kink_fold.png`  /%}}
-{{% image `/img/2024/07/tonto3/Fig_17b_Kink_fold.png`  %}}
-
+{{% image `/img/2024/07/tonto3/Fig_17.png` %}}
 **Figure 17.** Kink Fold, Tapeats Sandstone, with and without interpretation of faults and fractures. Located near and part of deformation associated with Monument Monocline. Faults had only small amounts of displacement. (Photo by [Billingsley, 2019](https://www.sciencebase.gov/catalog/item/5c75a46be4b0fe48cb4a5071))
 
 {{% /image %}}
