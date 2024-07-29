@@ -218,13 +218,17 @@ The Muav Limestone in at least some places, includes banded units known as strom
 [^47]: Wise and Snelling 2005.
 [^48]: Snelling 2022, 170
 
+{{% image `/img/2024/07/tonto2/Fig_8_stromatolite_map.png` %}}
+**Figure 8.** Simplified Late Cambrian paleogeography from Blakely’s “Key Time Slices of North America”(2013), with locations of “apparent in-situ” stromatolitic reefs from Coulson (2021). Notice that the occurrences fall within shallow marine regions on the map. The recognition of in-situ stromatolites that developed after the GU is not reconcilable with most FG models and this issue appears repeatedly in the Cambrian record. In addition, the figure locates another form of Cambrian reefs from an ancient sponge, archaeocyaths. This also would not fit FG models.
+{{% /image %}}
+
 Should we doubt the reports of stromatolites in the Muav until this work is done? If these were the only Cambrian stromatolites in the region, this would be a real concern. In fact, stromatolite development is extensive above the Tapeats in the Cambrian Carrara Formation in Nevada.[^49] Cambrian and earlier stromatolitic reefs are present in many parts of the world. YEC geologist, Dr. Ken Coulson documented Late Cambrian stromatolitic reefs in the Notch Peak Formation in Utah in great detail.[^50] These thick intervals of stromatolitic reefs that clearly grew in place over long periods of time are stratigraphically younger than the Muav limestone and well above the GU. Coulson recounts Cambrian stromatolitic reef development in many parts of North America. (**Figure 8**).[^51] He recognizes that reef development, including stromatolites, where they are developed, are incompatible with a flood interpretation. Based on this, he rejects considering the GU as the base of global flood deposits. Reefs of many types are found throughout the Phanerozoic rock record making it difficult to include any significant section as a result of such a flood.
 
 [^49]: Palmer and Halley, 1979.
 [^50]: Coulson 2021.
 [^51]: (Blakely 2013; Coulson 2021.
 
-*Figure 8.* Simplified Late Cambrian paleogeography from Blakely’s “Key Time Slices of North America”(2013), with locations of “apparent in-situ” stromatolitic reefs from Coulson (2021). Notice that the occurrences fall within shallow marine regions on the map. The recognition of in-situ stromatolites that developed after the GU is not reconcilable with most FG models and this issue appears repeatedly in the Cambrian record. In addition, the figure locates another form of Cambrian reefs from an ancient sponge, archaeocyaths. This also would not fit FG models.
+
 
 ## Summary
 
