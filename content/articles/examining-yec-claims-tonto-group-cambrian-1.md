@@ -49,10 +49,19 @@ The differences between these two models are major and as a result, both cannot 
 
 {{< image `/img/2024/07/tonto1/Table_1_Stoplight.png` `aside-xl-wide` >}}
 
-**Table 1:** is a summary of our findings in the form of a “stoplight chart”, such as is commonly used in the oil industry to convey risks and uncertainties associated with particular plays or prospects. Green signals show that the data support the proposed model, while red signals reflect potentially fatal flaws that would need to be addressed in order for the model to be considered viable. The column for Old Age Models reflects not one single model, but whether or not concerns have been identified that would make depositional processes acting over deep time doubtful. The column for FG also does not reflect a particular FG model, but whether concerns are recognized that would invalidate the general explanation for the Cambrian rocks being deposited by a global catastrophic flood. The colors are subjective appraisals of the evidence but provide a quick visual assessment of what we have found.
+**Table 1.** Comparison of strength of models. Green
+symbols reflect that the data is consistent with the model. Red
+lights are given when the data are not consistent with the
+model. Yellow lights reflect some uncertainty, suggesting that
+there could be scenarios that might fit. Some are light red or
+green suggesting that there is overall agreement or
+disagreement, but some data has not been completely
+resolved
 
 {{< /image >}}
 
+
+**Table 1** is a summary of our findings in the form of a “stoplight chart”, such as is commonly used in the oil industry to convey risks and uncertainties associated with particular plays or prospects. Green signals show that the data support the proposed model, while red signals reflect potentially fatal flaws that would need to be addressed in order for the model to be considered viable. The column for Old Age Models reflects not one single model, but whether or not concerns have been identified that would make depositional processes acting over deep time doubtful. The column for FG also does not reflect a particular FG model, but whether concerns are recognized that would invalidate the general explanation for the Cambrian rocks being deposited by a global catastrophic flood. The colors are subjective appraisals of the evidence but provide a quick visual assessment of what we have found.
 
 Notice that the stoplight column for Old Earth is all green. That means that we interpret that all of the evidence can comfortably be interpreted within an Old Earth framework. This includes the data provided by the Snelling reports and all other published materials that we have reviewed. Geologists have had different depositional models and structural understandings, but all involve far longer timeframes than are available in the YEC timelines. Although ideas will continue to develop, there is no reason to believe that future models will alter in ways that call into question the general concept of deep time.
 
@@ -60,7 +69,7 @@ Notice that the stoplight column for the Young Earth models includes largely red
 
 Part Two will concentrate on how long it took for the Cambrian sediments to be deposited and what processes are evidenced.  It is worth noting that for FG models to be considered viable, every hill is a hill to die on.  Given their interpretation of the Genesis text, all of the flood deposits had to take place over  371 days.  Any rocks that took longer than this to form must be excluded from their flood deposits. This applies not just to individual beds, but to each set of beds and formation.
 
-{{< amazon `164349421X` >}}
+{{< amazon `164349421X` `Free [download link](https://jesusinhistoryandscience.com/?p=3297).` >}}
 
 We will look at several examples that don’t fit the flood models.  The published interpretations tell us approximately how many days YEC models propose were available to deposit rocks in each of the geologic periods, regardless of how long these periods actually were. The duration of each of these periods, including the Cambrian period provide reality checks that we can use to see if the YEC models are viable. (See **Figure 1**).
 
