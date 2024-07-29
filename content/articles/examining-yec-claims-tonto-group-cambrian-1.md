@@ -5,8 +5,7 @@ description: Assessing whether the geology of the Grand Canyon is consistent wit
 authors:
 - Stephen Mitchell
 - Kennen Tillman
-date: 2023-10-19
-publishdate: 2024-08-06
+date: 2024-07-31 05:01:00
 draft: true
 headerimage:
   src: /img/2024/07/tonto1/01_Grand_Canyon_Mferbfriske.jpg
