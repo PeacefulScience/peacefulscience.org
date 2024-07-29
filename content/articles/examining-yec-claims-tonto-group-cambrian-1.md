@@ -1,6 +1,6 @@
 ---
 series: tonto
-title: "Introduction to YECs and the Tonto Group "
+title: "Examining Young Earth Creation Claims for Tonto Group, Cambrian, Colorado Plateau"
 description: Assessing whether the geology of the Grand Canyon is consistent with rapid formation under a young Earth, global flood model.
 authors:
 - Stephen Mitchell

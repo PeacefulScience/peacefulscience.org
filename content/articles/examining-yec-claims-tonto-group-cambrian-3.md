@@ -1,6 +1,6 @@
 ---
 series: tonto
-title: "Tonto Deformation"
+title: "The Tonto Deformation"
 description: Assessing whether the geology of the Grand Canyon is consistent with rapid formation under a young Earth, global flood model.
 authors:
 - Stephen Mitchell
@@ -130,7 +130,6 @@ We will look at a series of questions to determine which model fits the data.
 
 {{% image `/img/2024/07/tonto3/Fig_17.png` %}}
 **Figure 17.** Kink Fold, Tapeats Sandstone, with and without interpretation of faults and fractures. Located near and part of deformation associated with Monument Monocline. Faults had only small amounts of displacement. (Photo by [Billingsley, 2019](https://www.sciencebase.gov/catalog/item/5c75a46be4b0fe48cb4a5071))
-
 {{% /image %}}
 
 {{% image `/img/2024/07/tonto3/Fig_18_Whitmore_Helipad_fold.png`  %}}
