@@ -61,9 +61,11 @@ In order to get the sediment moving, Snelling proposes that flow rates “ranged
 
 [^14]: Snelling 2021b.
 
-{{% image `/img/2024/07/tonto2/Fig_1_geologic_column.png` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto2/Fig_1_geologic_column.png` `aside-xl-wide` %}}
 
-*Figure 1.* Comparison for interpretations of the geologic column by leading flood geology advocates. This does not include any time for initial erosion. Snelling (2023) proposes a “prolonged period (days or more) in which there was a significant amount of continental-scale erosion to bevel the Precambrian (pre-Flood) land surface to produce the Great Unconformity”.
+**Figure 1.** Comparison for interpretations of the geologic column by leading flood geology advocates. This does not include any time for initial erosion. Snelling (2023) proposes a “prolonged period (days or more) in which there was a significant amount of continental-scale erosion to bevel the Precambrian (pre-Flood) land surface to produce the Great Unconformity”.
+
+{{% /image %}}
 
 First considering the flow rates, geologists recognize that high flow rates forming large deposits have occurred. Are they comparable? Just as after a car accident, it is possible to examine the wreckage and estimate how fast the cars were moving, we can estimate how fast the flow was moving that caused a sand deposit by examining it. A global catastrophic flood would certainly be larger than typical floods that have occurred around the world in our lifetimes. In this case, like many others, the present is not the entire key to the past. Dr. Paul Carling and Dr. Xuanmei Fan[^15] describe examples of this in the geologic record known as “megafloods” or “superfloods”. Such rare events have occurred and left distinctive deposits. Such floods move sediments at rates similar to what Snelling claims for Noah’s flood. Such large flows are high unidirectional events that extended over broad areas. Grains from such events are unusual. Carling and Fan[^16] report that they are “distinctive, being dominated by comminuted (smashed) grain-size distributions, which contrast to the sediment deposits of more moderate floods”.
 
@@ -80,9 +82,11 @@ Megaflood deposits, however, are not the only option for rapid deposition. Depos
 [^19]: Bozetti et al. 2018.
 [^20]: Rose 2006; Bozetti et al. 2018.
 
-{{% image `/img/2024/07/tonto2/Fig_2_Megabeds.png` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto2/Fig_2_Megabeds.png` `aside-xl-wide` %}}
 
-*Figure 2.* Idealized Tapeats lithology modified from Rose 2006 compared to three megabed deposits (Bozeti, et al. 2018). The figure from Rose has been squeezed to approximate the grain size through the Tapeats, making the channels look disproportionately steep.
+**Figure 2.** Idealized Tapeats lithology modified from Rose 2006 compared to three megabed deposits (Bozeti, et al. 2018). The figure from Rose has been squeezed to approximate the grain size through the Tapeats, making the channels look disproportionately steep.
+
+{{% /image %}}
 
 Geologists have studied the Tonto Group in a number of major studies over the area and described the environments in different ways.[^21] Most recognize that the depositional environments varied both around the area and through time (vertically).
 
@@ -121,13 +125,17 @@ The next key sedimentary structure that studies of the Tonto Group have observed
 
 [^28]: Rose (2006), Hagadorn et al. (2011), Hill and Mosier (2016), Hardy (1986), Wanless (1973).
 
-{{% image `/img/2024/07/tonto2/Fig_3_Mudcracks_1.jpg` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto2/Fig_3_Mudcracks_1.jpg` %}}
 
-*Figure 3.* Recent mudcracks with dog prints. Cambrian examples don’t have dog prints or plant debris because they weren’t around at that time. However, tracks and debris are found later all around the world in rocks of all ages.
+**Figure 3.** Recent mudcracks with dog prints. Cambrian examples don’t have dog prints or plant debris because they weren’t around at that time. However, tracks and debris are found later all around the world in rocks of all ages.
 
-{{% image `/img/2024/07/tonto2/Fig_4_mudcracks_2.jpg` `aside-xl-wide` /%}}
+{{% /image %}}
 
-*Figure 4.* Mudcracks filled with calcite from the Tapeats Sandstone Used with permission (Hill and Mosier, 2016)
+{{% image `/img/2024/07/tonto2/Fig_4_mudcracks_2.jpg`  %}}
+
+**Figure 4.** Mudcracks filled with calcite from the Tapeats Sandstone Used with permission (Hill and Mosier, 2016)
+
+{{% /image %}}
 
 These polygonal features are common indicators of at least some time of exposure and drying of sediment. The presence of such features is difficult to reconcile with either the rapid rate of sedimentation or the limited time available in FG models because their formation demonstrates periods when deposition stopped.
 
@@ -176,9 +184,11 @@ Assessing flood geology on the whole, it is difficult to understand why we do no
 
 [^43]: Strother and Beck 2000.
 
-{{% image `/img/2024/07/tonto2/Fig_5_trilobite.jpg` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto2/Fig_5_trilobite.jpg`  %}}
 
-*Figure 5.* [Trilobite from BAS (_Dolichometoppus productus_ and _Alokistocare althea_)](https://commons.wikimedia.org/wiki/File:11570_Grand_Canyon_Fossil_Trilobite_in_Bright_Angel_Shale_(4749628242).jpg)
+**Figure 5.** [Trilobite from BAS (_Dolichometoppus productus_ and _Alokistocare althea_)](https://commons.wikimedia.org/wiki/File:11570_Grand_Canyon_Fossil_Trilobite_in_Bright_Angel_Shale_(4749628242).jpg)
+
+{{% /image %}}
 
 ### Trace Fossils (Ichnofossils)
 
@@ -186,14 +196,15 @@ The most common evidence for biologic activity that is found is in the form of t
 
 [^44]: Miller et al. 2020.
 
-{{% image `/img/2024/07/tonto2/Fig_6_trilobite_trail.png` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto2/Fig_6_trilobite_trail.png`  %}}
 
-*Figure 6.* Trilobite trail (_Cruziana_ sp.) from the Bright Angel Shale preserved in negative relief in bed that covered the trail (hyporelief) (Miller, et al., 2020). Similar fossils are also shown from the Tapeats by McKee (1945).
+**Figure 6.** Trilobite trail (_Cruziana_ sp.) from the Bright Angel Shale preserved in negative relief in bed that covered the trail (hyporelief) (Miller, et al., 2020). Similar fossils are also shown from the Tapeats by McKee (1945).
 
-{{% image `/img/2024/07/tonto2/Fig_7_burrows.png` `aside-xl-wide` /%}}
+{{% /image %}}
+{{% image `/img/2024/07/tonto2/Fig_7_burrows.png` %}}
 
-*Figure 7.* Burrows by unknown invertebrate animals (_Palaeophycus_ sp.) from the Bright Angel Shale preserved in negative relief (hyporelief) (Miller, et al., 2020). Similar fossils are also shown from the Tapeats by McKee (1945).
-
+**Figure 7.** Burrows by unknown invertebrate animals (_Palaeophycus_ sp.) from the Bright Angel Shale preserved in negative relief (hyporelief) (Miller, et al., 2020). Similar fossils are also shown from the Tapeats by McKee (1945).
+{{% /image %}}
 Flood geologists, including Snelling, recognize that the trace fossils represent evidence that living animals were active during the period when the sediments were laid down. Animals in marine, tidal and nearshore environments form similar features today. The cast of animals has changed, but the ecological niches were the same. FG demands that the traces be part of very rapid deposition, with the reworking of the sediment (bioturbation) accomplished by the animals caught up in rapidly deposited flows. They would have been the dying acts of animals as they were buried.
 
 The simpler interpretation is that the trace fossils of the Tonto Group reflect large populations that existed for an extended time. They formed at multiple levels. It is not as though there was a single episode of biological activity. The traces in the units, particularly the BAS show that a complete ecosystem was present with the same feeding styles we find today.[^45] Multiple levels of highly active biogenic activity such as these are not compatible with the rates of deposition demanded by FG models. These were not some sort of death assemblage, transported into place, where a few survivors dug around before finally succumbing to the pressure of burial. That seems obvious from examples such as were shown in Figures 6 and 7. These were thriving communities that lived for some period of time before sedimentation shifted into the area again and buried them. All are consistent with tidal environments, though certainly some could have formed over time in deeper water environments.

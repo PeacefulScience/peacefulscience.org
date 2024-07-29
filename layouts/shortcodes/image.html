@@ -12,7 +12,7 @@
 
 {{ if replaceRE "(\\s)" "" .Inner }}
 <figcaption class="text-smaller text-muted" style="padding-top: 0">
-   {{ .Inner }}
+   {{ .Inner  | $.Page.RenderString  }}
 </figcaption>
 {{ end }}
 

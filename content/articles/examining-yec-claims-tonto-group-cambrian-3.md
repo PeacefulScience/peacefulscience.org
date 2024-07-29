@@ -46,11 +46,26 @@ In contrast, unlithified beds are relatively incoherent and the mechanical diffe
 
 In a continuum that ranges between totally unlithified sediments to highly lithified, and highly deformed to gently deformed, where would the folding in the Tonto group fall? We have identified the criteria that can be used to differentiate between folding of soft (unlithified) sediments, which can occur very rapidly, and folding of lithified sediments, which can only occur over a very long period of time. Now let’s consider the observations that have been made of the folds in the Grand Canyon in general, and in the Tonto Formation in particular. Even moderately lithified and moderately deformed sediments would require long periods of time to deform. Before we look at these particular folds however, it’s useful to understand the regional context of those folds, so let’s start there.
 
-{{% image `/img/2024/07/tonto3/Fig_9_Soft_sed_deformation.jpg` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto3/Fig_9_Soft_sed_deformation.jpg` `aside-xl-wide` %}}
 
-*Figure 9.* Soft sediment deformation example showing how both sand and shale beds changed in thickness as the folding took place. (Photo by Dan Hobley. Creative Commons Attribution-Share Alike 4.0 International license from Wikipedia)
+**Figure 9.** Soft sediment deformation example showing how both sand and shale beds changed in thickness as the folding took place. (Photo by Dan Hobley. Creative Commons Attribution-Share Alike 4.0 International license from Wikipedia)
+{{% /image %}}
 
 ## Regional Context
+
+
+{{% image `/img/2024/07/tonto3/Fig_10_fold_location_map.png`  %}}
+**Figure 10.** Google Earth image of the Grand Canyon Region showing major monoclinal folds. (Karlstrom and Timmons, 2012) Also shown are dots representing the location of sampling done by Dr. Snelling for his papers.
+{{% /image %}}
+{{% image `/img/2024/07/tonto3/Fig_11_Snelling_East_Kaibab_Monocline.png` %}}
+**Figure 11.** Snelling (2009b) showing his understanding of the development of the folding. Notice that the Tapeats Sandstone is shown draping gently over the faults that died out before the top of the “Metamorphics and Granites”.
+{{% /image %}}
+{{% image `/img/2024/07/tonto3/Fig_12_Cross_section_monocline.png` %}}
+**Figure 12.** Cross section showing EKM fault-fold relationships (Tindall, 2000). Note the dashed lines that show the interval that has been eroded away. The downthrown block has steeply dipping beds and tight folds.
+{{% /image %}}
+{{% image `/img/2024/07/tonto3/Fig_13_composite_xsec.png`  %}}
+**Figure 13.** Composite cross section of the Palisades monocline (Reches, 1978). Reches chose to use a location where the folding was more evident in the Bright Angel Formation than in the Tapeats Sandstone. The Palisades monocline connects to and extends the EKM. (Note: the section has been flipped from the original publication to be consistent with the other cross-sections.)
+{{% /image %}}
 
 {{< amazon `0195050150` >}}
 
@@ -58,9 +73,6 @@ The Colorado Plateau has numerous monoclinal folds (step-like folds consisting o
 
 [^8]: e.g., Ze’ev Reches and Matthews 1978; Ze’ev Reches and Johnson 1978; Huntoon 1990; Cooke et al. 1999; Tindall and Davis 1999; Tindall, Sarah E. 2000; Orofino, James Cory 2005; C. Hill 2016; Karlstrom and Timmons 2012; Tapp, Bryan and Wolgemuth, Ken 2016
 
-{{% image `/img/2024/07/tonto3/Fig_10_fold_location_map.png` `aside-xl-wide` /%}}
-
-*Figure 10.* Google Earth image of the Grand Canyon Region showing major monoclinal folds. (Karlstrom and Timmons, 2012) Also shown are dots representing the location of sampling done by Dr. Snelling for his papers.
 
 {{< amazon `0825444217` >}}
 
@@ -74,17 +86,6 @@ Numerous cross-sections have been published of the folds in the Colorado Plateau
 
 Together Figures 12 and 13 provide a useful summary of the structural geometries of the monoclines in the Grand Canyon region and their associated subsidiary structures. Together with the map view, they allow us to understand when the folding developed. They demonstrate that the folding developed when the sediments were deeply buried and were much later exposed by extensive erosion.
 
-{{% image `/img/2024/07/tonto3/Fig_11_Snelling_East_Kaibab_Monocline.png` `aside-xl-wide` /%}}
-
-*Figure 11.* Snelling (2009b) showing his understanding of the development of the folding. Notice that the Tapeats Sandstone is shown draping gently over the faults that died out before the top of the “Metamorphics and Granites”.
-
-{{% image `/img/2024/07/tonto3/Fig_12_Cross_section_monocline.png` `aside-xl-wide` /%}}
-
-*Figure 12.* Cross section showing EKM fault-fold relationships (Tindall, 2000). Note the dashed lines that show the interval that has been eroded away. The downthrown block has steeply dipping beds and tight folds.
-
-{{% image `/img/2024/07/tonto3/Fig_13_composite_xsec.png` `aside-xl-wide` /%}}
-
-*Figure 13.* Composite cross section of the Palisades monocline (Reches, 1978). Reches chose to use a location where the folding was more evident in the Bright Angel Formation than in the Tapeats Sandstone. The Palisades monocline connects to and extends the EKM. (Note: the section has been flipped from the original publication to be consistent with the other cross-sections.)
 
 ## Outcrop-scale and Microscopic-scale Observations
 
@@ -98,49 +99,54 @@ Now let’s take a closer look at some of the actual smaller scaled folding asso
 
 [^14]: Snelling 2022; Snelling, Andrew A. 2022
 
+{{% image `/img/2024/07/tonto3/Fig_14_Carbon_Cnyn_fold.png`  %}}
+
+**Figure 14.** Carbon Canyon Fold. Recognize that this photo, oriented as the one in Snelling’s article, is reversed to match the orientation of Figures 12 to 14. Notice the near vertical beds on the western side of the photo towards the upthrown block of the EKM. Beds outlined in white were sampled for Snelling’s report (2021a, 2021b). The location of slide CCG-01, Figure 23, is labeled. Used with permission from [Ron Wolf](https://www.flickr.com/photos/rwolf/51077567833/in/album-72157630005144558/)
+
+{{% /image %}}
+{{% image `/img/2024/07/tonto3/Fig_15_Carbon_Cnyn_line_drawing.png`  %}}
+
+**Figure 15.** An interpretive line drawing of a Carbon Canyon photograph from Snellings, 2023 (p.103). Many macroscopic fractures are observed (traced in red), most of which appear to be related to the deformation. Fracture concentrations along the axial plane are present. Bed thickening and thinning associated with the deformation is present. One thickened interval is highlighted. Thickening along the axis in recessive beds appears to be present but debris makes it impossible to see details. As with Figure 14, the photo is reversed to match Figures 13 to 15. The bed outlined in yellow was sampled for Snelling’s report (2021, 2021c)
+{{% /image %}}
+
 First, here are a few general observations. In four of these cases, the fold limbs dip steeply (in some cases the limbs are overturned), and the folds are relatively narrow, with bedding returning to sub-horizontal within a distance ranging from a few 10s of meters to a few 100s of meters. This tells us that the features are of the scale and type of the small folds illustrated in Figure 13. The examples in Figures 18 and 19 appear to be deformed similarly, but so far, we do not have views of them from far enough away to see the overall fold geometries. All of these are consistent with folding that developed as the monoclines deformed and the inherent space problems caused each of the local folds. We see such in our everyday experience, for instance as in the case mentioned earlier, cardboard boxes in an attic collapse. If they collapse in a confined space, the cardboard will tend to fold with some compressional features. What should we look for to tell if the folding took place as soft sediment deformation vs lithified rocks? We can examine both the overall geometries to see if they tell us that the rocks behaved as coherent rock or were they “soupy” soft sediments. As the figures show, the rocks today are faulted and quite fractured. We can look for clues that tell us that the fractures were related to the folding vs. later joint development. We will look at evidence for the timing of the lithification using other clues.
 
 It is worth noting that the published work is not complete enough to allow a thorough analysis. A complete structural analysis at the outcrop-scale requires multiple measured sections at different locations across the fold, abundant bedding orientation measurements to define the fold orientations and geometries, and measurements of the orientations of associated deformation features like fractures and faults. A complete structural analysis at the microscopic scale requires oriented samples from representative locations across the structure to document how microstructures vary as a function of structural position and lithology. Ideally one would use multiple samples from each lithology at multiple locations across the structure (even tracing individual beds across the structure if possible), as well as samples representing the various structural levels. Then one would examine oriented thin sections (in plane-polarized and cross-polarized light at a minimum) to document the types and orientations of microstructures. Typically, three mutually perpendicular thin sections are used that are oriented parallel to bedding, perpendicular to bedding and parallel to the fold axis, and perpendicular to bedding and perpendicular to the fold axis. Snelling (2023) shows that he is examining the slides that he has in appropriate ways, but there just are some limitations in the data that he collected. In the absence of this detailed data however, observations can still be gleaned from photographs, photomicrographs, and other publications. What we can do is use the data available to see what they tell us about the deformation.
 
 If the folding develops in a continuum ranging between totally unlithified soft sediments to highly lithified hard rocks, can we tell if these rocks were more like the very “soupy” soft endmember, or did they behave like sediments that were already rock? As stated earlier, bedding-scale observations that can be used to distinguish between folding of lithified and unlithified sediments include: the presence or absence of fold-related fractures and faults, the presence or absence of flexural slip, and the nature of fold-related bedding thickness changes. The primary microscopic-scale deformation mechanism in unlithified sediments will be grain boundary sliding. In contrast, deformation mechanisms in lithified sediments potentially include: fracturing and faulting (of individual grains and across layers), internal distortion of grains, and dissolution and reprecipitation of minerals in response to stress (i.e., pressure solution). We will look to see indications of such in the photomicrographs published.
 
-{{% image `/img/2024/07/tonto3/Fig_14_Carbon_Cnyn_fold.png` `aside-xl-wide` /%}}
-
-*Figure 14.* Carbon Canyon Fold. Recognize that this photo, oriented as the one in Snelling’s article, is reversed to match the orientation of Figures 12 to 14. Notice the near vertical beds on the western side of the photo towards the upthrown block of the EKM. Beds outlined in white were sampled for Snelling’s report (2021a, 2021b). The location of slide CCG-01, Figure 23, is labeled. Used with permission from [Ron Wolf](https://www.flickr.com/photos/rwolf/51077567833/in/album-72157630005144558/)
-
-{{% image `/img/2024/07/tonto3/Fig_15_Carbon_Cnyn_line_drawing.png` `aside-xl-wide` /%}}
-
-*Figure 15.* An interpretive line drawing of a Carbon Canyon photograph from Snellings, 2023 (p.103). Many macroscopic fractures are observed (traced in red), most of which appear to be related to the deformation. Fracture concentrations along the axial plane are present. Bed thickening and thinning associated with the deformation is present. One thickened interval is highlighted. Thickening along the axis in recessive beds appears to be present but debris makes it impossible to see details. As with Figure 14, the photo is reversed to match Figures 13 to 15. The bed outlined in yellow was sampled for Snelling’s report (2021, 2021c)
-
-{{% image `/img/2024/07/tonto3/Fig_16_Monument_fold.png` `aside-xl-wide` /%}}
-{{% image `/img/2024/07/tonto3/Fig_16a_Monument_fold.png` `aside-xl-wide` /%}}
-{{% image `/img/2024/07/tonto3/Fig_16b_Monument_fold.png` `aside-xl-wide` /%}}
-
-*Figure 16.* Monument fold, Tapeats Sandstone with and without interpreted faults and fractures that cross multiple beds. Fold sampled by Snelling and reported on his Tapeats reports (Snelling, 2021, 2021c) So far photos do not document clearly where much of the sampling was done. (Photo from: Billingsley, et al., 2019, CF04. View toward western part of Monument Fold in Tapeats Sandstone - ScienceBase-Catalog)
-
-{{% image `/img/2024/07/tonto3/Fig_17_Kink_fold.png` `aside-xl-wide` /%}}
-{{% image `/img/2024/07/tonto3/Fig_17b_Kink_fold.png` `aside-xl-wide` /%}}
-{{% image `/img/2024/07/tonto3/Fig_17c_Kink_fold.png` `aside-xl-wide` /%}}
-
-*Figure 17.* Kink Fold, Tapeats Sandstone, with and without interpretation of faults and fractures. Located near and part of deformation associated with Monument Monocline. Faults had only small amounts of displacement. (Photo by [Billingsley, 2019](https://www.sciencebase.gov/catalog/item/5c75a46be4b0fe48cb4a5071))
-
-{{% image `/img/2024/07/tonto3/Fig_18_Whitmore_Helipad_fold.png` `aside-xl-wide` /%}}
-{{% image `/img/2024/07/tonto3/Fig_18a_Whitmore_Helipad_fold.png` `aside-xl-wide` /%}}
-
-*Figure 18.* An interpretive line drawing of the Whitmore Helipad Fod photograph from Snelling, 2021b (p.307). Faults, traced in red, are clearly related to the formation of the fold. The fold morphology is consistent with that of a compressional fault-propagation-fold in the BAS. The folding is consistent with the folding and faulting of lithified sediment over long periods of time where the variations in the competency of the beds influence the smaller scale deformation. The location of slide HF-08, Figure 24, is labeled. The interpretation of stratigraphy could be made with more confidence if images were available showing more of the fold.
-
-{{% image `/img/2024/07/tonto3/Fig_19_Matkatamiba_fold.png` `aside-xl-wide` /%}}
-{{% image `/img/2024/07/tonto3/Fig_19a_Matkatamiba_fold.png` `aside-xl-wide` /%}}
-
-*Figure 19.* An interpretive line drawing of the Matkatamiba fold photograph from Snelling, 2022b (p.143). Here the fold includes fractures and faults (traced in red) in the Muav Limestone. Sampled beds are above and below the red dashed line that separates the Gateway Canyon Member of the Muav Formation below from the Havasu Member of the Muav above. The location of slide MFML-05, Figure 22, is labeled. Again, most of the macroscopic fracturing appears to be directly related to the deformation.
-
-{{% image `/img/2024/07/tonto3/Fig_20_Palisades_Creek_fault.png` `aside-xl-wide` /%}}
-
-*Figure 20.* Approximately 120m (400 ft) long cross section across the Palisades Creek branch of the EKM (Reches, 1978, Figure 10). This shows a tight synclinal fold with overturned beds on the downthrown side of the fault zone. Located approximately 2 miles (3.4 km) southeast of the Carbon Canyon fold. (See Figure 10 for location). (Note: the section has been flipped from the original figure to match the orientation of the cross-sections shown previously)
 
 ### Do the outcrop observations indicate that the sediments were deformed as weak, unlithified rocks or as lithified rocks?
 
 We will look at a series of questions to determine which model fits the data.
+
+
+
+
+{{% image `/img/2024/07/tonto3/Fig_16_Monument_fold.png` /%}}
+{{% image `/img/2024/07/tonto3/Fig_16a_Monument_fold.png`  %}}
+**Figure 16.** Monument fold, Tapeats Sandstone with and without interpreted faults and fractures that cross multiple beds. Fold sampled by Snelling and reported on his Tapeats reports (Snelling, 2021, 2021c) So far photos do not document clearly where much of the sampling was done. (Photo from: Billingsley, et al., 2019, CF04. View toward western part of Monument Fold in Tapeats Sandstone - ScienceBase-Catalog)
+{{% /image %}}
+
+
+{{% image `/img/2024/07/tonto3/Fig_17_Kink_fold.png`  /%}}
+{{% image `/img/2024/07/tonto3/Fig_17b_Kink_fold.png`  %}}
+
+**Figure 17.** Kink Fold, Tapeats Sandstone, with and without interpretation of faults and fractures. Located near and part of deformation associated with Monument Monocline. Faults had only small amounts of displacement. (Photo by [Billingsley, 2019](https://www.sciencebase.gov/catalog/item/5c75a46be4b0fe48cb4a5071))
+
+{{% /image %}}
+
+{{% image `/img/2024/07/tonto3/Fig_18_Whitmore_Helipad_fold.png`  %}}
+**Figure 18.** An interpretive line drawing of the Whitmore Helipad Fod photograph from Snelling, 2021b (p.307). Faults, traced in red, are clearly related to the formation of the fold. The fold morphology is consistent with that of a compressional fault-propagation-fold in the BAS. The folding is consistent with the folding and faulting of lithified sediment over long periods of time where the variations in the competency of the beds influence the smaller scale deformation. The location of slide HF-08, Figure 24, is labeled. The interpretation of stratigraphy could be made with more confidence if images were available showing more of the fold.
+{{% /image %}}
+
+{{% image `/img/2024/07/tonto3/Fig_19_Matkatamiba_fold.png`  %}}
+**Figure 19.** An interpretive line drawing of the Matkatamiba fold photograph from Snelling, 2022b (p.143). Here the fold includes fractures and faults (traced in red) in the Muav Limestone. Sampled beds are above and below the red dashed line that separates the Gateway Canyon Member of the Muav Formation below from the Havasu Member of the Muav above. The location of slide MFML-05, Figure 22, is labeled. Again, most of the macroscopic fracturing appears to be directly related to the deformation.
+{{% /image %}}
+
+{{% image `/img/2024/07/tonto3/Fig_20_Palisades_Creek_fault.png` %}}
+**Figure 20.** Approximately 120m (400 ft) long cross section across the Palisades Creek branch of the EKM (Reches, 1978, Figure 10). This shows a tight synclinal fold with overturned beds on the downthrown side of the fault zone. Located approximately 2 miles (3.4 km) southeast of the Carbon Canyon fold. (See Figure 10 for location). (Note: the section has been flipped from the original figure to match the orientation of the cross-sections shown previously)
+{{% /image %}}
 
 1. Do the folds have an overall “soupy” appearance or is their morphology more consistent with some degree of lithification?
 
@@ -220,15 +226,18 @@ Snelling’s articles all make the point that the Tonto group shows no evidence 
 
 Most of the thin sections show evidence of fracturing. Some, such as the example in **Figure 21**, are intensely fractured at the scale of a few millimeters. The rock more resembles finely shattered porcelain than soft sands that were deformed. This particular sample was taken in a tighter synclinal portion of the Monument fold. Again, in the absence of detailed orientation and timing data it is not possible to definitively determine the timing of these deformation features relative to the timing of the monoclinal folding. Nonetheless, all the evidence at this fold is consistent with folding of previously lithified sediments.
 
-{{% image `/img/2024/07/tonto3/Fig_21_MF-06.png` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto3/Fig_21_MF-06.png` %}}
 
-*Figure 21.* Interpretive line drawing of an example from the Monument fold of a heavily fractured coarse sandsto1e. Many grains are fractured. Some fractures show offset, but others do not. This is an interpretation of a photograph in the Tapeats Supplement (Snelling, 2021: Appendix D – Locations and Petrographic Descriptions of Tapeats Sandstone Samples). Note that the blue material in this and following slides is resin impregnated during slide preparation showing open pores and fractures. Some fractures may have been induced during impregnation, but most are original. The light gray quartz in this and following slides represents original grains and cement as it is in many cases difficult to recognize in the difference, particularly for the smaller grains. This makes it difficult to demonstrate the relationship between the fractures and the cement, though the photograph suggests that the cementation took place prior to the fracturing. The sample location is near a synclinal axis with small faults nearby, suggesting that the factures on the slide were related to the deformation.
+**Figure 21.** Interpretive line drawing of an example from the Monument fold of a heavily fractured coarse sandsto1e. Many grains are fractured. Some fractures show offset, but others do not. This is an interpretation of a photograph in the Tapeats Supplement (Snelling, 2021: Appendix D – Locations and Petrographic Descriptions of Tapeats Sandstone Samples). Note that the blue material in this and following slides is resin impregnated during slide preparation showing open pores and fractures. Some fractures may have been induced during impregnation, but most are original. The light gray quartz in this and following slides represents original grains and cement as it is in many cases difficult to recognize in the difference, particularly for the smaller grains. This makes it difficult to demonstrate the relationship between the fractures and the cement, though the photograph suggests that the cementation took place prior to the fracturing. The sample location is near a synclinal axis with small faults nearby, suggesting that the factures on the slide were related to the deformation.
+{{% /image %}}
 
 Another example from the Matkatamiba Fold shows multiple generations of fractures (**Figure 22**). In this case we see rock that was fractured (possibly including pressure dissolution), later the fractures filled with iron oxides and then the rock fractured again, and the later fractures later filled with calcite.
 
-{{% image `/img/2024/07/tonto3/Fig_22_MFML-05.png` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto3/Fig_22_MFML-05.png`  %}}
 
-*Figure 22.* Siltstone from the Muav Limestone (52% quartz and K-feldspar) cut by fractures, primarily horizontal and vertical. The horizontal fractures formed first and often filled with iron-oxide material. Vertical fractures are mostly filled with calcite (stained pink) and offset the horizontal fractures. This is an interpretive line drawing of a photograph in the Muav Formation Supplement (Snelling, 2022a: Appendix E – Locations and Petrographic Descriptions of Muav Formation Samples).
+**Figure 22.** Siltstone from the Muav Limestone (52% quartz and K-feldspar) cut by fractures, primarily horizontal and vertical. The horizontal fractures formed first and often filled with iron-oxide material. Vertical fractures are mostly filled with calcite (stained pink) and offset the horizontal fractures. This is an interpretive line drawing of a photograph in the Muav Formation Supplement (Snelling, 2022a: Appendix E – Locations and Petrographic Descriptions of Muav Formation Samples).
+{{% /image %}}
+
 
 3. Is there evidence of internal destruction of grains?
 
@@ -236,13 +245,17 @@ We said that when soft sediments are folded, the grains are able to shift and th
 
 [^27]: A concretion is a hardened body that formed in a sedimentary rock when mineral cement concentrated in a local area. They are often round or ovoid, though many shapes are formed. In many cases, they weather out of softer, less cemented rocks at the surface.
 
-{{% image `/img/2024/07/tonto3/Fig_23_CCF-01.png` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto3/Fig_23_CCF-01.png`  %}}
 
-*Figure 23.* Example from the Carbon Canyon fold of a fracture cutting through the quartz grains. This is an interpretive line drawing of a portion of a photograph in the Tapeats Supplement (Snelling, 2021: Appendix D – Locations and Petrographic Descriptions of Tapeats Sandstone Samples). The slide location is shown in Figure 16.
+**Figure 23.** Example from the Carbon Canyon fold of a fracture cutting through the quartz grains. This is an interpretive line drawing of a portion of a photograph in the Tapeats Supplement (Snelling, 2021: Appendix D – Locations and Petrographic Descriptions of Tapeats Sandstone Samples). The slide location is shown in Figure 16.
+{{% /image %}}
 
-{{% image `/img/2024/07/tonto3/Fig_24_HF-08.png` `aside-xl-wide` /%}}
 
-*Figure 24.* Example from the BAS in the Whitmore Helipad Fold. This shows apparent horizontal displacement of approximately 5mm (edges of the thin section are aligned in the original photo; top of the thin section has been displaced to the right along the red fault). Dark areas are described as “brown iron-oxide-stained carbonate (which could be detrital carbonate clasts given their rounded shape and reasonably defined edges)”. This figure is an interpretive line drawing of a portion of a photograph in the Bright Angel Supplement (Snelling, 2021a: Appendix D – Locations and Petrographic Descriptions of Bright Angel Formation Samples). No attempt was made to digitize the fine-grained, cemented sandstone grains.
+{{% image `/img/2024/07/tonto3/Fig_24_HF-08.png` %}}
+
+**Figure 24.** Example from the BAS in the Whitmore Helipad Fold. This shows apparent horizontal displacement of approximately 5mm (edges of the thin section are aligned in the original photo; top of the thin section has been displaced to the right along the red fault). Dark areas are described as “brown iron-oxide-stained carbonate (which could be detrital carbonate clasts given their rounded shape and reasonably defined edges)”. This figure is an interpretive line drawing of a portion of a photograph in the Bright Angel Supplement (Snelling, 2021a: Appendix D – Locations and Petrographic Descriptions of Bright Angel Formation Samples). No attempt was made to digitize the fine-grained, cemented sandstone grains.
+{{% /image %}}
+
 
 4. Are more heavily deformed areas more heavily fractured?
 
@@ -252,9 +265,10 @@ Snelling also collected samples away from the folds to compare these relatively 
 
 One final piece of evidence will be included here. We said that fractures with shear typically exhibit cataclasis, the crushing of the rock typified by the fracturing of grains, grain-size reduction, and compaction. Such might often be difficult to sample as the bands might well be eroded out or crumbly.
 
-{{% image `/img/2024/07/tonto3/Fig_25_MF-02.png` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto3/Fig_25_MF-02.png`  %}}
 
-*Figure 25.* Example from the Monument fold showing deformed zone with that resulted from tectonic shearing. Many fractures are present (traced in red). Grains are also fractured outside of the sheared zone and the shear faulting through both quartz and K-feldspar clasts. This is an interpretive line drawing of a portion of a photograph in the Tapeats Supplement (Snelling, 2021: Appendix D – Locations and Petrographic Descriptions of Tapeats Sandstone Samples). The sample was taken in a zone between two small faults as illustrated in the Tapeats Supplement and this shearing was probably associated with those faults.
+**Figure 25.** Example from the Monument fold showing deformed zone with that resulted from tectonic shearing. Many fractures are present (traced in red). Grains are also fractured outside of the sheared zone and the shear faulting through both quartz and K-feldspar clasts. This is an interpretive line drawing of a portion of a photograph in the Tapeats Supplement (Snelling, 2021: Appendix D – Locations and Petrographic Descriptions of Tapeats Sandstone Samples). The sample was taken in a zone between two small faults as illustrated in the Tapeats Supplement and this shearing was probably associated with those faults.
+{{% /image %}}
 
 However, some samples, such as from the nose of the Monument fold, show good evidence of shear and cataclasis as shown in **Figure 25**. Shear in soft sediment would not have crushed grains such as are evident in the figure.
 
@@ -290,9 +304,11 @@ The Tonto Group was deposited as loose sands, muds and lime muds. Today they are
 
 Figure 1 shows the time available in Snelling’s model at a scale that includes all of geologic history. **Figure 26** expands the late Cretaceous to Recent, in order to help show how events had to work in the two leading flood geology models. In Snelling’s model, the Laramide folding in the Grand Canyon, beginning in the late Cretaceous period, and continuing into the Paleocene epoch, would have been late in the flood and continued into the early post-flood period. As illustrated in Figure 26, that period would seem to have been at most a few years long in Snelling’s model, given that all of the Paleocene, Eocene, Oligocene, Miocene and Pliocene and at least part of the Pleistocene would have lasted just 350 - 450 years. Notice that the folding would have been in the middle of the flood in the ICR model proposed by Dr. Clarey, and therefore would have occurred in a matter of days. This leaves a very short time for diagenesis to have occurred.
 
-{{% image `/img/2024/07/tonto3/Fig_26_Strat_Column.png` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto3/Fig_26_Strat_Column.png` %}}
 
-*Figure 26.* Expansion of the Cenozoic and late Mesozoic Eras from Figure 1. The Laramide orogeny is labeled, along with accepted dates for formation of the Grand Canyon and igneous events.
+**Figure 26.** Expansion of the Cenozoic and late Mesozoic Eras from Figure 1. The Laramide orogeny is labeled, along with accepted dates for formation of the Grand Canyon and igneous events.
+{{% /image %}}
+
 
 Additional complications for the FG model result from the fact that much rock had to be eroded away in order to expose the folds in the Grand Canyon today. Do they believe that the canyon was carved while the sediments were unlithified as well? That would present even more problems. Here are some observations that would need to be reconciled for any FG model to be viable:
 
@@ -311,9 +327,10 @@ Additional complications for the FG model result from the fact that much rock ha
 
 Together these observations dramatically constrain the time available in the FG models for the regionally extensive diagenesis to occur. For Snelling’s model, diagenesis would have to occur within a few hundred years. For Carey’s model, it would have to happen in a matter of days.
 
-{{% image `/img/2024/07/tonto3/Fig_27_Split_twig_figure.jpg` `aside-xl-wide` /%}}
+{{% image `/img/2024/07/tonto3/Fig_27_Split_twig_figure.jpg`  %}}
 
-*Figure 27.* Split Twig figurine from the Grand Canyon. Such figures, dated from 4100–3530 BP as shown on the left side of Figure 26. (Emslie and Coats, 2013).
+**Figure 27.** Split Twig figurine from the Grand Canyon. Such figures, dated from 4100–3530 BP as shown on the left side of Figure 26. (Emslie and Coats, 2013).
+{{% /image %}}
 
 ### FG explanations
 
@@ -352,10 +369,12 @@ Snelling’s next assertion is that the erosion of hardened rocks can take place
 
 A spectacular example documenting this is the Goosenecks of the San Juan River (**Figure 28**). In this location, the river valley has a very anomalous form. To recognize why this is anomalous, think about how rivers in normal areas develop. In the upper parts of rivers, they tend to cut down through rock with patterns that branch like a tree. In the middle course of the river, the gradient is gentle. High volumes of water and energy make the river migrate laterally in loops known as meanders. The Goosenecks are anomalous because the river has the meandering form of a river flowing on a low relief surface, but it downcut 1000 feet, down into Paleozoic limestones and sandstones, as the Colorado Plateau was gradually uplifted. In other words, the meanders were already present when the river was on relatively flat ground and then cut down into the bedrock as the plateau was uplifted. Such “entrenched” meanders show that the uplift had to be gradual in order to preserve the meandering form. This contradicts the FG models.
 
-{{% image `/img/2024/07/tonto3/Fig_28a_Gooseneck.jpg` `aside-xl-wide` /%}}
-{{% image `/img/2024/07/tonto3/Fig_28b_Gooseneck.jpg` `aside-xl-wide` /%}}
 
-*Figure 28.* Goosenecks State Park, Mexican Hat, Utah. The San Juan River cut down through Paleozoic rocks as the Colorado Plateau was uplifted. This preserved the original river path that formed as the river meandered across an earlier low relief surface. The uplift re-energized the river, causing it to begin to downcut, but the uplift could not have been rpid or the meanders would not have been preserved.
+{{% image `/img/2024/07/tonto3/Fig_28a_Gooseneck.jpg` `aside-xl-wide` %}}
+
+**Figure 28.** Goosenecks State Park, Mexican Hat, Utah. The San Juan River cut down through Paleozoic rocks as the Colorado Plateau was uplifted. This preserved the original river path that formed as the river meandered across an earlier low relief surface. The uplift re-energized the river, causing it to begin to downcut, but the uplift could not have been rpid or the meanders would not have been preserved.
+{{% /image %}}
+
 
 ## Conclusions
 
