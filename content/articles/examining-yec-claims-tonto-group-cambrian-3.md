@@ -11,6 +11,17 @@ headerimage:
   src: /img/2024/07/tonto3/1_Part_3_canyon_photo.jpg
 ---
 
+<div class="editor-note">
+
+This article is in a series examining the claims in these three articles by young earth creationist, Andrew Snelling:
+
+Snelling, Andrew. [“The Petrology of the Tapeats Sandstone, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/petrology-tapeats-sandstone-tonto-group/) _Answers Research Journal_ 14 (2021): 159–254.
+
+Snelling, Andrew. [“The Petrology of the Bright Angel Formation, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/petrology-bright-angel-tonto-group/) _Answers Research Journal_ 14 (2021): 303–415.
+
+Snelling, Andrew. [“The Petrology of the Muav Formation, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/geology/petrology-muav-formation-tonto-group/) _Answers Research Journal_ 15 (2022): 139–262.
+</div>
+
 The third contrasting view separating the YEC views proposed by Dr. Snelling from most geologists’ understanding regards how these rocks were deformed. Geologists recognize that rocks can be deformed by brittle mechanisms, such as faulting and fracturing or by ductile mechanisms that produce folds. If you want to understand the difference, you can perform a simple experiment. First, drop a ball of soft clay from a few feet up onto a concrete floor. Next, drop a fine porcelain plate onto the same concrete floor. Both will have different shapes after the fall. The clay may be slightly cracked but much of the change will be ductile. In contrast, the porcelain plate will be shattered or brittlely deformed. The Tonto units show evidence of both. All agree that the folds in question here were folded by ductile mechanisms, but the differences include the specific mechanisms involved and how much time was required for the folding.
 
 The consensus view is that folding in the Tonto formations took place over thousands to millions of years, while YEC timelines demand that it took place over a much shorter time period. Today, the rocks that make up the Tonto group are not loose sediment but hardened or lithified stone. Since at least 2009, Snelling[^1] has proposed that the folding of the Tapeats sandstone in the Grand Canyon occurred before the sediments were lithified. This kind of deformation is commonly known as soft-sediment deformation. Snelling’s present studies began in 2013 with a research proposal specifically designed to examine the Tonto sediments for evidence related to the timing of the folding in these units.[^2]

@@ -11,6 +11,18 @@ headerimage:
   src: /img/2024/07/tonto2/01_Part_2_Strat_image.png
 ---
 
+<div class="editor-note">
+
+This article is in a series examining the claims in these three articles by young earth creationist, Andrew Snelling:
+
+Snelling, Andrew. [“The Petrology of the Tapeats Sandstone, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/petrology-tapeats-sandstone-tonto-group/) _Answers Research Journal_ 14 (2021): 159–254.
+
+Snelling, Andrew. [“The Petrology of the Bright Angel Formation, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/petrology-bright-angel-tonto-group/) _Answers Research Journal_ 14 (2021): 303–415.
+
+Snelling, Andrew. [“The Petrology of the Muav Formation, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/geology/petrology-muav-formation-tonto-group/) _Answers Research Journal_ 15 (2022): 139–262.
+</div>
+
+
 Young Earth Creation (YEC) models propose that geologic units like the formations of the Tonto Group were deposited in a few days or weeks. In Part Two, we will look at two of the four ways that we listed in Part One that the Snelling articles contrast with the consensus geologic understandings developed for these formations. These are:
 
 1. How long did it take for the unit to be deposited? Thousands to millions of years vs. a few days.

@@ -11,6 +11,19 @@ headerimage:
   src: /img/2024/07/tonto1/01_Grand_Canyon_Mferbfriske.jpg
 ---
 
+<div class="editor-note">
+
+This article is in a series examining the claims in these three articles by young earth creationist, Andrew Snelling:
+
+Snelling, Andrew. [“The Petrology of the Tapeats Sandstone, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/petrology-tapeats-sandstone-tonto-group/) _Answers Research Journal_ 14 (2021): 159–254.
+
+Snelling, Andrew. [“The Petrology of the Bright Angel Formation, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/petrology-bright-angel-tonto-group/) _Answers Research Journal_ 14 (2021): 303–415.
+
+Snelling, Andrew. [“The Petrology of the Muav Formation, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/geology/petrology-muav-formation-tonto-group/) _Answers Research Journal_ 15 (2022): 139–262.
+</div>
+
+
+
 ## Plain Language Summary
 
 In the papers reviewed here, Dr. Andrew Snelling proposes that the Cambrian aged Tonto Group was deposited over a few days or weeks early in Noah’s flood. He proposes that the sediments were moved at very high flow rates and deposited very rapidly. He further interprets them to have been deformed by faults and folding while the sediments were soft (unlithified), quickly lithified and then eroded rapidly as the Grand Canyon formed. For Young Earth Creation models to be viable, these same rates of deposition, deformation, and often erosion had to occur in sedimentary rocks all around the world.
