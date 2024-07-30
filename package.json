@@ -14,7 +14,7 @@
     "@netlify/functions": "^1.0.0",
     "algoliasearch": "^4.13.0",
     "atomic-algolia-fixed": "github:swamidass/atomic-algolia",
-    "axios": "^0.24.0",
+    "axios": ">=0.28.0",
     "citeproc": "^2.4.62",
     "date-fns": "^2.28.0",
     "git-date-extractor": "^4.0.1",
