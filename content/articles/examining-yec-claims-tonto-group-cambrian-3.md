@@ -376,7 +376,7 @@ Snelling’s next assertion is that the erosion of hardened rocks can take place
 A spectacular example documenting this is the Goosenecks of the San Juan River (**Figure 28**). In this location, the river valley has a very anomalous form. To recognize why this is anomalous, think about how rivers in normal areas develop. In the upper parts of rivers, they tend to cut down through rock with patterns that branch like a tree. In the middle course of the river, the gradient is gentle. High volumes of water and energy make the river migrate laterally in loops known as meanders. The Goosenecks are anomalous because the river has the meandering form of a river flowing on a low relief surface, but it downcut 1000 feet, down into Paleozoic limestones and sandstones, as the Colorado Plateau was gradually uplifted. In other words, the meanders were already present when the river was on relatively flat ground and then cut down into the bedrock as the plateau was uplifted. Such “entrenched” meanders show that the uplift had to be gradual in order to preserve the meandering form. This contradicts the FG models.
 
 
-{{% image `/img/2024/07/tonto3/Fig_28a_Gooseneck.jpg` `aside-xl-wide` %}}
+{{% image `/img/2024/07/tonto3/Fig_28.png` `aside-xl-wide` %}}
 
 **Figure 28.** Goosenecks State Park, Mexican Hat, Utah. The San Juan River cut down through Paleozoic rocks as the Colorado Plateau was uplifted. This preserved the original river path that formed as the river meandered across an earlier low relief surface. The uplift re-energized the river, causing it to begin to downcut, but the uplift could not have been rpid or the meanders would not have been preserved.
 {{% /image %}}
