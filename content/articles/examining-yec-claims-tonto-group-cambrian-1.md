@@ -5,8 +5,7 @@ description: Assessing whether the geology of the Grand Canyon is consistent wit
 authors:
 - Stephen Mitchell
 - Kennen Tillman
-date: 2024-07-31 05:01:00
-draft: true
+date: 2024-08-15 00:01:00
 headerimage:
   src: /img/2024/07/tonto1/01_Grand_Canyon_Mferbfriske.jpg
 ---
@@ -53,11 +52,15 @@ The differences between these two models are major and as a result, both cannot 
 
 {{< image `/img/2024/07/tonto1/Fig_1_geologic_column.png` `aside-xl-wide` >}}
 
-**Figure 1:**[^2] shows two current contrasting YEC interpretations for the timing of Noah’s flood in the geologic record from separate leading YEC organizations. Both groups recognize that, regardless of their differences with the accepted timescale, the accepted geologic column is a valid summary of many, many observations around the world. The relative order of sediment deposition is recognizable. The key difference in the two interpretations is in the top of the flood interval. Snelling interprets the top of the flood interval as the top of the Mesozoic section and that gives him very limited time for the deposition of the Tonto Group. Dr Tim Clarey of the Institute for Creation Research (ICR) places the top of the flood deposits at the top of the Pliocene and therefore, leaves even less time available for each system of rocks to be deposited, including the Tonto Group as illustrated on the figure. In many places around the world, the differences between these views involves literally miles of sediment thickness.
+**Figure 1:** Comparison for interpretations of the geologic column by leading flood geology advocates. This does not include any time for initial erosion. Snelling (2023) proposes a “prolonged period (days or more) in which there was a significant amount of continental-scale erosion to bevel the Precambrian (pre-Flood) land surface to produce the Great Unconformity (GU).
+
+{{< /image >}}
+
+
+Figure 1[^2] shows two current contrasting YEC interpretations for the timing of Noah’s flood in the geologic record from separate leading YEC organizations. Both groups recognize that, regardless of their differences with the accepted timescale, the accepted geologic column is a valid summary of many, many observations around the world. The relative order of sediment deposition is recognizable. The key difference in the two interpretations is in the top of the flood interval. Snelling interprets the top of the flood interval as the top of the Mesozoic section and that gives him very limited time for the deposition of the Tonto Group. Dr Tim Clarey of the Institute for Creation Research (ICR) places the top of the flood deposits at the top of the Pliocene and therefore, leaves even less time available for each system of rocks to be deposited, including the Tonto Group as illustrated on the figure. In many places around the world, the differences between these views involves literally miles of sediment thickness.
 
 [^2]: Clarey 2020; Mitchell, Stephen 2018; Snelling 2009; Vail, Mitchum Jr, and Thompson III 1977
 
-{{< /image >}}
 
 {{< image `/img/2024/07/tonto1/Table_1_Stoplight.png` `aside-xl-wide` >}}
 
