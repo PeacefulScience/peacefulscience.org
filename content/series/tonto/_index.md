@@ -1,8 +1,8 @@
 ---
-title: Examining Young Earth Creation Claims for Tonto Group, Cambrian, Colorado Plateau
+title: Examining Young Earth Creation Claims about the Grand Canyon 
 ---
 
-This series examines the claims in these three articles by young earth creationist, Andrew Snelling:
+This series examines the claims in these three articles by young earth creationist, Andrew Snelling on the Tonto Group formation in the Grand Canyon:
 
 Snelling, Andrew. [“The Petrology of the Tapeats Sandstone, Tonto Group, Grand Canyon, Arizona.”](https://answersresearchjournal.org/petrology-tapeats-sandstone-tonto-group/) _Answers Research Journal_ 14 (2021): 159–254.
 
