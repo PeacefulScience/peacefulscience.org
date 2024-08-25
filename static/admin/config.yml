@@ -1,10 +1,13 @@
 backend:
-  name: git-gateway
+  name: github
   branch: master
+  repo: PeacefulScience/peacefulscience.org
+publish_mode: editorial_workflow
 media_folder: static/img
 public_folder: /img
 collections:
   - name: authors
+    create: true
     label: "Authors"
     folder: content/authors/
     path: '{{slug}}/_index.md'
@@ -14,6 +17,7 @@ collections:
       - { label: "Slug", name: 'slug', widget: 'string' }
     
   - name: 'article'
+    create: true
     label: 'Article'
     folder: 'content/articles'
     fields:
@@ -22,3 +26,11 @@ collections:
       - { label: 'Description', name: 'description', widget: 'string' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
 
+  - name: 'print'
+    label: 'Print'
+    folder: 'content/prints'
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Publish Date', name: 'date', widget: 'datetime' }
+      - { label: 'Description', name: 'description', widget: 'string' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
