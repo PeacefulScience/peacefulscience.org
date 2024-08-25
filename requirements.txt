@@ -1,3 +1,4 @@
+mako
 bs4
 ruamel.yaml
 python-dotenv
@@ -6,4 +7,9 @@ oauth2client
 google-api-python-client
 google-auth-httplib2 
 google-auth-oauthlib
-
+markdown2
+mailchimp3
+bottle
+iso8601
+plim
+lxml
