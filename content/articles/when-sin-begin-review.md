@@ -6,7 +6,7 @@ categories:
 - ancestry
 - evolution
 date: "2024-11-27T01:16:59"
-description: There are indeed “many ways” to reconcile evolution with the doctrine of sin...
+description: Reviewing Haarsma's book, there are indeed “many ways” to reconcile evolution with the doctrine of sin...
 headerimage:
   src: /img/2024/11/when-sin-begin-review.png
 title: When Did Sin Begin?
