@@ -8,7 +8,7 @@ publishdate: 2025-03-05
 categories:
 - science
 - Communication
-description: Reviewing Haarsma's book, there are indeed “many ways” to reconcile evolution with the doctrine of sin...
+description: Likely the new director of the NIH, Jay Bhattacharya preaches on the Bible and COVID in 2022.
 headerimage:
   src: /img/2025/03/jayb-confirmation-hearing.jpg
   youtube: GljbhvGQ9EE
