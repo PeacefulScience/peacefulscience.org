@@ -20,7 +20,7 @@
        {{ $page := . }}
        {{- with partial "getpdf" . }}
           <url>
-            <loc>https://peacefulscience.org{{ . }}</loc>
+            <loc>{{ $.Site.BaseURL | strings.TrimRight "/"  }}{{ . }}</loc>
             {{ with $page.Lastmod -}}
               {{- $date := . -}}
               {{- if ( .Before $sitemap_min_date) -}}{{ $date = $sitemap_min_date }}{{ end -}}
