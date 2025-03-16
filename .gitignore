@@ -1,3 +1,5 @@
+examples
+*.swp
 newsletter.html
 newsletter.mjml
 yarn.lock
