@@ -1789,10 +1789,14 @@
   },
   "content/articles/jay-bhattacharya-sermon.md": {
     "created": 1741216188,
-    "modified": 1741217645
+    "modified": 1741218315
   },
   "content/authors/jayb/_index.md": {
     "created": 1741216817,
     "modified": 1741217656
+  },
+  "content/newsletter/bhattacharya-sermon.md": {
+    "created": 1742150566,
+    "modified": 1742152083
   }
 }
