@@ -1,4 +1,8 @@
 examples
+# comic POC
+content/comics
+static/img/comics
+
 *.swp
 newsletter.html
 newsletter.mjml
@@ -44,3 +48,25 @@ hugo.log
 # Local Netlify folder
 .netlify
 *.pdf
+# Additional entries
+.cache
+.pytest_cache
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.envrc
+*.log
+*.sqlite
+*.db
+*.sqlite3
+*.sql
+*.bak
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
