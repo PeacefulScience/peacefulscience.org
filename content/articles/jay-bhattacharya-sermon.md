@@ -1,5 +1,5 @@
 ---
-title: Jay Battacharya's COVID Sermon
+title: Jay Bhattacharya's COVID Sermon
 description: A new fellowship desinged to equip Christian scholars in secular institutions.
 authors:
 - jayb
@@ -16,7 +16,7 @@ headerimage:
 ---
 <div class="editor-note">
 
-This is transcript of [Jay Battacharya's sermon](https://www.youtube.com/watch?v=GljbhvGQ9EE) at [First Presbyterian Church Mountain View](https://www.fpcmv.org/) on February 27th, 2022. On March 5th, 2025,  Dr. Battacharya was questioned by the Senate, and it is very he will be confirmed soon as the next director of the NIH. 
+This is transcript of [Jay Bhattacharya's sermon](https://www.youtube.com/watch?v=GljbhvGQ9EE) at [First Presbyterian Church Mountain View](https://www.fpcmv.org/) on February 27th, 2022. On March 5th, 2025,  Dr. Bhattacharya was questioned by the Senate, and it is very he will be confirmed soon as the next director of the NIH. 
 
 </div>
 
