@@ -1,0 +1,66 @@
+---
+description: 
+globs: content/articles/*.md
+alwaysApply: false
+---
+---
+description: 
+globs: content/articles/*.md
+alwaysApply: false
+---
+
+# Article Writing Rules
+
+Rules for writing articles on Peaceful Science, based on common patterns and requirements.
+
+1. Required Front Matter
+   - title: Article title
+   - authors: List using author slugs
+   - date: Publication date (YYYY-MM-DD)
+   - description: 1-2 sentence summary
+   - headerimage: Featured image with src
+   - categories: Topic categories
+
+2. Optional Front Matter
+   ```yaml
+   # Future publication scheduling
+   publishdate: 2025-03-05  # Article won't appear until this date
+   
+   # Series identification
+   series: series-slug  # Groups articles in a series together
+   
+   # Interview articles
+   interview:
+   - interviewee-slug  # Marks interviewed people
+   
+   # Related content
+   about:
+   - /books/book-slug/  # Links to related content
+   
+   # Header image with video
+   headerimage:
+     src: /img/path/image.jpg
+     youtube: VIDEO_ID  # Adds video preview
+   
+   # Multiple authors with roles
+   authors:
+   - primary-author
+   - role: editor
+     slug: editor-name
+   
+   egories
+   categories:
+   - primary-category
+   - subcategory
+   ```
+
+3. Article Structure
+   - Editor's note in <div class="editor-note"> for context
+   - Start content with H2 (##) headings
+   - Use clear section breaks
+   - Include citations with DOI links as footnotes
+   - Break text into readable paragraphs
+
+4. You cannot write mdc files yet, so prompt user to manually copy over.
+
+[Rest of file remains unchanged...]

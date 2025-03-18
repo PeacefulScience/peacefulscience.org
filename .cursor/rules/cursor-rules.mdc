@@ -1,0 +1,68 @@
+---
+description: 
+globs: .cursor/rules/*.mdc
+alwaysApply: true
+---
+
+# Cursor Rules Format
+
+These are rules for creating and maintaining Cursor rule files.
+Each rule file should follow a specific format and structure.
+Rules help Cursor understand and assist with specific file types and tasks.
+
+<RULES>
+1. Every rule file must have YAML frontmatter with:
+   - Empty description field
+   - Comma-separated globs without quotes
+   - alwaysApply setting
+2. Title should be H1 and describe the rule category
+3. Include a brief plain text description after the title
+4. Use <RULES> section for numbered requirements
+5. Use <EXAMPLES> section with proper code blocks
+6. Use <VALIDATION> section with bullet points
+7. No custom tags beyond RULES, EXAMPLES, and VALIDATION
+8. Code blocks must use proper language tags
+9. Keep descriptions concise and focused
+</RULES>
+
+<EXAMPLES>
+```markdown
+---
+description: 
+globs: path/to/files/*.ext,other/path/**/*.ext
+alwaysApply: true
+---
+
+# Category Name Rules
+
+Brief description of what these rules cover.
+Additional context if needed.
+Keep it focused and clear.
+
+<RULES>
+1. First rule
+2. Second rule
+3. Third rule
+</RULES>
+
+<EXAMPLES>
+```language
+Example code here
+```
+</EXAMPLES>
+
+<VALIDATION>
+- First validation step
+- Second validation step
+- Third validation step
+</VALIDATION>
+```
+</EXAMPLES>
+
+<VALIDATION>
+- Check YAML frontmatter format
+- Verify section tags are correct
+- Ensure code blocks have language tags
+- Validate glob patterns
+- Check markdown formatting
+</VALIDATION> 
