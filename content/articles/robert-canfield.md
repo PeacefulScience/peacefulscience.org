@@ -37,10 +37,6 @@ How did the Pharisees who opposed the resurrection give evidence of it? By what 
 
 {{< amazon `1533390185` >}}
  
-it is to you I write. I had serious doubts during part of my college days, but now I am convinced that Jesus of Nazareth rose from the dead. I am convinced that any seeker of truth cannot avoid a strong impression of Christ's resurrection as he ponders the responses of the Pharisees who opposed the resurrection, the disciples who at first disbelieved it, and Saul who persecuted those who believed it.
-
-How did the Pharisees who opposed the resurrection give evidence of it? By what they didn't do.
-
 During Jesus' life the Pharisees had murmured at him for claiming that he could forgive sins. They had accused him of being the prince of devils when he healed a demoniac, and had opposed his healing on the Sabbath. On the Sabbath day he had cast out an unclean spirit, healed a woman of an infirmity which had existed for eighteen years, and cured a man of dropsy. And when he healed a man's withered hand on the Sabbath, they had gone out and discussed how they could destroy him.
 
 They had tried to stone him to death for saying. "I and the Father are one," and had abused him for his last claim that he was the Messiah, the Son of God. They had taunted him with inveterate malice as he hung on the cross.
