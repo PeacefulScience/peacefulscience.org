@@ -1,21 +1,33 @@
+{{/* 
+  URL Resolution Partial
+  This function processes and normalizes URLs, determining their type and applying
+  appropriate transformations for different link categories (internal, external, PDF, forum, Amazon)
+*/}}
+
+{{/* Initialize variables */}}
 {{ $dest := .Destination }}
 {{ $location := $.Page.File.Path }}
 {{ $hash := default nil }}
 {{ $out := (dict ) }}
 
+{{/* Clean URL by removing affiliate tags and trailing slashes */}}
 {{- $dest = replaceRE  `tag=.*` `` $dest -}}
 {{- $dest = replaceRE  `\/$` `` $dest -}}
 
+{{/* Check URL mapping for redirects - try exact match first */}}
 {{- with index site.Data.urlmap $dest -}}
   {{- $dest = . -}} 
 {{- end -}}
 
+{{/* Check URL mapping with trailing slash */}}
 {{- with index site.Data.urlmap ( printf "%s/" $dest ) -}}
   {{- $dest = . -}} 
 {{- end -}}
 
+{{/* Remove UTM tracking parameters */}}
 {{- $dest := replaceRE `\?.*?utm.*` `` $dest }}
 
+{{/* Parse URL and get site configuration */}}
 {{- $url := urls.Parse ( $dest | absURL ) -}}
 {{- $basehost := (urls.Parse site.BaseURL).Host -}}
 {{- $type := "internal" -}}
@@ -24,20 +36,25 @@
 {{- $rel := default nil }}
 {{- $tooltip := default nil }}
 
+{{/* Check if this is an internal link (same host) */}}
 {{- if in (slice "peacefulscience.org" $basehost) $url.Host -}}
+  {{/* Extract path from URL, removing domain and protocol */}}
   {{- $path := replaceRE ".*//peacefulscience.org" "" $dest -}}
   {{- $path := replaceRE (printf ".*//%s"  $basehost) "" $path -}}
   {{- $path := replaceRE "/$" "" $path -}}
   
+  {{/* Extract hash fragment if present */}}
   {{ if in $path  "#"  }}
     {{ $hash = replaceRE `.*#` `` $path }}
     {{ $path = replaceRE `#.*` `` $path }}
   {{ end }}
   
+  {{/* Try to resolve as internal page */}}
   {{- with site.GetPage $path -}}
     {{- $dest = .Permalink -}}
     {{- $tooltip = .Title | markdownify -}}
   {{- else -}}
+    {{/* Check if it's a PDF file */}}
     {{- if  (findRE "pdf$" $path) -}}
 
        {{- $pdf := $path -}}
@@ -50,34 +67,41 @@
           {{- warnf "BROKEN.PDF:\t%s\t%s\t%s" $location $pdf $pdffile -}}      
        {{- end -}}   
     {{- else -}}
+      {{/* Warn about broken internal links (unless it's just a hash) */}}
       {{- if not (eq (substr $dest 0 1) "#") -}}
         {{- warnf "BROKEN.LINK:\t%s\t%s" $location $dest -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- else -}}
+  {{/* External link */}}
   {{- $type = "external" -}}
 {{- end -}}
 
+{{/* Special handling for forum links */}}
 {{- if eq $url.Host "discourse.peacefulscience.org" -}}
   {{- $type = "forum" -}}
   {{- $dest = replaceRE `\?.*` `` $dest }}  
   {{- $dest = replaceRE `discourse.peacefulscience.org/t/.*?/` `discourse.peacefulscience.org/t/_/` $dest }}  
 {{- end -}}
 
+{{/* Warn about Amazon short links (should use full URLs) */}}
 {{- if (in $dest  "/amzn.to/")  -}}
   {{- warnf "AMZN.LINK:\t%s\t%s" $dest $location -}}
 {{- end -}}
 
+{{/* Handle hash-only links (anchor links) */}}
 {{- if eq (substr .Destination 0 1) "#" -}}
   {{- $dest = $dest | absURL -}}
   {{- $type = "hash" }}
 {{- end -}}
 
+{{/* Amazon link processing - add affiliate tags and extract ASIN */}}
 {{- if in $url.Host "amazon.com" -}}
   {{- $tag = "?tag=swamidass-20" -}}
   {{- $dest = printf "https://amazon.com%s/" $url.Path -}}
   {{- $rel = "sponsored" -}}  
+  {{/* Try to extract ASIN from various Amazon URL formats */}}
   {{- $asin =  replaceRE  `.*/dp/(.*?)/.*`  "${1}" $dest  -}}
   {{- if eq $asin $dest }}
     {{- $asin = replaceRE  `.*/dp/(.*?)\?.*`  "${1}" $dest  -}}
@@ -89,30 +113,36 @@
     {{- $asin = replaceRE  `.*/gp/product/(.*?)\?.*`  "${1}" $dest  -}}
   {{- end }}
   
+  {{/* If ASIN extraction failed, warn and clear it */}}
   {{- if eq $asin $dest }}
     {{- warnf "PARSE.ASIN\t%s\t%s" $dest -}}
     {{- $asin = default nil }}
   {{- else }}
+    {{/* Normalize Amazon URL to standard format */}}
     {{- $dest = printf "https://amazon.com/dp/%s/" $asin -}}
     {{- $tag = "?tag=swamidass-20" }}
     {{- $type = "external" }}
   {{- end }}
 {{- end -}}
 
+{{/* Check if there's an internal page for this Amazon product */}}
 {{- with $asin }}
   {{- range where site.Pages ".Params.amazon" "intersect" (slice $asin) }}
+    {{/* Use internal page instead of Amazon link */}}
     {{- $dest = .Permalink }}
     {{- $tag = "" }}  
     {{- $rel = default nil }}
     {{- $type = "internal" }}
     {{- $tooltip = .Title |markdownify }}
   {{ else }}
+   {{/* Commented out: warn about missing internal pages for Amazon products */}}
    {{/*- warnf "MISSING.ASIN.PAGE:\t%s\t%s" $asin $dest */}}
   {{- end }}
 {{- end }}
 
+{{/* Build output dictionary with all resolved link information */}}
 {{- $out = (dict "Destination" $dest "Tag" $tag "Type" $type "Amazon" $asin  "Rel" $rel "Tooltip" $tooltip "Hash" $hash ) }}
 
-
+{{/* Return the resolved URL data */}}
 {{- return $out }}
 

@@ -1,11 +1,19 @@
 
+{{/* 
+  Hugo link render hook for processing markdown links
+  This template handles different types of links and applies appropriate styling/behavior
+*/}}
+
+{{/* Resolve the URL to get destination and metadata */}}
 {{ $resolve := partial "resolve-url" . }}
 {{- $dest := $resolve.Destination -}}
 
+{{/* Special handling for DOI links without text - render as DOI partial */}}
 {{- if and (in $dest  "https://doi.org/") (not .Text )  -}}
   {{- partial "doi" $dest -}}
 {{- else -}}
 
+{{/* Initialize variables for link attributes */}}
 {{- $class := default nil -}}
 {{- $target :=  default nil -}}
 {{- $data := default nil -}}
@@ -14,53 +22,64 @@
 {{- $hash := $resolve.Hash -}}
 {{- $tooltip := $resolve.Tooltip -}}
 
+{{/* Format hash fragment for URL */}}
 {{- with $hash }}
   {{- $hash = printf "#%s" $hash }}
 {{- else }}
   {{- $hash = `` }}
 {{- end }} 
 
+{{/* Set attributes based on link type */}}
+{{/* Internal links - no special class needed */}}
 {{- if eq $resolve.Type "internal" }}
   {{- $class = "" -}}
 {{- end }}
 
+{{/* External links - add external-link class and security attributes */}}
 {{- if eq $resolve.Type "external" }}
   {{- $class = "external-link" -}}
   {{- $rel = "noopener nofollow" -}}
   {{- $target = "_blank" -}}
 {{- end }}
 
+{{/* PDF links - treat as external with same security attributes */}}
 {{- if eq $resolve.Type "pdf" }}
   {{- $class = "external-link" -}}
   {{- $rel = "noopener nofollow" -}}
   {{- $target = "_blank" -}}
 {{- end }}
 
+{{/* Forum links - special forum-link class */}}
 {{- if eq $resolve.Type "forum" }}
   {{- $class = "forum-link" -}}
   {{- $target = "_blank" -}}
 {{- end }}
 
+{{/* Warn about empty link text */}}
 {{- if not .Text -}}
   {{- warnf "EMPTY.LINK:\t%s" $.Page.File.Path -}}
 {{- end -}}
 
+{{/* Get page scratch for storing link data */}}
 {{- $scratch := $.Page.Scratch -}}
 
+{{/* Track Amazon links for potential affiliate processing */}}
 {{- with  $resolve.Amazon }}
   {{- $scratch.Add "Amazon" (slice .) -}}
 {{- end -}}
 
-
+{{/* Link numbering system for reference tracking */}}
 {{- $links := slice }}
 {{- with $scratch.Get "Links" }}
    {{- $links = . }}
 {{- end }}
 
+{{/* Assign sequential numbers to non-hash links for reference lists */}}
 {{- $num := default nil }}
 {{- if not (eq $resolve.Type "hash") }}
   {{- $num = -1 }}
   {{- $n := 1 }}
+  {{/* Check if this link already exists in the list */}}
   {{- range $links }}
     {{- if eq . $dest }}
        {{- $num = $n }}
@@ -68,22 +87,27 @@
     {{- $n = add $n 1 }}
   {{- end }}
   
+  {{/* If link not found, add it to the list and assign new number */}}
   {{- if lt $num 0 }}
      {{- $num = $n }}
      {{- $links = $links | append $dest }}
   {{- end }}
  
+  {{/* Store updated links list in scratch */}}
   {{- $scratch.Set "Links" $links -}}
 {{- end }}
 
+{{/* Debug logging when HUGO_LINKS environment variable is set */}}
 {{- with getenv "HUGO_LINKS" -}}
   {{- warnf "LINK\t%s\t%s"  $.Page.RelPermalink $dest -}}
 {{- end -}}
 
+{{/* Warn about empty destination URLs */}}
 {{ if  (eq $dest "") }}
   {{ warnf "EMPTYDEST:\t%s\t%s" .Page.RelPermalink .Destination }}
 {{ end }} 
 
+{{/* Render the final anchor tag with all attributes */}}
 <a href="{{- $dest -}}{{ $hash }}{{- $tag }}"
 {{- with $data }} data-toggle="tooltip" data-placement="bottom" data-html="true" title="{{- $data -}}" {{- end -}}
 {{- with $target }} target='{{- $target -}}'{{- end -}}
