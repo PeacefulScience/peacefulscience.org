@@ -85,6 +85,11 @@
   {{- $dest = replaceRE `discourse.peacefulscience.org/t/.*?/` `discourse.peacefulscience.org/t/_/` $dest }}  
 {{- end -}}
 
+{{/* Add UTM parameter for Christianity Today links */}}
+{{- if in $url.Host "christianitytoday.com" -}}
+  {{- $dest = printf "%s?utm_medium=widgetsocial" $dest -}}
+{{- end -}}
+
 {{/* Warn about Amazon short links (should use full URLs) */}}
 {{- if (in $dest  "/amzn.to/")  -}}
   {{- warnf "AMZN.LINK:\t%s\t%s" $dest $location -}}
