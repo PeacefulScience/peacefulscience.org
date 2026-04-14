@@ -47,6 +47,18 @@ python3 code/docx_to_article.py /absolute/path/to/manuscript.docx --draft
    - If the Word document does not provide a subtitle or explicit description, draft one before finishing.
    - Follow the style of existing repo descriptions: one concise sentence, plain-language, specific to the article's argument or topic, and usually around 15-30 words.
    - Avoid vague summaries like "An article about..." or promotional copy.
+   - Always ask the user whether the article should have a header image.
+   - If yes, ask which image should be used and whether there should be a caption/credit.
+   - Add the header image to front matter in repo format:
+
+```yaml
+headerimage:
+  src: /img/YYYY/MM/filename.ext
+  credit: Optional caption or credit text
+```
+
+   - Only include `credit` when the user provides one.
+   - If the user wants a header image but has not chosen one yet, stop and confirm before finalizing metadata.
 10. Validate the chosen categories against the existing taxonomy files in `content/categories/*/_index.md`.
    - Use category slugs that already exist in the repo.
    - Choose the smallest set that fits the manuscript.
@@ -68,6 +80,7 @@ python3 code/docx_to_article.py /absolute/path/to/manuscript.docx --draft
 - Metadata quality is the skill's responsibility:
   - title proposal
   - description proposal, always present by the end of the task
+  - prompting for a header image and optional caption/credit
   - asking for the author after conversion
   - author matching against `content/authors/*/_index.md`
   - invoking `$add-author` when an author record does not exist
