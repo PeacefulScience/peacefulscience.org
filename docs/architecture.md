@@ -1,6 +1,6 @@
 # Architecture
 
-Peaceful Science is a content site about science, faith, and the question *what does it mean to be human?* The GitHub repo is the source of truth: articles, books, preprints, and most of the presentation live here. A Discourse forum at `discourse.peacefulscience.org` is a separate product; this repo only links to it and (optionally) posts there.
+Peaceful Science is a content site about science, faith, and the question *what does it mean to be human?* The GitHub repo is the source of truth: articles, books, preprints, and most of the presentation live here. A Discourse forum at `discourse.peacefulscience.org` may still exist as a separate site; **this repo’s Discourse integration is defunct** (no auto-share, not a publishing dependency). Historical `commenturl` values and forum links in article bodies are leftover content.
 
 The published site is **static HTML** hosted on **Netlify**. Hugo renders Markdown into `public/`. A post-render Node step mutates that HTML. Netlify also runs a few on-demand functions. There is **no working front-end admin**; the source of edits is this git repo.
 
@@ -58,7 +58,7 @@ Markdown (and a few HTML) files with YAML front matter. Hugo sections:
 | `categories/`, `series/` | Taxonomy term pages |
 | `about/` | Mission, editorial policy, author's guide |
 | `archive/` | Paginated dump of all regular pages |
-| `forum/` | Marketing page that points at Discourse |
+| `forum/` | Marketing page that pointed at Discourse (integration defunct) |
 | `news/` | A leftover news item (not a first-class nav section) |
 | `jsonld/` | Headless Organization schema fragment |
 
@@ -85,7 +85,7 @@ Homepage and cards use `partial "render"` which picks `layouts/partials/render/_
 
 ### Assets and static files
 
-- **CSS:** Bootstrap 4 SCSS imported from `node_modules` via `assets/css/main.scss`, plus Font Awesome. Hugo `resources.ToCSS` + PostCSS (PurgeCSS, autoprefixer, cssnano). Tailwind scripts exist but the production pipeline does not run them; Tailwind output is gitignored.
+- **CSS:** **Destination is Tailwind.** Today production still compiles Bootstrap 4 SCSS from `assets/css/main.scss` (plus Font Awesome) through Hugo `resources.ToCSS` + PostCSS (PurgeCSS, autoprefixer, cssnano). A parallel Tailwind pipeline exists (`sources/tailwind.css`, `tailwind.config.js`, `npm run tailwind` → `assets/css/tw.css`) but is **commented out** of `code/production` and `head.html`, and `tw.css` is gitignored. Cleanup should turn Tailwind on and migrate remaining Bootstrap/custom SCSS onto it — not delete the Tailwind files.
 - **JS:** `assets/js/turbo.js` is the entry. Hugo `js.Build` bundles Hotwired Turbo, navbar, TOC progress, YouTube player, and (empty) subscribe helpers. Search is a separate InstantSearch bundle on the search layout.
 - **Images / PDFs:** `static/img` and `static/pdf`, stored in **Git LFS** and served through **Netlify Large Media**. At build time, `data/imgsize.json` and `data/pdfinfo.json` record dimensions / last-modified for templates.
 - **Image CDN:** Production templates rewrite image URLs to ImageEngine (`8l2ic7fx.cdn.imgeng.in`) via `partials/imgcdn.html`. Local `hugo server` serves files from `static/` when they exist.
@@ -117,12 +117,12 @@ Analytics JSON (`mostread.json`, `trending.json`, `ytd.json`) is gitignored and,
 | --- | --- |
 | `production` | What Netlify production runs: TASKS (default `BUILD`) → prebuild → hugo → render.js → postbuild |
 | `prebuild.hook` | Optional `ANALYTICS` / `CACHE` (not on git-push or DAILY) |
-| `postbuild.hook` | Optional `CROSSREF` / `ALGOLIA` / `DISCOURSE` (DAILY enables the first two, gated on `TODAY`) |
+| `postbuild.hook` | Optional `CROSSREF` / `ALGOLIA` (DAILY, gated on `TODAY`). `DISCOURSE` still exists in the script and is **defunct** — do not enable. |
 | `render.js` | Post-process every HTML file: run `script[render]`, strip `[remove]`, optional MathJax, collect CSS classes |
 | `doi.py` | **CLI only** (`make doi`). Writes `data/doi.json`. Not called on Netlify. |
 | `newsletter/` | **CLI only** (`make news`). MJML + Mailchimp campaign upsert. Not called on Netlify. |
 | `imgsize.py` / `pdfinfo.py` | **CLI only** (`make imginfo` / `pdfinfo`). Refresh committed JSON. |
-| `document.py` | Parse Markdown front matter (newsletter CLI and Discourse) |
+| `document.py` | Parse Markdown front matter (newsletter CLI; also used by the defunct Discourse share script) |
 | `update_analytics.py` | UA v3 → cache JSON (`ANALYTICS` task only) |
 | `extract.js` | RDF extract; commented out of production |
 | `wordpress.py` / `wp-migrate.py` | WordPress migration leftovers |
@@ -144,7 +144,7 @@ The PDF function only allows sections `articles`, `about`, and `prints`. Netlify
 
 - **Algolia** index `PeacefulScience` — Hugo always writes `algolia.json` on production BUILD. Upload runs only on the **DAILY** hook when the Hugo log contains `TODAY` (`atomic-algolia`). Git-push production does not upload. Client search uses InstantSearch (`assets/js/search.js`).
 - **Crossref** — Hugo always emits three XML batches during BUILD. Deposit (`doMDUpload`) runs only on **DAILY** + `TODAY`. **Assigning** a new DOI (`make doi`) is local: it only edits `data/doi.json`, which must be committed before a build can show or deposit it.
-- **Discourse** — `commenturl` front matter plus “Discuss on Forum”. `share_discourse.py` is a postbuild task that DAILY currently omits.
+- **Discourse** — **integration defunct.** `share_discourse.py` / `DISCOURSE` task: do not restore. Many articles still have `commenturl` and a “Discuss on Forum” button; treat as leftover UI. `content/forum/` is a marketing page. Body links to `discourse.peacefulscience.org` are ordinary URLs.
 - **Mailchimp** — on-site subscribe forms POST to Mailchimp. Composing a campaign is `make news` on a laptop, not the Netlify build.
 - **OneSignal** — web push, still configured with WordPress plugin SDK paths.
 - **Google Tag Manager** `GTM-KDF8R85` plus `googleAnalytics: G-BHPH29YM44` in config (the template still calls Universal Analytics `ga('send')` on Turbo navigations).
@@ -159,7 +159,7 @@ The PDF function only allows sections `articles`, `about`, and `prints`. Netlify
 
 **“Suggest Changes”** is a GitHub edit URL: `https://github.com/PeacefulScience/peacefulscience.org/edit/master/content/<path>`. Revision history is the commits URL for the same file.
 
-**Today’s pages:** `single.html` warns `TODAY <path>` when `PublishDate` is today. Postbuild uses that log line as a gate for Crossref, Algolia, and Discourse.
+**Today’s pages:** `single.html` warns `TODAY <path>` when `PublishDate` is today. Postbuild uses that log line as a gate for Crossref and Algolia (the Discourse branch of that gate is defunct).
 
 **Lastmod:** with `enableGitInfo`, `.Lastmod` is the content file’s last commit. Do not bump it by writing generated fields into the article; use sidecar `data/` files ([goals](goals.md)).
 
@@ -169,4 +169,4 @@ The PDF function only allows sections `articles`, `about`, and `prints`. Netlify
 
 ## Client runtime
 
-Turbo intercepts navigation and swaps `#app` instead of the whole body, so the YouTube overlay and subscribe modal persist. Navbar JS is custom (Bootstrap’s JS is not the driver). Font variant JS (`fontvar.js`) exists to randomize stylistic alternates on headings but is not imported by `turbo.js`.
+Turbo intercepts navigation and swaps `#app` instead of the whole body, so the YouTube overlay and subscribe modal persist. Navbar JS is custom (Bootstrap’s JS is not the driver). Font variant JS (`fontvar.js`) exists to randomize stylistic alternates on headings but is not imported by `turbo.js`. AMP layouts exist and are **not** in the default outputs — AMP is defunct.

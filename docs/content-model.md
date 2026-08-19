@@ -79,6 +79,7 @@ Books, newsletters, author/category/series terms, and `prints/deleted/` do not f
 **Git / GitHub is the only working editor today.** There is no functioning in-site CMS.
 
 - On-page **Suggest Changes** opens GitHub’s editor for that Markdown file (`…/edit/master/content/…`). **Revision History** opens the GitHub commits view. That matches the public README and `/about/editorial/`.
+- **“Discuss on Forum”** (`commenturl`) is leftover Discourse UI. Integration is defunct; do not require new `commenturl` values.
 - **Decap CMS** files live at `static/admin/` (`/admin/`) but the admin UI is **not working yet**.
 - **Forestry** config in `.forestry/` is leftover from a discontinued product. Do not treat it as a publishing path.
 

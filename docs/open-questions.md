@@ -9,12 +9,15 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 - **DOI assign vs deposit:** minting IDs is local `make doi` (writes `data/doi.json`, **not** the article file). Crossref *deposit* is the DAILY Netlify hook, and only if Hugo logged `TODAY`.
 - **Sidecar data:** auto-generated fields follow the DOI pattern (`data/*.json` keyed by path/URL) so they do not clobber the article’s git last-modified (`enableGitInfo`). Editorial body/front-matter edits are supposed to change lastmod.
 - **Mailchimp campaigns:** local `make news` only. The Netlify build does not call Mailchimp. Subscribe forms on the site are separate (browser POST to Mailchimp).
+- **AMP is defunct.** No AMP output. Safe to delete `layouts/_default/baseof.amp.html` and `config/amp/`.
+- **CSS: Tailwind.** Prefer Tailwind; migrate all remaining CSS (today production is still Bootstrap 4 SCSS). The Tailwind toolchain is the destination, not leftover.
+- **Discourse integration is defunct.** Do not restore `share_discourse.py` / `DISCOURSE` postbuild / auto-`commenturl`. Historical forum links in content can remain until cleaned up.
 
 ## Product and ownership
 
 1. **Who is actively maintaining the site today?** Is this still the primary publishing workflow, or is the site mostly archival?
-2. **What should a refactor optimize for?** **Answered as product direction** in [goals](goals.md): hosted admin (no local clone), accurate Crossref references, better Algolia, auto topics/entities, auto social posts, optional content-repo split, optional S3/dynamic backend so new content does not require a full daily rebuild, and **Word → Hugo format as the highest near-term implementation goal**. Cleanup/Hugo-upgrade is secondary to that pipeline.
-3. **Is the Discourse forum still the intended comments system?** Should new articles always get a `commenturl`, and should auto-posting (`share_discourse.py`) be restored? (Also part of goal 5 — which networks besides Discourse?)
+2. **What should a refactor optimize for?** **Answered as product direction** in [goals](goals.md): hosted admin (no local clone), accurate Crossref references, better Algolia, auto topics/entities, auto social posts, optional content-repo split, optional S3/dynamic backend so new content does not require a full daily rebuild, **Word → Hugo format as the highest near-term implementation goal**, and **migrate CSS to Tailwind**. Cleanup/Hugo-upgrade is secondary to that pipeline. AMP and Discourse integration are out of scope (delete, do not revive).
+3. **Discourse comments / auto-post?** **Answered: integration is defunct.** Do not restore auto-posting. `commenturl` / “Discuss on Forum” are leftover UI. The forum site may still exist independently; this repo should not treat it as a publishing dependency.
 
 ## Publishing workflow
 
@@ -28,7 +31,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 8. **Algolia:** Is the `PeacefulScience` index still updated in production? Daily builds only upload when Hugo logs `TODAY`. Goal 3 is to improve indexing and the search page regardless; confirm the index is still the live search backend.
 9. **OneSignal:** Should web push stay? The implementation still points at WordPress plugin paths.
 10. **Analytics:** UA v3 code cannot work as written. Is GTM/GA4 the only analytics now? Can `update_analytics.py`, `byviews.html`, and the analytics git repo hook be removed?
-11. **AMP, Tailwind, MathJax, cite/bookcover functions:** which of these are still required in production?
+11. **MathJax, cite/bookcover functions:** which of these are still required in production? (**AMP: defunct.** **Tailwind: keep and migrate all CSS onto it.**)
 12. **Netlify Large Media / Git LFS:** Netlify has been winding Large Media down. Is it still enabled on this site, and is there a preferred replacement for images/PDFs?
 
 ## Build behavior
@@ -36,7 +39,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 13. **Should deploy previews run `code/render.js`?** They currently do not, so dropcaps/sidenotes/MathJax differ from production.
 14. **Should the default (non-production) Netlify command stay as bare `hugo`?** That also skips Make, Prince, and post-render.
 15. **Is the daily scheduled rebuild (`functions/daily-build.js` → `BUILD_HOOK`) still configured and wanted?** That is the only automated Crossref/Algolia upload path. Goal 7 is to replace full daily rebuilds with incremental publish + side effects.
-16. **Python on Netlify:** `runtime.txt` is 3.8. Default `BUILD` does not call Python. Keep it only if ANALYTICS/DISCOURSE hooks are still used.
+16. **Python on Netlify:** `runtime.txt` is 3.8. Default `BUILD` does not call Python. **DISCOURSE is defunct** — do not keep Python for that hook. Keep the runtime only if `ANALYTICS` (or local CLI via a different path) still matters.
 
 ## Content policy (for later refactors that touch templates)
 
@@ -54,7 +57,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 
 23. **Admin stack:** custom hosted app, GitHub-backed CMS with validation, or Git gateway (Actions/app that commits `content/` + `data/doi.json`)? Decap as-is is not sufficient.
 24. **DOI policy in the admin:** who may mint? Articles and prints, or prints only? Must assign stay an explicit button (recommended) rather than a side effect of save?
-25. **Social networks** for auto-post: Discourse only, plus which of X / Facebook / Bluesky / Mastodon / Mailchimp?
+25. **Social networks** for auto-post: which of X / Facebook / Bluesky / Mastodon / Mailchimp? **Not Discourse.**
 26. **Content-repo split:** required before admin ships, or only after Word ingest + DOI-as-a-service exist?
 27. **Backend:** keep Hugo and move only side effects (Algolia/Crossref/social) off the daily rebuild vs processed content on S3 + dynamic JS vs Next/Metalsmith?
 28. **Word ingest:** `.docx` upload only, or Google Docs API as well (editors already work in Docs)?

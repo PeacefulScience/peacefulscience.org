@@ -119,7 +119,7 @@ No subfolders. Section index `articles/_index.md` cascades `rss: true`, outputs 
 | `headerimage` | 139/141 | map `src` required in practice | hero, OG, RSS enclosure |
 | `categories` | 129/141 | list of slugs | pills, related, homepage buckets, Algolia |
 | `aliases` | 121/141 | list of paths | redirects |
-| `commenturl` | 94/141 | Discourse URL | “Discuss on Forum” |
+| `commenturl` | 94/141 | Discourse URL | “Discuss on Forum” button. **Integration is defunct**; leftover links, not a publishing requirement. |
 | `series` | 45/141 | series slug | prev/next aside, related union |
 | `podcast` | 17/141 | bool | **unused** in templates (often overlaps `headerimage.youtube`, 13/17) |
 | `draft` | 4/141 | bool | Hugo |

@@ -19,11 +19,17 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 
 **Sidecar data (DOI pattern):** auto-generated fields belong in `data/*.json` (or an equivalent store), keyed by page path or URL, **not** written back into the article’s front matter or body. `config.yml` has `enableGitInfo: true`, so Hugo `.Lastmod` (page “modified” date, sitemap, Algolia `lastmod`, JSON-LD `dateModified`) is the last **git commit of that markdown file**. Touching the article to store a DOI, detected entities, resolved citations, or a social-post id would bump “modified” even when the prose did not change. See [architecture](architecture.md) § Sidecar data.
 
+### Confirmed stack decisions
+
+- **CSS: Tailwind.** Prefer Tailwind for all styling. Production still compiles Bootstrap 4 via `assets/css/main.scss`; the Tailwind pipeline (`sources/tailwind.css` → `assets/css/tw.css`) exists but is commented out of `code/production` and `head.html`. A cleanup should **migrate remaining CSS to Tailwind**, not delete the Tailwind tooling.
+- **AMP is defunct.** Do not emit AMP pages. `layouts/_default/baseof.amp.html` and `config/amp/outputs.yml` are deletion candidates.
+- **Discourse integration is defunct.** Do not restore `share_discourse.py`, the `DISCOURSE` postbuild task, or auto-`commenturl`. Historical forum URLs in article bodies and existing `commenturl` values can stay as ordinary links until a later content pass. Goal 5 (social posts) does **not** include Discourse.
+
 ---
 
 ## 1. Admin UI (no local repo)
 
-**Intent:** editors publish from a browser. Today every controlled operation that is not “edit a markdown file on GitHub” still needs a laptop: DOI minting, Mailchimp campaigns, image/PDF metadata, and (historically) Discourse share.
+**Intent:** editors publish from a browser. Today every controlled operation that is not “edit a markdown file on GitHub” still needs a laptop: DOI minting, Mailchimp campaigns, and image/PDF metadata.
 
 ### What exists
 
@@ -134,17 +140,17 @@ DOI **assignment** stays a separate, gated action (goal 1). Improving XML must n
 
 ### What exists
 
-- `share_discourse.py` can post to the forum; DAILY **omits** `DISCOURSE` (“removed DISCOURSE for now”).
+- `share_discourse.py` and the `DISCOURSE` postbuild task are **defunct**. Do not restore them. DAILY already omits `DISCOURSE`.
 - `data/tweet.json` / `tweetAPI.json` are **embed caches**, not a posting API.
 - OneSignal web push is still injected (WordPress SDK paths); that is not social posting.
-- Front matter `commenturl` is the manual Discourse thread link.
+- Front matter `commenturl` is a leftover “Discuss on Forum” link on many articles. It is not a live integration.
 
 ### Design notes
 
-- Pick networks (Discourse, X, Facebook, Bluesky, Mastodon, Mailchimp “campaign is live”) explicitly; do not revive OneSignal-as-Twitter.
+- Pick networks (X, Facebook, Bluesky, Mastodon, Mailchimp “campaign is live”) explicitly. **Not Discourse.** Do not revive OneSignal-as-Twitter.
 - Same gate as DOI: **publish** is distinct from **announce**. Drafts and `private` must not post.
 - Copy should be editable in the admin (title + description + permalink + image). Auto-generated text is a draft.
-- Store remote post ids / Discourse topic URLs in sidecar data, not `commenturl` rewrites on every share. (`commenturl` in front matter is fine when an editor sets the canonical thread.)
+- Store remote post ids in sidecar data, not by rewriting article front matter on every share.
 - Daily full-site rebuild is a bad trigger; post on the publish event (git merge, admin “publish”, or S3 object create).
 
 ---
@@ -236,6 +242,8 @@ Zotero is already recommended to authors; if the Word file contains a Zotero bib
 - **DOI minting is two-phase:** write `data/doi.json` (or successor store), then deposit XML. The admin and any S3 pipeline must not collapse those phases. The DOI never needs to live in front matter (`getdoi` already warns `DOI.OLD` when it does).
 - **Per-folder schemas and shortcodes are the publication format.** Word ingest and any new backend emit that format; they do not invent a parallel CMS schema.
 - **TODAY-gated DAILY tasks** are the current way to avoid depositing/indexing on every push. Incremental side effects should replace that gate rather than adding more full-site rebuilds.
+- **CSS is Tailwind.** New UI and any CSS cleanup migrate off Bootstrap 4 / `main.scss` onto Tailwind. Do not treat `sources/tailwind.css` as dead code.
+- **AMP and Discourse integration are defunct.** Do not spend implementation time reviving them.
 - **Git remains the audit log** until a port says otherwise. Suggest Changes / pull requests should keep working for readers even after editors get an admin.
 
 ## Decisions still needed
@@ -244,7 +252,7 @@ See [open questions](open-questions.md) § Product direction. The blocking ones 
 
 1. Admin stack (custom app vs GitHub-backed CMS vs hosted Git gateway).
 2. Who may mint DOIs, and whether prints-only vs articles too.
-3. Which social networks to post to.
+3. Which social networks to post to (**not Discourse**).
 4. Whether a content-repo split is required before admin, or only after.
 5. Stay on Hugo with incremental side effects vs S3+JS vs Next.
 6. Word path: `.docx` only vs Google Docs API as well.

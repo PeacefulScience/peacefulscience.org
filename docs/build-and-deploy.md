@@ -4,7 +4,7 @@ Pinned versions (from `netlify.toml` / `runtime.txt`):
 
 - Hugo **0.97.3**
 - Node **20.15.1** (functions runtime `nodejs20.x`)
-- Python **3.8** listed in `runtime.txt`. The default production path (`BUILD` only) does **not** call Python. Python is for local CLI (`doi`, `news`, `imginfo`) and for optional `ANALYTICS` / `DISCOURSE` tasks that the daily hook does not enable.
+- Python **3.8** listed in `runtime.txt`. The default production path (`BUILD` only) does **not** call Python. Python is for local CLI (`doi`, `news`, `imginfo`) and for the optional `ANALYTICS` hook. The `DISCOURSE` hook is **defunct**.
 
 The site was written against Hugo 0.97 APIs (`getJSON`, `.Site.IsServer`, `resources.ToCSS`, etc.). Newer Hugo will likely require template updates.
 
@@ -37,14 +37,14 @@ Task list:
 TASKS = INCOMING_HOOK_BODY or $TASKS or "BUILD"
 
 if TASKS == "DAILY":
-    TASKS = "BUILD CROSSREF ALGOLIA"   # DISCOURSE intentionally omitted
+    TASKS = "BUILD CROSSREF ALGOLIA"   # DISCOURSE omitted and defunct — do not re-add
 ```
 
 | How the build is triggered | Typical `TASKS` | Side effects besides HTML |
 | --- | --- | --- |
 | Git push / merge to the production branch | `BUILD` | Hugo `--minify`, `render.js`, stash `.xref` + `algolia.json` + `_redirects` in `_cache/`. **No** Crossref, Algolia upload, Mailchimp, or DOI writes. |
 | Scheduled function `functions/daily-build.js` (`0 14 * * *`) POSTs body `DAILY` to `BUILD_HOOK` | `BUILD CROSSREF ALGOLIA` | Same as BUILD, then **if** `_cache/hugo.log` contains `TODAY`: deposit Crossref XML and run `npm run algolia`. |
-| Manual build hook with a custom body | whatever you post (`ANALYTICS`, `CACHE`, `DISCOURSE`, …) | See hooks below. |
+| Manual build hook with a custom body | whatever you post (`ANALYTICS`, `CACHE`, …) | See hooks below. Do not use `DISCOURSE`. |
 
 `TODAY` is a Hugo `warnf` from `single.html` when `PublishDate` is today’s date. No new page today → daily Crossref/Algolia steps are skipped even on the DAILY hook.
 
@@ -57,7 +57,7 @@ if TASKS == "DAILY":
 3. `hugo -b $URL --minify` (if `CONTEXT` is not `production`, it would use `-DF` and `$DEPLOY_URL`; Netlify production sets `CONTEXT=production` and `HUGO_ENV=production`)
 4. `node code/render.js` (MathJax, `script[render]`, dropcaps/sidenotes)
 5. Move `public/.xref` → `_cache/xref`, `public/algolia.json` → `_cache`, copy `_redirects`
-6. `code/postbuild.hook` — Crossref / Algolia / Discourse only if those tokens are in `TASKS` **and** `TODAY` is in the Hugo log
+6. `code/postbuild.hook` — Crossref / Algolia only if those tokens are in `TASKS` **and** `TODAY` is in the Hugo log. The `DISCOURSE` branch is defunct.
 
 If `BUILD` is missing from `TASKS`, postbuild still runs but the script **exits 100** so Netlify does not publish.
 
@@ -69,7 +69,7 @@ If `BUILD` is missing from `TASKS`, postbuild still runs but the script **exits 
 | `CACHE` | prebuild | copy `_cache` into `public/` |
 | `CROSSREF` | postbuild | `curl` each `_cache/xref/*.xml` to Crossref `doMDUpload` |
 | `ALGOLIA` | postbuild | `ALGOLIA_INDEX_FILE=_cache/algolia.json npm run algolia` (`atomic-algolia`) |
-| `DISCOURSE` | postbuild | `share_discourse.py` for each path in the `TODAY` log lines |
+| `DISCOURSE` | postbuild | **Defunct.** `share_discourse.py` for each `TODAY` path. Do not enable. |
 
 ### Deploy previews
 
@@ -117,7 +117,7 @@ pip install -r requirements.txt
 hugo server -D
 ```
 
-`npm run dev` starts Make hugo-watch + tailwind-watch. Tailwind is not used in the production CSS path (`head.html` has `tw.css` commented out; `code/production` has `npm run tailwind` commented out).
+`npm run dev` starts Make hugo-watch + tailwind-watch. Production still ships Bootstrap via `main.scss`; Tailwind watch is the CSS path to turn on as the migration proceeds.
 
 ## Extra Hugo outputs
 
@@ -133,7 +133,7 @@ Configured in `config.yml` `outputformats` / `outputs`:
 | `RSS` | home | Feed |
 | `precompute` | unused in default outputs | View-count dump |
 
-`config/index/outputs.yml` is an alternate environment (`hugo -e index`) that emits only Algolia. `config/amp/outputs.yml` would add AMP pages; AMP is not in the default `outputs`.
+`config/index/outputs.yml` is an alternate environment (`hugo -e index`) that emits only Algolia. `config/amp/outputs.yml` would add AMP pages; **AMP is defunct** and is not in the default `outputs`.
 
 ## Git hooks
 
@@ -157,7 +157,7 @@ Used by Make, functions, or Python (typically Netlify UI + local `.env`):
 | `CROSSREF_ID`, `CROSSREF_PASS` | DOI deposits |
 | `ALGOLIA_APP_ID`, `ALGOLIA_ADMIN_KEY`, `ALGOLIA_INDEX_NAME`, `ALGOLIA_INDEX_FILE` | Index upload |
 | `BUILD_HOOK` | Daily rebuild function |
-| `DISCOURSE_API` | Forum posting |
+| `DISCOURSE_API` | **Defunct** (was forum posting) |
 | `MAILCHIMP_*` / `MJML_*` | **CLI only** (`make news`), not the Netlify build |
 | `GA_SERVICE` | `ANALYTICS` task only (not on git-push or DAILY) |
 
@@ -165,9 +165,9 @@ The Algolia **search-only** app id / key are hardcoded in `assets/js/search.js` 
 
 ## CSS / JS build notes
 
-- Production pages compile `assets/css/main.scss` and `fontawesome.scss` through Hugo, then PostCSS. PurgeCSS scans `layouts/**` and `assets/js/*.js`. `layouts/whitelist.html` and generated `layouts/classes.html` exist so purged class names (Algolia widgets, editor notes, etc.) survive.
-- `npm run tailwind` writes `assets/css/tw.css` (gitignored). `head.html` has the Tailwind `<style>` block commented out.
-- `code/production` also has `npm run tailwind` commented out.
+- **Intent: all CSS is Tailwind.** Production today still compiles `assets/css/main.scss` and `fontawesome.scss` through Hugo, then PostCSS. PurgeCSS scans `layouts/**` and `assets/js/*.js`. `layouts/whitelist.html` and generated `layouts/classes.html` exist so purged class names (Algolia widgets, editor notes, etc.) survive.
+- `npm run tailwind` writes `assets/css/tw.css` (gitignored). `head.html` has the Tailwind `<style>` block commented out; `code/production` has `npm run tailwind` commented out. Turn this path **on** as Bootstrap/`main.scss` is migrated away, rather than deleting it.
+- `npm run dev` starts Make hugo-watch + tailwind-watch. That watch is the preferred CSS workflow once Tailwind is the live sheet.
 
 ## Python packages
 

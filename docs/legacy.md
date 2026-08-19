@@ -1,6 +1,13 @@
 # Legacy and unused code
 
-This is a **candidate list** for a later cleanup, not a deletion plan. Confirm each item against [open questions](open-questions.md) before removing it. Several paths look unused from static analysis but may still be triggered by Netlify UI, old bookmarks, or unpublished env flags.
+This is a **candidate list** for a later cleanup. Items marked **confirmed defunct** may be deleted in a cleanup pass. Others still need a check against [open questions](open-questions.md).
+
+## Confirmed defunct (safe to delete in a cleanup)
+
+| Item | Notes |
+| --- | --- |
+| AMP | `layouts/_default/baseof.amp.html`, `config/amp/outputs.yml`, `ampcssframework` comments in SCSS. Not in default `outputs`. Do not revive. |
+| Discourse integration | `share_discourse.py`, Makefile/`code/production` `DISCOURSE` task, `DISCOURSE_API`. DAILY already omits it. Do not restore auto-post or treat `commenturl` as required. Historical forum URLs in markdown can wait for a content pass. |
 
 ## High confidence leftovers
 
@@ -23,12 +30,9 @@ This is a **candidate list** for a later cleanup, not a deletion plan. Confirm e
 
 | Item | Notes |
 | --- | --- |
-| AMP (`layouts/_default/baseof.amp.html`, `config/amp/outputs.yml`) | AMP is not in default `outputs`. Comment in `main.scss` still mentions `ampcssframework` |
-| Tailwind | Scripts and `sources/tailwind.css` exist; production does not compile or include `tw.css` |
 | `layouts/_default/single.mjml.html` | MJML article layout; newsletter CLI uses `code/newsletter.plim` instead |
 | Google Analytics UA in `update_analytics.py` / `byviews.html` | UA Reporting API v3 was shut down. Homepage view-count usage in `single.html` is commented out. `byviews.html` still `getJSON`s `PeacefulScience/analytics` |
 | OneSignal | Still injected in production `head.html`, with SDK paths under `/wp-content/plugins/onesignal-...` |
-| Discourse auto-share | `share_discourse.py` works, but DAILY tasks comment says “removed DISCOURSE for now” |
 | Mailchimp send | `send_newsletter` is commented out; CLI (`make news`) still creates/updates campaigns and sends **test** emails. **Not** invoked by Netlify. |
 | `content/news/` | Single 2019 staff note; not in the main nav |
 | `package.json` `"directories": { "test": "test" }` | No `test/` tree in repo (`test*` is gitignored) |
@@ -64,3 +68,4 @@ Keep these unless product direction in [goals](goals.md) replaces them:
 - Image CDN partials + `data/imgsize.json`
 - Suggest Changes / GitHub links
 - Mailchimp embed forms (even if the Python campaign CLI is unused)
+- Tailwind toolchain (`tailwind.config.js`, `sources/tailwind.css`) — migrate Bootstrap/`main.scss` onto this
