@@ -139,7 +139,7 @@ JSON-LD `description` / `title` partials run `htmlEscape` **before** `jsonify`, 
 | Titles | `<title>` is the page title only (no site name). Distinct article titles are fine; thin taxonomy titles are weaker. |
 | Snippets | Fallback to `.Kind` on pages with no description. Most articles have `description:`; enforce it in the admin validator (goal 1 / 8). |
 | Duplicate PDFs | Sitemap includes `/pdf/…` at the same priority as HTML. Google may index the PDF instead of the article. Prefer HTML as canonical; PDF as alternate (already a `rel="alternate"`). Consider dropping PDF locs from the sitemap or giving them lower priority. |
-| `_prince` HTML | **Prince intermediate only — must not be indexed.** Public page is the article HTML; public download is `/pdf/…`. Block with `robots.txt` Disallow, meta `noindex`, and `X-Robots-Tag`. Do not sitemap, do not emit JSON-LD or a self-canonical, do not advertise as `rel=alternate`. **Keep Schema.org microdata** on the print layout; Prince uses it. |
+| `_prince` HTML | **Prince intermediate only — must not be indexed.** Public page is the article HTML; public download is `/pdf/…`. Block with `robots.txt` Disallow, meta `noindex`, and `X-Robots-Tag`. Do not sitemap, do not emit JSON-LD or a self-canonical, do not advertise as `rel=alternate`. **Keep Schema.org microdata** on the print layout; Prince uses it. Production **`render.js` still runs** on these files before Prince fetches them. |
 | AMP | Defunct; not in outputs. Do not revive for SEO. |
 | Pagination | Disallowed in robots; good. |
 | Internal links | Related module + series help. Entity detection (goal 4) should suggest links into sidecar data, not rewrite bodies on a loop. |
