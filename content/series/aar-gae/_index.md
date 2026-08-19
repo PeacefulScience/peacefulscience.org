@@ -18,7 +18,7 @@ jsonld-extend:
     "@type": Event
     about: /books/genealogical-adam-eve/
     location: 
-      "@type": virtuallocation
+      "@type": VirtualLocation
       url: https://www.youtube.com/playlist?list=PLc0j60GXf64qJibrBKx6yB1RaEYcoupN9
     startDate: 2020-12-01
     endDate: 2020-12-01
@@ -27,11 +27,10 @@ jsonld-extend:
       "@id": = permalink superevent
       "@type": Event
       startDate: 2020-11-29
-      enddate: 2020-12-10
+      endDate: 2020-12-10
       location: 
-        "@type": virtuallocation
+        "@type": VirtualLocation
         url: https://www.aarweb.org/common/Uploaded%20files/Annual%20Meeting/Past%20AM%20Files/AM-ProgramBook-2020-web_version-reduced_file_size-rev1.pdf
-      sameas: 
       name: The 2020 Annual Meetings of the American Academy of Religion and the Society of Biblical Literature
 ---
 

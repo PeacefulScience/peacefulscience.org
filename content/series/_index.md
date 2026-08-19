@@ -13,9 +13,9 @@ cascade:
     about: = about
     hasPart: = pages
     publisher: 
-      "@id": https://peacefulscience.org
+      "@id": https://peacefulscience.org/#organization
       name: Peaceful Science
-    sameas: = sameas    
+    sameAs: = sameas 
     mainEntityOfPage: 
       "@type": WebPage
       "@id": = permalink webpage

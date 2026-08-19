@@ -2,7 +2,7 @@
 headless: true
 jsonld:
   "@type": Organization
-  "@id": https://peacefulscience.org/
+  "@id": https://peacefulscience.org/#organization
   additionalType: https://en.wikipedia.org/wiki/Science_communication
   name: Peaceful Science
   url: https://peacefulscience.org/

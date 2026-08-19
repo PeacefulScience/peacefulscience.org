@@ -23,11 +23,10 @@ ASINs passed to `amazon` / `amazon-caption` are recorded on the page scratch. Bo
 | `vimeo` | 6 | 1 | Hugo built-in | Vimeo iframe |
 | `footnotes2refs` | 3 | 3 | yes | Marker: turn footnotes into a References heading |
 | `facebook` | 3 | 3 | yes | Facebook post embed |
-| `tweet` | 3 | 3 | Hugo built-in | Tweet embed |
+| `tweet` | 4 | 4 | Hugo built-in | Tweet embed |
 | `amazon-caption` | 2 | 2 | yes | Cover + **inner** caption (paired) |
 | `pdf` | 2 | 1 | yes | Adobe PDF embed |
 | `youtube-two` | 1 | 1 | yes | Two YouTube posters side by side |
-| `twitter` | 1 | 1 | **no** | Almost certainly a misspelling of `tweet` |
 | `nolinklist` | 0 | 0 | yes, **unused** | Hide print link-list |
 
 Almost all uses are in `articles/` and `prints/` (`prints` is heavy on `amazon`). One `tweet` is in a newsletter.
@@ -177,14 +176,6 @@ Named params `user` and `id`. Three uses (two articles, one newsletter). One id 
 
 Hugo’s Vimeo iframe. All six uses are `articles/human-origins-rtb-workshop.md`.
 
-### `twitter` (broken name)
-
-```hugo
-{{< twitter user=JohnInazu id=`1180111902669725698` >}}
-```
-
-One use (`articles/lents-in-usa-today.md`). There is no local `twitter` shortcode; Hugo 0.97’s embed is **`tweet`**. This likely renders nothing useful.
-
 Hugo’s built-in `youtube` is **not** used as-is; the custom file shadows it. Built-ins `figure`, `highlight`, `ref`, `relref`, `instagram` do not appear in the corpus.
 
 ---
@@ -222,6 +213,5 @@ Admin UI, Word ingest, and any new shortcode must keep this table in mind. Overs
 1. `image` vs `mediatext` vs Markdown images overlap; a single figure shortcode would be enough.
 2. `amazon` vs `amazon-caption` differ only in where the caption lives.
 3. `nolinklist` can go if `design.linklist` stays.
-4. Rename or fix the lone `twitter` call to `tweet`.
-5. Custom `youtube` vs Hugo `youtube`: the custom one is required for the site player; do not delete it thinking the built-in is enough. Add a print fallback so Prince is not empty.
-6. `pdf` shortcode (Adobe embed) is for **uploaded** PDFs in the article body, not the page’s Prince download.
+4. Custom `youtube` vs Hugo `youtube`: the custom one is required for the site player; do not delete it thinking the built-in is enough. Add a print fallback so Prince is not empty.
+5. `pdf` shortcode (Adobe embed) is for **uploaded** PDFs in the article body, not the page’s Prince download.

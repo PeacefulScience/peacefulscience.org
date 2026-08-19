@@ -8,7 +8,7 @@ This is a **candidate list** for a later cleanup. Items marked **confirmed defun
 | --- | --- |
 | AMP | `layouts/_default/baseof.amp.html`, `config/amp/outputs.yml`, `ampcssframework` comments in SCSS. Not in default `outputs`. Do not revive. |
 | Discourse integration | `share_discourse.py`, Makefile/`code/production` `DISCOURSE` task, `DISCOURSE_API`. DAILY already omits it. Do not restore auto-post or treat `commenturl` as required. Historical forum URLs in markdown can wait for a content pass. |
-| Universal Analytics | `ga('send')` on `turbo:load`; `code/update_analytics.py` (Reporting API v3); `ANALYTICS` prebuild / `GA_SERVICE`; `layouts/partials/byviews.html` + `PeacefulScience/analytics`. Near-term: delete these and fix GTM/GA4 Turbo pageviews ([goals](goals.md#tracking-near-term)). |
+| Universal Analytics | `code/update_analytics.py` (Reporting API v3); `ANALYTICS` prebuild / `GA_SERVICE`; `layouts/partials/byviews.html` + `PeacefulScience/analytics`. `ga('send')` on `turbo:load` is gone (`dataLayer` `page_view` instead). Near-term: delete the rest ([goals](goals.md#tracking-near-term)). |
 
 ## High confidence leftovers
 

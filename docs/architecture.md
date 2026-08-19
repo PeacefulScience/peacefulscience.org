@@ -163,7 +163,7 @@ The PDF function only allows sections `articles`, `about`, and `prints`. Netlify
 
 **Lastmod:** with `enableGitInfo`, `.Lastmod` is the content file’s last commit. Do not bump it by writing generated fields into the article; use sidecar `data/` files ([goals](goals.md)).
 
-**JSON-LD** is data-driven. Front matter `jsonld:` maps (and `= permalink`-style directives) are resolved by `layouts/partials/jsonld/`. Articles cascade a Schema.org `Article` template from `content/articles/_index.md`. Known defects (wrong `sameas` key, DOI not an `identifier`, SearchAction vs InstantSearch routing) are in [seo.md](seo.md) / [goal 9](goals.md#9-seo-json-ld-and-ai-utilization). Unused `layouts/partials/seo/structured/` is not on this path.
+**JSON-LD** is data-driven. Front matter `jsonld:` maps (and `= permalink`-style directives) are resolved by `layouts/partials/jsonld/`. Articles cascade a Schema.org `Article` template from `content/articles/_index.md` (`sameAs`, DOI `identifier`, `ImageObject`). Remaining SearchAction vs InstantSearch routing is in [seo.md](seo.md) / [goal 9](goals.md#9-seo-json-ld-and-ai-utilization). Unused `layouts/partials/seo/structured/` is not on this path.
 
 **Related content** uses Hugo `related` (categories, authors, section) plus optional `series` union.
 

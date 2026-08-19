@@ -1,4 +1,4 @@
-{{- $.Scratch.Set "Description" ( (.Description | markdownify |  plainify  ) | default .Params.subtitle | default .Summary | default .Kind ) -}}
+{{- $.Scratch.Set "Description" ( (.Description | markdownify |  plainify  ) | default .Params.subtitle | default .Summary ) -}}
 
 {{- $.Scratch.Set "Title" ( .Title | default .Site.Title | markdownify | plainify | htmlUnescape  ) -}}
 
@@ -65,7 +65,7 @@
 {{ with .Params.headerimage.src | default $amazonimg | default .Params.defaultimg | default site.Params.logo -}}
 <meta property="og:image" content="{{- . | partial `imgcdn` -}}"/>
 <meta name="twitter:card" content={{ if eq . site.Params.logo }}"summary"{{ else }}"summary_large_image"{{ end }}>
-<meta name="twitter:image" content="{{-  . | absURL -}}">
+<meta name="twitter:image" content="{{- . | partial `imgcdn` -}}">
 {{- end }}
 
 
@@ -85,7 +85,9 @@
       {{- with site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize .)) }}
         <meta property="author" content="{{ .Title | markdownify |  plainify }}"/>
         <meta name="citation_author" content="{{ .Title | markdownify |  plainify }}"/>
-        <meta name="twitter:creator" content="@{{ .Params.twitter }}">
+        {{- with .Params.twitter }}
+        <meta name="twitter:creator" content="@{{ . }}">
+        {{- end }}
       {{- end }}
     {{- end }}
 {{ end }}
@@ -140,7 +142,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-KDF8R85');
 
 document.addEventListener("turbo:load", function() {
-    ga('send', 'pageview', window.location.pathname);
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      event: "page_view",
+      page_path: window.location.pathname
+    });
   });
 </script>
 {{ end  }}

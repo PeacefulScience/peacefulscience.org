@@ -32,6 +32,6 @@ cascade:
     image: = headerimage
     isPartOf: = series
     publisher: = copy /jsonld/peacefulscience
-    sameas: = sameas
+    sameAs: = sameas
     about: = about
 ---

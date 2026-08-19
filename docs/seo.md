@@ -1,6 +1,6 @@
 # SEO, JSON-LD, and AI utilization
 
-Review of how the live site presents itself to **Google Search / Scholar**, other crawlers, and **AI systems** that retrieve or ground on pages. This is the inventory for [goal 9](goals.md#9-seo-json-ld-and-ai-utilization). Nothing here is implemented yet.
+Review of how the live site presents itself to **Google Search / Scholar**, other crawlers, and **AI systems** that retrieve or ground on pages. This is the inventory for [goal 9](goals.md#9-seo-json-ld-and-ai-utilization). Cascade JSON-LD hygiene (`sameAs`, DOI `identifier`, Organization `@id`, `ImageObject`) is implemented; SearchAction routing and citation graphs are not.
 
 Two audiences share most of the same work:
 
@@ -71,36 +71,9 @@ Article-shaped pages also set `headline`, `datePublished` / `dateModified`, `ima
 
 ## JSON-LD defects (highest leverage)
 
-These are template/cascade bugs. Fixing them does not need Word ingest or an admin UI.
+Template/cascade bugs. Several were fixed in a later hygiene pass (cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, no `htmlEscape` before `jsonify`). Remaining:
 
-### 1. `sameas` vs Schema.org `sameAs`
-
-Articles, books, series, and the default WebPage cascade emit the key **`sameas`** (all lowercase). Schema.org and Google expect **`sameAs`**. Person and Organization templates already use the correct case.
-
-Until that is renamed, Google (and most AI extractors) will **ignore** the DOI, aliases, Amazon, ISBN, and canonical URLs on articles and books. ORCID on *Person* pages still works.
-
-### 2. `notnews` leaked into Person JSON-LD
-
-`content/authors/_index.html` puts `notnews: true` **inside** `cascade.jsonld`. Consequences:
-
-- Person graphs include an invalid `"notnews": true` property.
-- Page-level `params.notnews` is **not** set, so author (and likely author-term) pages do **not** get `Googlebot-News` `noindex`. Books do this correctly (`cascade.notnews: true` beside `jsonld`, not inside it).
-
-### 3. DOI is not `identifier`
-
-Highwire `citation_doi` is in the head. JSON-LD should also emit something like:
-
-```json
-"identifier": { "@type": "PropertyValue", "propertyID": "DOI", "value": "10.54739/xxxx" }
-```
-
-(or `sameAs` **and** `identifier`). ScholarlyArticle pages should not rely on a misspelled `sameas` list.
-
-### 4. `image` is a bare URL
-
-`headerimage.html` returns an ImageEngine URL string. Google’s Article guidance prefers an `ImageObject` with `url`, `width`, and `height`. Those sizes already live in `data/imgsize.json`.
-
-### 5. SearchAction does not drive search
+### SearchAction does not drive search
 
 Home `WebSite.potentialAction` targets:
 
@@ -108,13 +81,9 @@ Home `WebSite.potentialAction` targets:
 
 The nav form uses the same query name. InstantSearch is initialized with **`routing: false`**, so the query string is ignored. Sitelinks search and shared search URLs do not populate the box. Goal 3 (Algolia UI routing) and this SearchAction should be one change.
 
-### 6. Organization `@id` collides with the homepage
-
-`content/jsonld/peacefulscience.md` uses `"@id": "https://peacefulscience.org/"`. Home `WebSite` uses the homepage URL as `@id` as well (`= permalink webpage`). Distinct ids (for example `https://peacefulscience.org/#organization` vs the WebSite `@id`) avoid merging Organization and WebSite in a knowledge graph.
-
 Organization `sameAs` lists Facebook, YouTube, Twitter only. Nav also links Patreon; YouTube in nav is a `/channel/` URL while JSON-LD uses `/c/PeacefulscienceOrg/`.
 
-### 7. Missing properties that help both Scholar and AI
+### Missing properties that help both Scholar and AI
 
 | Gap | Why it matters |
 | --- | --- |
@@ -128,7 +97,7 @@ Organization `sameAs` lists Facebook, YouTube, Twitter only. Nav also links Patr
 | BreadcrumbList | Unused old partial is also wrong (skips position 2). Add a correct one in the live system if wanted |
 | `speakable` | Low value; Google support is narrow — skip unless there is a specific product need |
 
-JSON-LD `description` / `title` partials run `htmlEscape` **before** `jsonify`, which can produce `&amp;` inside JSON strings. Let `jsonify` be the only escaper.
+JSON-LD `description` / `title` are `plainify` only; `jsonify` is the escaper.
 
 ---
 
@@ -137,15 +106,15 @@ JSON-LD `description` / `title` partials run `htmlEscape` **before** `jsonify`, 
 | Area | Issue |
 | --- | --- |
 | Titles | `<title>` is the page title only (no site name). Distinct article titles are fine; thin taxonomy titles are weaker. |
-| Snippets | Fallback to `.Kind` on pages with no description. Most articles have `description:`; enforce it in the admin validator (goal 1 / 8). |
+| Snippets | Pages with no `description`, `subtitle`, or summary emit no meta description (do not fall back to `.Kind`). Enforce `description:` in the admin validator (goal 1 / 8). |
 | Duplicate PDFs | Sitemap includes `/pdf/…` at the same priority as HTML. Google may index the PDF instead of the article. Prefer HTML as canonical; PDF as alternate (already a `rel="alternate"`). Consider dropping PDF locs from the sitemap or giving them lower priority. |
 | `_prince` HTML | **Prince intermediate only — must not be indexed.** Public page is the article HTML; public download is `/pdf/…`. Block with `robots.txt` Disallow, meta `noindex`, and `X-Robots-Tag`. Do not sitemap, do not emit JSON-LD or a self-canonical, do not advertise as `rel=alternate`. **Keep Schema.org microdata** on the print layout; Prince uses it. Production **`render.js` still runs** on these files (scripts stripped; inline TeX **rendered** to SVG) before Prince fetches them. |
 | AMP | Defunct; not in outputs. Do not revive for SEO. |
 | Pagination | Disallowed in robots; good. |
 | Internal links | Related module + series help. Entity detection (goal 4) should suggest links into sidecar data, not rewrite bodies on a loop. |
 | Author E-E-A-T | Strong when a slug page exists (ORCID, sameAs). Weak for display-name bylines. |
-| Core Web Vitals | ImageEngine + width/height from `imgsize.json` help CLS. Turbo SPA: GTM misses in-app pageviews (tracking goal). Font preload is a single face from the live origin. |
-| News | `notnews` on books is correct. Authors likely intended the same and missed because `notnews` is inside `jsonld`. |
+| Core Web Vitals | ImageEngine + width/height from `imgsize.json` help CLS. Turbo SPA: `turbo:load` pushes `page_view` on `dataLayer` (GTM). UA `ga('send')` is gone; `update_analytics.py` is still leftover. Font preload is a single face from the live origin. |
+| News | `notnews` on books and authors (page-level cascade). |
 | Scholar | `citation_journal_title` is always “Peaceful Science”, including books. Fine for essays; noisy for Book pages. Highwire dates use `.Date`, JSON-LD `datePublished` uses `PublishDate` — keep those aligned. |
 
 Algolia on-site search (goal 3) does not change Google rankings, but a working SearchAction and shareable `/search/` URLs do.
@@ -158,7 +127,7 @@ Ranking work already helps retrieval: canonical URL, authors, dates, DOI, visibl
 
 Extra, AI-specific layers (decide which to ship; see [open questions](open-questions.md)):
 
-1. **Make JSON-LD actually parse** (case, identifier, Person, Organization ids). This is the cheapest “AI SEO” change.
+1. **JSON-LD camelCase / identifier / Organization `@id`.** Implemented in the hygiene pass. Remaining parse quality: SearchAction, typed `about` / `citation`.
 2. **Citations as `citation` / `mentions`.** Same sidecar as Crossref (goal 2). Models and Google both prefer cited sources over a bag of outbound links.
 3. **Entities as `about`.** Goal 4 sidecar → JSON-LD `Thing` nodes with Wikipedia/Wikidata/`@id` when known. Do not write tags into article markdown on every run.
 4. **Machine-readable copies (optional):**
@@ -176,9 +145,9 @@ Sidecar rule still applies: generated SEO fields (entities, resolved citations, 
 
 Independent of Word ingest. Order is technical, not calendar.
 
-1. **JSON-LD hygiene:** rename `sameas` → `sameAs` in cascades; move author `notnews` out of `jsonld`; distinct Organization `@id`; DOI `identifier`; `ImageObject` from `imgsize.json`; drop `htmlEscape` in jsonld string partials; stop emitting empty `twitter:creator`.
+1. **JSON-LD hygiene:** done for cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, jsonld string escaping, empty `twitter:creator`.
 2. **SearchAction + InstantSearch routing** (shared with goal 3).
-3. **Head/snippet quality:** never fall back to `.Kind`; consistent OG/Twitter image CDN; optional BreadcrumbList in the live jsonld system; PDF sitemap policy.
+3. **Head/snippet quality:** description no longer falls back to `.Kind`; OG/Twitter images both use ImageEngine. Optional BreadcrumbList; PDF sitemap policy still open.
 4. **Delete unused** `layouts/partials/seo/structured/` (and `seo/main.html` if still unreferenced).
 5. **Scholarly `citation` + entity `about`:** after goals 2 and 4 have a sidecar to read.
 6. **`llms.txt` / markdown alternate** only if maintainers want AI-specific copies.
