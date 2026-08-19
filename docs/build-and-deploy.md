@@ -4,7 +4,7 @@ Pinned versions (from `netlify.toml` / `runtime.txt`):
 
 - Hugo **0.97.3**
 - Node **20.15.1** (functions runtime `nodejs20.x`)
-- Python **3.8** listed in `runtime.txt`. The default production path (`BUILD` only) does **not** call Python. Python is for local CLI (`doi`, `news`, `imginfo`) and for the optional `ANALYTICS` hook. The `DISCOURSE` hook is **defunct**.
+- Python **3.8** listed in `runtime.txt`. The default production path (`BUILD` only) does **not** call Python. Python is for local CLI (`doi`, `news`, `imginfo`). The `DISCOURSE` hook is **defunct**. The `ANALYTICS` hook is **defunct Universal Analytics** (near-term delete).
 
 The site was written against Hugo 0.97 APIs (`getJSON`, `.Site.IsServer`, `resources.ToCSS`, etc.). Newer Hugo will likely require template updates.
 
@@ -65,7 +65,7 @@ If `BUILD` is missing from `TASKS`, postbuild still runs but the script **exits 
 
 | Token | Hook | What |
 | --- | --- | --- |
-| `ANALYTICS` | prebuild | `update_analytics.py` (Universal Analytics v3) → `_cache/*.json` copied to `data/` |
+| `ANALYTICS` | prebuild | **Defunct UA.** `update_analytics.py` (Reporting API v3). Do not enable. Near-term delete. |
 | `CACHE` | prebuild | copy `_cache` into `public/` |
 | `CROSSREF` | postbuild | `curl` each `_cache/xref/*.xml` to Crossref `doMDUpload` |
 | `ALGOLIA` | postbuild | `ALGOLIA_INDEX_FILE=_cache/algolia.json npm run algolia` (`atomic-algolia`) |
@@ -211,7 +211,7 @@ Used by Make, functions, or Python (typically Netlify UI + local `.env`):
 | `BUILD_HOOK` | Daily rebuild function |
 | `DISCOURSE_API` | **Defunct** (was forum posting) |
 | `MAILCHIMP_*` / `MJML_*` | **CLI only** (`make news`), not the Netlify build |
-| `GA_SERVICE` | `ANALYTICS` task only (not on git-push or DAILY) |
+| `GA_SERVICE` | **Defunct** (`ANALYTICS` task / UA v3) |
 
 The Algolia **search-only** app id / key are hardcoded in `assets/js/search.js` (normal for a public InstantSearch client).
 

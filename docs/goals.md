@@ -14,8 +14,9 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 | 6 | Possibly **split content into its own git repo** | Architectural; after ingest is stable |
 | 7 | Consider a **different backend** (processed content on S3, no daily full rebuild) | Architectural; see tradeoffs |
 | 8 | Automated **Word → publication format** | **Highest near-term** among implementation work |
+| — | **Tracking: remove defunct GA, fix remaining tags** | **Near-term**; independent of Word/admin |
 
-**Suggested order of implementation** (not calendar time): **8 → pieces of 1 (DOI + validation as services) → 2 and 3 in parallel → 4 → 5**. **6 and 7** after the ingest/admin contract is clear, because a content-repo split or S3 site only helps if Word/admin already emit the same files the site expects.
+**Suggested order of implementation** (not calendar time): **tracking cleanup can ship first** (small, independent). Then **8 → pieces of 1 (DOI + validation as services) → 2 and 3 in parallel → 4 → 5**. **6 and 7** after the ingest/admin contract is clear, because a content-repo split or S3 site only helps if Word/admin already emit the same files the site expects.
 
 **Sidecar data (DOI pattern):** auto-generated fields belong in `data/*.json` (or an equivalent store), keyed by page path or URL, **not** written back into the article’s front matter or body. `config.yml` has `enableGitInfo: true`, so Hugo `.Lastmod` (page “modified” date, sitemap, Algolia `lastmod`, JSON-LD `dateModified`) is the last **git commit of that markdown file**. Touching the article to store a DOI, detected entities, resolved citations, or a social-post id would bump “modified” even when the prose did not change. See [architecture](architecture.md) § Sidecar data.
 
@@ -28,6 +29,28 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 - **Discourse integration is defunct.** Do not restore `share_discourse.py`, the `DISCOURSE` postbuild task, or auto-`commenturl`. Historical forum URLs in article bodies and existing `commenturl` values can stay as ordinary links until a later content pass. Goal 5 (social posts) does **not** include Discourse.
 - **Page PDFs are Prince of `_prince` HTML.** On-demand Lambda for typical pages; if the PDF would be **> ~6 MB**, generate locally and commit Git LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the main site **and** in that Prince HTML.
 - **Image dimensions live in `data/imgsize.json`.** Netlify does not download LFS; `make imginfo` is local (or a worker that has the bytes).
+- **Near-term: tracking.** Remove defunct Universal Analytics. Keep (and fix) live tag loading so Turbo navigations count.
+
+---
+
+## Tracking (near-term)
+
+**Intent:** stop shipping dead Google Analytics, and make the remaining tags actually record visits on this Turbo site.
+
+### What exists
+
+- **GTM** `GTM-KDF8R85` in `layouts/partials/head.html` and a noscript iframe in `baseof.html` (skipped on `hugo server`). Injection is gated on `config.yml` `googleAnalytics: G-BHPH29YM44` (a GA4 id used only as a truthy flag).
+- On `turbo:load`, the same script calls **`ga('send', 'pageview', …)`** — Universal Analytics. UA shut down in 2023; that call does nothing useful. Turbo already swapped the page, so GTM’s default first-load pageview also misses in-app navigations.
+- **`code/update_analytics.py`** talks to Analytics Reporting API **v3** (`ga:pageviews`, profile `125738398`). Dead. Optional `ANALYTICS` prebuild task; not on git-push or DAILY.
+- **`layouts/partials/byviews.html`** `getJSON`s `PeacefulScience/analytics` (`mostread.json` / `trending.json`). Homepage “by views” in `single.html` is commented out.
+
+### What to do
+
+1. **Remove defunct UA:** `ga('send')`; `update_analytics.py`; `ANALYTICS` / `GA_SERVICE`; `byviews.html` and the unused `PeacefulScience/analytics` fetch; Python Analytics client deps if nothing else uses them.
+2. **Improve tracking:** keep GTM (or a single GA4 `gtag`) and push a page_view on `turbo:load` with the new path (`dataLayer` or `gtag('event','page_view')`). Load tags independently of the old `googleAnalytics` Hugo param, or rename that param so it is not a UA leftover.
+3. Do not restore view-count widgets from UA data.
+
+This does not need Word ingest or an admin UI.
 
 ---
 
@@ -251,6 +274,7 @@ Zotero is already recommended to authors; if the Word file contains a Zotero bib
 - **TODAY-gated DAILY tasks** are the current way to avoid depositing/indexing on every push. Incremental side effects should replace that gate rather than adding more full-site rebuilds.
 - **CSS is Tailwind.** New UI and any CSS cleanup migrate off Bootstrap 4 / `main.scss` onto Tailwind. Do not treat `sources/tailwind.css` as dead code.
 - **AMP and Discourse integration are defunct.** Do not spend implementation time reviving them.
+- **Universal Analytics is defunct.** Remove it in the near-term tracking pass; do not rebuild features on UA Reporting API v3.
 - **Git remains the audit log** until a port says otherwise. Suggest Changes / pull requests should keep working for readers even after editors get an admin.
 
 ## Decisions still needed
@@ -263,3 +287,4 @@ See [open questions](open-questions.md) § Product direction. The blocking ones 
 4. Whether a content-repo split is required before admin, or only after.
 5. Stay on Hugo with incremental side effects vs S3+JS vs Next.
 6. Word path: `.docx` only vs Google Docs API as well.
+7. Tracking: keep GTM `GTM-KDF8R85` + GA4 vs a single `gtag` snippet (UA is out either way).

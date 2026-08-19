@@ -14,11 +14,12 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 - **CSS: Tailwind.** Prefer Tailwind; migrate all remaining CSS (today production is still Bootstrap 4 SCSS). The Tailwind toolchain is the destination, not leftover.
 - **Discourse integration is defunct.** Do not restore `share_discourse.py` / `DISCOURSE` postbuild / auto-`commenturl`. Historical forum links in content can remain until cleaned up.
 - **Page PDFs:** Prince of `_prince` HTML. Lambda until **~6 MB**; larger files → local Prince + LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the site and in Prince.
+- **Tracking (near-term):** remove defunct Universal Analytics (`ga('send')`, `update_analytics.py`, `byviews.html`). Improve remaining GTM/GA4 so Turbo navigations count.
 
 ## Product and ownership
 
 1. **Who is actively maintaining the site today?** Is this still the primary publishing workflow, or is the site mostly archival?
-2. **What should a refactor optimize for?** **Answered as product direction** in [goals](goals.md): hosted admin (no local clone), accurate Crossref references, better Algolia, auto topics/entities, auto social posts, optional content-repo split, optional S3/dynamic backend so new content does not require a full daily rebuild, **Word → Hugo format as the highest near-term implementation goal**, and **migrate CSS to Tailwind**. Cleanup/Hugo-upgrade is secondary to that pipeline. AMP and Discourse integration are out of scope (delete, do not revive).
+2. **What should a refactor optimize for?** **Answered as product direction** in [goals](goals.md): hosted admin, Word ingest, Crossref, Algolia, Tailwind, sidecar data. **Near-term:** remove defunct Universal Analytics and fix Turbo pageview tracking. AMP and Discourse integration are out of scope (delete, do not revive).
 3. **Discourse comments / auto-post?** **Answered: integration is defunct.** Do not restore auto-posting. `commenturl` / “Discuss on Forum” are leftover UI. The forum site may still exist independently; this repo should not treat it as a publishing dependency.
 
 ## Publishing workflow
@@ -32,7 +33,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 
 8. **Algolia:** Is the `PeacefulScience` index still updated in production? Daily builds only upload when Hugo logs `TODAY`. Goal 3 is to improve indexing and the search page regardless; confirm the index is still the live search backend.
 9. **OneSignal:** Should web push stay? The implementation still points at WordPress plugin paths.
-10. **Analytics:** UA v3 code cannot work as written. Is GTM/GA4 the only analytics now? Can `update_analytics.py`, `byviews.html`, and the analytics git repo hook be removed?
+10. **Analytics?** **Answered: UA is defunct — remove it.** Near-term work: delete `ga('send')`, `update_analytics.py`, `ANALYTICS`/`GA_SERVICE`, `byviews.html`. Improve GTM (`GTM-KDF8R85`) / GA4 (`G-BHPH29YM44`) so `turbo:load` records pageviews. Do not rebuild most-read widgets on UA data. Remaining: keep GTM+GA4 vs a single `gtag` snippet.
 11. **MathJax, cite/bookcover functions:** which of these are still required in production? (**AMP: defunct.** **Tailwind: keep and migrate all CSS onto it.**)
 12. **Netlify Large Media / Git LFS:** Confirmed: **Netlify does not download LFS** in the build; that is why `imgsize.json` is committed. Remaining: Large Media is being wound down — is it still enabled, and is there a preferred replacement for storing the binaries (S3, etc.) while keeping the sidecar?
 
@@ -41,7 +42,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 13. **Should deploy previews run `code/render.js`?** They currently do not, so dropcaps/sidenotes/MathJax differ from production.
 14. **Should the default (non-production) Netlify command stay as bare `hugo`?** That also skips Make, Prince, and post-render.
 15. **Is the daily scheduled rebuild (`functions/daily-build.js` → `BUILD_HOOK`) still configured and wanted?** That is the only automated Crossref/Algolia upload path. Goal 7 is to replace full daily rebuilds with incremental publish + side effects.
-16. **Python on Netlify:** `runtime.txt` is 3.8. Default `BUILD` does not call Python. **DISCOURSE is defunct** — do not keep Python for that hook. Keep the runtime only if `ANALYTICS` (or local CLI via a different path) still matters.
+16. **Python on Netlify:** `runtime.txt` is 3.8. Default `BUILD` does not call Python. **DISCOURSE and ANALYTICS (UA) are defunct.** Python remains for local CLI (`doi`, `news`, `imginfo`) if those stay in this repo.
 
 ## Content policy (for later refactors that touch templates)
 

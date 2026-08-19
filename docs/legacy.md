@@ -8,6 +8,7 @@ This is a **candidate list** for a later cleanup. Items marked **confirmed defun
 | --- | --- |
 | AMP | `layouts/_default/baseof.amp.html`, `config/amp/outputs.yml`, `ampcssframework` comments in SCSS. Not in default `outputs`. Do not revive. |
 | Discourse integration | `share_discourse.py`, Makefile/`code/production` `DISCOURSE` task, `DISCOURSE_API`. DAILY already omits it. Do not restore auto-post or treat `commenturl` as required. Historical forum URLs in markdown can wait for a content pass. |
+| Universal Analytics | `ga('send')` on `turbo:load`; `code/update_analytics.py` (Reporting API v3); `ANALYTICS` prebuild / `GA_SERVICE`; `layouts/partials/byviews.html` + `PeacefulScience/analytics`. Near-term: delete these and fix GTM/GA4 Turbo pageviews ([goals](goals.md#tracking-near-term)). |
 
 ## High confidence leftovers
 
@@ -32,7 +33,6 @@ This is a **candidate list** for a later cleanup. Items marked **confirmed defun
 | Item | Notes |
 | --- | --- |
 | `layouts/_default/single.mjml.html` | MJML article layout; newsletter CLI uses `code/newsletter.plim` instead |
-| Google Analytics UA in `update_analytics.py` / `byviews.html` | UA Reporting API v3 was shut down. Homepage view-count usage in `single.html` is commented out. `byviews.html` still `getJSON`s `PeacefulScience/analytics` |
 | OneSignal | Still injected in production `head.html`, with SDK paths under `/wp-content/plugins/onesignal-...` |
 | Mailchimp send | `send_newsletter` is commented out; CLI (`make news`) still creates/updates campaigns and sends **test** emails. **Not** invoked by Netlify. |
 | `content/news/` | Single 2019 staff note; not in the main nav |
