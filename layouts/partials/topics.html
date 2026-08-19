@@ -1,0 +1,3 @@
+{{- range first 8 (partial "gettopics" .) -}}
+  <a class="tag-link topic-link d-print-none" rel="tag" href="{{ printf "/topics/%s/" .slug | absURL }}"> {{ .title }} </a>
+{{- end -}}

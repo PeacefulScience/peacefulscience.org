@@ -1,0 +1,79 @@
+{{ define "head" }}
+  {{ partial "jsonld" . }}
+{{ end }}
+
+{{ define "main" }}
+{{ $slug := .Params.topic_slug }}
+{{ $topic := false }}
+{{ if and $slug site.Data.topics }}
+  {{ $topic = index site.Data.topics.topics $slug }}
+{{ end }}
+
+<div class="bg-white">
+  <header class="container" style="padding-top: 120px">
+    <div class="row">
+      <div class="col-12">
+        {{ if eq .Kind "term" }}
+          {{ partial "breadcrumbs" .Parent }}
+        {{ else }}
+          {{ partial "breadcrumbs" . }}
+        {{ end }}
+
+        <h1 class="mt-2">{{ .Title | markdownify }}</h1>
+
+        {{ with $topic }}
+          <p class="text-muted">
+            <span class="topic-kind">{{ .kind }}</span>
+            {{ with .pages }} · mentioned in {{ len . }} {{ if eq (len .) 1 }}page{{ else }}pages{{ end }}{{ end }}
+          </p>
+          {{ with .sameas }}
+            <p class="mb-3">
+              {{- range . -}}
+                {{ with site.GetPage (replaceRE `/$` `` .) }}
+                  <a class="tag-link" href="{{ .Permalink }}">{{ .Title }}</a>
+                {{ end }}
+              {{- end -}}
+            </p>
+          {{ end }}
+        {{ else }}
+          {{ with .Description }}<p>{{ . | markdownify }}</p>{{ end }}
+        {{ end }}
+
+        <div style="max-width: 600px">
+          {{- .Content -}}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container pb-5">
+    {{ if not $slug }}
+      {{ with site.Data.topics.topics }}
+        <div class="row">
+          {{ range sort . "title" }}
+            <div class="col-md-6 py-2">
+              <a href="{{ printf "/topics/%s/" .slug | absURL }}">{{ .title }}</a>
+              <span class="text-muted text-smaller"> {{ .kind }} · {{ len .pages }}</span>
+            </div>
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ else }}
+      {{ $pages := slice }}
+      {{ with $topic }}
+        {{ range .pages }}
+          {{ with site.GetPage (replaceRE `/$` `` .) }}
+            {{ $pages = $pages | append . }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+
+      <div class="row">
+        {{ range $pages }}
+          {{ partial "render" (dict "Page" . "Style" "horizontal" "Layout" "col-12") }}
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

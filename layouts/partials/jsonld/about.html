@@ -6,5 +6,11 @@
   {{ $out = $out | append (. | absURL) }}
 {{ end }}
 
+{{ with partial "gettopics" .Page }}
+  {{ range . }}
+    {{ $out = $out | append ((printf "/topics/%s/" .slug) | absURL) }}
+  {{ end }}
+{{ end }}
+
 {{ return $out }}
 

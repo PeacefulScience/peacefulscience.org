@@ -30,7 +30,8 @@ bash code/prebuild.hook
 if [[ "${TASKS}" == *"BUILD"* ]] 
 then
   echo
-  echo BUILD task... 
+  echo BUILD task...
+  node code/topics/pages.js
   echo $CMD
   $CMD | tee _cache/hugo.log | awk '{print "  "$0}'
   echo 

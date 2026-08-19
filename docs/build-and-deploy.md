@@ -88,6 +88,8 @@ make news INPUT=content/newsletter/foo.md
 | --- | --- | --- |
 | `production` | **yes** (production context only) | `code/production` as above |
 | `doi` | **no** | `python code/doi.py` — mint `10.54739/xxxx` into `data/doi.json` (must be committed). Converts `content/articles/foo.md` → `/articles/foo/` as the map key. Does not talk to Crossref. |
+| `topics` / `topics-llm` | **no** | Refresh committed `data/topics.json`. LLM cleanup is local-only. See [topics.md](topics.md). |
+| `topic-pages` | **yes** (via `code/production` / `netlify.toml`, not this target name) | Materialize gitignored `content/topics/t-<slug>/` stubs from the sidecar. Never rewrite `content/topics/_index.md`. |
 | `news` | **no** | `python -m code.newsletter` — MJML via mjml.io, create/update Mailchimp campaign, write `mailchimp.campaign_id` back into the markdown, `open newsletter.html`. Send-to-list is commented out; it sends **test** emails. Writing the id into the article is the pattern **not** to extend (use sidecar data; see [goals](goals.md)). |
 | `pdf` | **no** | Makefile calls `code/pdf ${INPUT}`, but **that script is not in the repo**. Oversized PDFs: local Prince on `_prince` HTML (below). |
 | `imginfo` / `pdfinfo` | **no** | Refresh `data/imgsize.json` / `data/pdfinfo.json`; commit the JSON. **`imginfo` needs the real LFS images** (Pillow). Never run it on Netlify. |

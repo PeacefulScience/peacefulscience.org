@@ -99,6 +99,7 @@ Canonical example: **`doi.json`**. Keys are permalinks (`/articles/foo/`). `part
 | File | Purpose |
 | --- | --- |
 | `doi.json` | Path → DOI under prefix `10.54739` |
+| `topics.json` | Path → detected topics, plus a topic catalog with reverse page lists. Local `make topics`; **not** regenerated on Netlify. See [topics.md](topics.md). |
 | `imgsize.json` | Image width/height. **Required at Netlify build** because LFS files are not downloaded. Update with every new/changed image (`make imginfo` locally). |
 | `pdfinfo.json` | Static PDF lastmod for the sitemap |
 | `dates.json` | Created/modified unix times from git (Husky pre-commit on `content/`) |
@@ -120,6 +121,7 @@ Analytics JSON (`mostread.json`, `trending.json`, `ytd.json`) is gitignored. It 
 | `postbuild.hook` | Optional `CROSSREF` / `ALGOLIA` (DAILY, gated on `TODAY`). `DISCOURSE` still exists in the script and is **defunct** — do not enable. |
 | `render.js` | Post-process **every** `public/**/*.html` file, **including `_prince/`**: run `script[render]`, strip `[remove]` (browser scripts), **render** TeX to SVG when `[mathjax]` is set (inline math is rendered, not stripped), collect CSS classes. Prince PDFs use this HTML. |
 | `doi.py` | **CLI only** (`make doi`). Writes `data/doi.json`. Not called on Netlify. |
+| `topics/` | **CLI** `generate.js` writes `data/topics.json` (`make topics`). **Build** `pages.js` writes gitignored stubs. Never overwrite `content/topics/_index.md`. Not an LLM on Netlify. |
 | `newsletter/` | **CLI only** (`make news`). MJML + Mailchimp campaign upsert. Not called on Netlify. |
 | `imgsize.py` / `pdfinfo.py` | **CLI only** (`make imginfo` / `pdfinfo`). Refresh committed JSON. `imginfo` **must** run on a machine that has smudged LFS files. |
 | `document.py` | Parse Markdown front matter (newsletter CLI; also used by the defunct Discourse share script) |
