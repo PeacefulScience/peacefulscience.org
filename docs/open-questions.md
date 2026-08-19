@@ -44,3 +44,5 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 ## Documentation follow-up
 
 20. **Where should contributor docs live long-term?** This `docs/` folder, the public `/about/` pages, Cursor rules, or all three with a single source of truth?
+21. **Should author values be normalized to slugs?** Books and several prints use display names with no `content/authors/` page. A strict schema would break those bylines.
+22. **Should `prints/excerpts` and `prints/deleted` stay one Hugo section?** They share `single.html` but not front matter. Splitting types would clarify templates at the cost of URL/section changes.

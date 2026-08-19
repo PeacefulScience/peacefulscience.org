@@ -5,7 +5,8 @@ This folder describes how [peacefulscience.org](https://peacefulscience.org/) is
 | Doc | What it covers |
 | --- | --- |
 | [Architecture](architecture.md) | System overview: content, templates, assets, serverless functions, and external services |
-| [Content model](content-model.md) | Sections, taxonomies, front matter, and how pages relate |
+| [Content model](content-model.md) | Sections, taxonomies, and how pages relate |
+| [Front matter](front-matter.md) | Per-section and per-subfolder YAML schemas (corpus scan + template check) |
 | [Build and deploy](build-and-deploy.md) | Local development, Makefile targets, Netlify contexts, and the production pipeline |
 | [Legacy and unused code](legacy.md) | Likely-dead paths to confirm before a cleanup refactor |
 | [Open questions](open-questions.md) | Things to confirm with maintainers before changing behavior |

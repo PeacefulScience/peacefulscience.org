@@ -1,6 +1,8 @@
 # Content model
 
-Editors work in Markdown under `content/`. Hugo taxonomies and front matter control listing, SEO, DOIs, and related articles. Public-facing writing guidance lives on the site at `/about/authors-guide/` and `/about/editorial/`. Cursor rules for article files are in `.cursor/rules/articles.mdc`.
+Editors work in Markdown under `content/`. Hugo taxonomies and front matter control listing, SEO, DOIs, and related articles. Public-facing writing guidance lives on the site at `/about/authors-guide/` and `/about/editorial/`. Cursor rules for article files are in `.cursor/rules/articles.mdc` (those rules are incomplete relative to the live corpus).
+
+**Front matter is per folder, not per site.** Subfolders of a section often use a different schema than the parent (especially `prints/excerpts/` vs `prints/deleted/`, and the various `series/<slug>/` term types). The inventory is in [front-matter.md](front-matter.md).
 
 ## Sections vs taxonomies
 
@@ -11,21 +13,21 @@ Editors work in Markdown under `content/`. Hugo taxonomies and front matter cont
 - `authors` → `content/authors/<slug>/_index.md`
 - `categories` → `content/categories/<slug>/_index.md`
 - `series` → `content/series/<slug>/_index.md`
-- `tags` — declared but rarely used in current content
+- `tags` — declared in config; **no content file sets `tags:`**
 
-Author slugs in article front matter must match an author page (e.g. `swamidass` → `content/authors/swamidass/_index.md`).
+Author values in front matter are strings. They *may* be a folder slug (`swamidass`) or a display name with no author page. Templates `urlize` the string and look up `content/authors/<slug>/`.
 
 Permalinks for articles: `/:sections/:title/` (title is the file slug). Most historical WordPress URLs are preserved with `aliases:`.
 
 ## Common front matter
 
-### Required on articles (in practice)
+There is no single required block for the whole site. The closest “article-shaped” core (articles and most prints) is:
 
 ```yaml
 title: Human-readable title
 authors:
-  - swamidass          # author slugs
-date: "2021-04-11"     # or a full timestamp
+  - swamidass          # slug or display name
+date: "2021-04-11"     # or a YAML date / timestamp
 description: One or two sentences for SEO, cards, and RSS
 headerimage:
   src: /img/2021/04/example.jpg
@@ -33,50 +35,19 @@ categories:
   - science
 ```
 
-### Frequently used optional fields
-
-| Field | Meaning |
-| --- | --- |
-| `publishdate` | If set, the page is not “live” until this date (`hugo -F` / `--buildFuture` on previews) |
-| `aliases` | Extra paths; emitted into Netlify `_redirects` |
-| `commenturl` | Discourse topic URL; drives the “Discuss on Forum” button |
-| `headerimage.youtube` | YouTube video id; header becomes a playable poster |
-| `headerimage.credit` | Caption/credit under the header image |
-| `headerimage.startsec` | Start offset for the YouTube embed |
-| `series` | Series slug; related-articles block unions that series |
-| `interview` | Slugs of people interviewed (Crossref contributor role) |
-| `editor` | Editor slugs (shown in byline, Crossref role) |
-| `pages` | Explicit list of related permalinks (newsletters, forum page, some lists) |
-| `layers` | Newsletter layout: body vs pages heading |
-| `amazon` | List of ASINs; book covers and “pages that mention this book” |
-| `isbn` | Book ISBN for JSON-LD |
-| `doi` | Legacy per-page DOI; current source of truth is `data/doi.json` keyed by permalink |
-| `pdf` | Legacy PDF URL; articles/prints/about now get `/pdf<path>.pdf` automatically |
-| `podcast` | Marks interview/podcast-style articles |
-| `rss` | `false` to keep a page out of RSS / homepage pools (home cascade defaults `rss: false`; articles/prints/newsletter cascade `true`) |
-| `private` | Omit from Algolia and sitemap |
-| `notnews` | Add `Googlebot-News` noindex |
-| `canonical` | Override canonical URL |
-| `deletiondate` | Visual strike-through on the title |
-| `crossref.type` | e.g. `conference` for Crossref conference batches |
-| `partof` | e.g. `/books/...` so prints attach to a book in Crossref |
-| `mailchimp.campaign_id` | Existing Mailchimp campaign to update |
-| `design.*` | List-page card layout (`style`, `layout`, `hide`, `footer`, `sort`) |
-| `jsonld` / `jsonld-template` | Schema.org overrides |
-
-Author pages also use `orcid`, `twitter`, `gscholar`, `wiki`, `sameas`.
+Books, newsletters, author/category/series terms, and `prints/deleted/` do not follow that block. Optional keys and frequencies: [front-matter.md](front-matter.md).
 
 ## Content types in more detail
 
 **Articles** (`content/articles/`) are the public blog. ~140 files. Index cascade enables HTML + print output and Article JSON-LD.
 
-**Prints** (`content/prints/`) are scholarly pre/post-prints. They get the same print output, ScholarlyArticle JSON-LD, and are first-class for DOI deposit. Subfolders `excerpts/` and `deleted/` inherit that model.
+**Prints** (`content/prints/`) are scholarly pre/post-prints. They get print output and ScholarlyArticle JSON-LD. **Subfolders are different types:** `prints/*.md` (talks/preprints), `prints/excerpts/` (book excerpts with `partof`), `prints/deleted/` (fair-use republications with `deletiondate` and `rss: false`).
 
 **Books** (`content/books/`) are not blog posts. They list related articles by Amazon ASIN backrefs (`pages_include_backrefs`) and optional explicit `pages`. Covers are fetched via `/img/bookcover/<ASIN>` (Netlify function).
 
 **Newsletters** (`content/newsletter/`) are dated issues. Body Markdown plus a `pages:` list. `python -m code.newsletter content/newsletter/foo.md` builds HTML with MJML and upserts a Mailchimp campaign. The production site also lists them like articles.
 
-**Authors / categories / series** are mostly `_index.md` with a title (and a bio for authors). Series grouping is by the `series:` field on articles, not by putting files inside the series folder.
+**Authors / categories / series** are taxonomy term folders (`<slug>/_index.md`). Series grouping is by the `series:` field on articles/prints. Series *term* folders themselves split into several schemas (conference Crossref metadata vs title-only vs deleted-source archives).
 
 ## Writing conventions the templates expect
 

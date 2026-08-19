@@ -23,7 +23,8 @@ This is a [Hugo](https://gohugo.io/) site hosted on [Netlify](https://app.netlif
 Developer docs:
 
 - [How the repo is put together](docs/architecture.md)
-- [Content model and front matter](docs/content-model.md)
+- [Content model](docs/content-model.md)
+- [Front matter schemas (per folder)](docs/front-matter.md)
 - [Local build and Netlify deploy](docs/build-and-deploy.md)
 - [Index of all developer docs](docs/README.md)
 
