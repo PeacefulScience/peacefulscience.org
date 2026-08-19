@@ -10,6 +10,7 @@ all: imginfo pdfinfo production
 topics:
 	node code/topics/generate.js
 
+# Local Ollama (llama3.2:3b / qwen2.5:3b) if `ollama serve` is running; else GROQ/GEMINI/OPENAI keys.
 topics-llm:
 	node code/topics/generate.js --llm
 

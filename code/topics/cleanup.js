@@ -8,14 +8,20 @@
  *   make topics-llm
  *   node code/topics/generate.js --llm
  *
- * Credentials (any one):
+ * Default for testing: a local Ollama model (free, no key) if
+ * `ollama serve` is running. Then free-tier hosted keys, then paid APIs:
+ *   ollama                  http://127.0.0.1:11434  (llama3.2:3b)
+ *   GROQ_API_KEY            Groq OpenAI-compatible (free tier)
+ *   GEMINI_API_KEY          Gemini generateContent (free tier)
  *   OPENAI_API_KEY          OpenAI Chat Completions
  *   ANTHROPIC_API_KEY       Anthropic Messages
  *   TOPICS_LLM_API_KEY      OpenAI-compatible (set TOPICS_LLM_BASE_URL)
  *
  * Optional:
- *   TOPICS_LLM_MODEL        default gpt-4o-mini or claude-3-5-haiku-latest
- *   TOPICS_LLM_BASE_URL     default https://api.openai.com/v1
+ *   TOPICS_LLM_PROVIDER     ollama | groq | gemini | openai | anthropic
+ *   TOPICS_LLM_MODEL        override model name
+ *   TOPICS_LLM_BASE_URL     override OpenAI-compatible base URL
+ *   OLLAMA_HOST             default 127.0.0.1:11434
  */
 
 const { uniqueAliases } = require("./lib");
@@ -56,16 +62,67 @@ Rules:
 }
 
 function parsePlan(raw) {
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    return normalizePlan(raw);
+  }
   let text = String(raw).trim();
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (fenced) text = fenced[1].trim();
-  const parsed = JSON.parse(text);
+  return normalizePlan(JSON.parse(text));
+}
+
+function normalizePlan(parsed) {
   return {
     drop: Array.isArray(parsed.drop) ? parsed.drop.map(String) : [],
-    rekind: parsed.rekind && typeof parsed.rekind === "object" ? parsed.rekind : {},
-    rename: parsed.rename && typeof parsed.rename === "object" ? parsed.rename : {},
+    rekind: parsed.rekind && typeof parsed.rekind === "object" && !Array.isArray(parsed.rekind) ? parsed.rekind : {},
+    rename: parsed.rename && typeof parsed.rename === "object" && !Array.isArray(parsed.rename) ? parsed.rename : {},
     merge: Array.isArray(parsed.merge) ? parsed.merge : [],
   };
+}
+
+function validatePlan(plan, knownSlugs, catalogSize) {
+  const known = new Set(knownSlugs);
+  const skip = [];
+  const drop = [];
+  for (const slug of plan.drop || []) {
+    if (!known.has(slug)) skip.push(`drop unknown ${slug}`);
+    else drop.push(slug);
+  }
+  const maxDrop = Math.max(8, Math.floor(catalogSize * 0.2));
+  if (drop.length > maxDrop) {
+    skip.push(`refused drop of ${drop.length} topics (max ${maxDrop})`);
+    drop.length = 0;
+  }
+
+  const rekind = {};
+  for (const [slug, kind] of Object.entries(plan.rekind || {})) {
+    if (!known.has(slug)) skip.push(`rekind unknown ${slug}`);
+    else if (!KINDS.has(kind)) skip.push(`rekind bad kind ${kind}`);
+    else rekind[slug] = kind;
+  }
+
+  const rename = {};
+  for (const [slug, title] of Object.entries(plan.rename || {})) {
+    if (!known.has(slug)) skip.push(`rename unknown ${slug}`);
+    else if (String(title).trim()) rename[slug] = String(title).trim();
+  }
+
+  const merge = [];
+  for (const row of plan.merge || []) {
+    const keep = row.keep || row.into;
+    const from = (row.from || []).filter((slug) => slug && slug !== keep);
+    if (!known.has(keep)) {
+      skip.push(`merge keep unknown ${keep}`);
+      continue;
+    }
+    const validFrom = from.filter((slug) => known.has(slug));
+    for (const slug of from) {
+      if (!known.has(slug)) skip.push(`merge from unknown ${slug}`);
+    }
+    if (validFrom.length) merge.push({ keep, from: validFrom });
+  }
+
+  return { drop, rekind, rename, merge, skipped: skip };
 }
 
 function mentionsIndex(sidecar) {
@@ -179,28 +236,106 @@ function applyCleanup(sidecar, plan) {
   return { pages: orderedPages, topics: orderedTopics, log };
 }
 
-function llmConfig() {
+function ollamaBase() {
+  const host = process.env.OLLAMA_HOST || "127.0.0.1:11434";
+  return (host.startsWith("http") ? host : `http://${host}`).replace(/\/$/, "");
+}
+
+async function detectOllama() {
+  const base = ollamaBase();
+  try {
+    const res = await fetch(`${base}/api/tags`, { signal: AbortSignal.timeout(800) });
+    if (!res.ok) return null;
+    const body = await res.json();
+    const names = (body.models || []).map((model) => model.name);
+    const preferred =
+      process.env.TOPICS_LLM_MODEL ||
+      names.find((name) => name.startsWith("qwen2.5:3b")) ||
+      names.find((name) => name.startsWith("llama3.2:3b")) ||
+      names.find((name) => name.includes("qwen2.5")) ||
+      names.find((name) => name.includes("llama3.2")) ||
+      names[0];
+    if (!preferred) return null;
+    return { provider: "ollama", base, model: preferred };
+  } catch {
+    return null;
+  }
+}
+
+async function resolveLlmConfig() {
+  const forced = (process.env.TOPICS_LLM_PROVIDER || "").toLowerCase();
+  const groq = process.env.GROQ_API_KEY;
+  const gemini = process.env.GEMINI_API_KEY;
   const anthropic = process.env.ANTHROPIC_API_KEY;
   const openai = process.env.OPENAI_API_KEY || process.env.TOPICS_LLM_API_KEY;
-  if (process.env.TOPICS_LLM_PROVIDER === "anthropic" || (anthropic && !openai)) {
-    if (!anthropic) return null;
+
+  if (forced === "ollama" || (!forced && !groq && !gemini && !anthropic && !openai)) {
+    const ollama = await detectOllama();
+    if (ollama) return ollama;
+    if (forced === "ollama") {
+      throw new Error("Ollama is not running. Start `ollama serve` and pull llama3.2:3b.");
+    }
+  }
+  if (forced === "groq" || (!forced && groq)) {
+    if (!groq) throw new Error("GROQ_API_KEY is not set.");
+    return {
+      provider: "openai",
+      key: groq,
+      model: process.env.TOPICS_LLM_MODEL || "llama-3.1-8b-instant",
+      base: (process.env.TOPICS_LLM_BASE_URL || "https://api.groq.com/openai/v1").replace(/\/$/, ""),
+    };
+  }
+  if (forced === "gemini" || (!forced && gemini)) {
+    if (!gemini) throw new Error("GEMINI_API_KEY is not set.");
+    return {
+      provider: "gemini",
+      key: gemini,
+      model: process.env.TOPICS_LLM_MODEL || "gemini-2.0-flash",
+    };
+  }
+  if (forced === "anthropic" || (!forced && anthropic && !openai)) {
+    if (!anthropic) throw new Error("ANTHROPIC_API_KEY is not set.");
     return {
       provider: "anthropic",
       key: anthropic,
       model: process.env.TOPICS_LLM_MODEL || "claude-3-5-haiku-latest",
     };
   }
-  if (!openai) return null;
-  return {
-    provider: "openai",
-    key: openai,
-    model: process.env.TOPICS_LLM_MODEL || "gpt-4o-mini",
-    base: (process.env.TOPICS_LLM_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, ""),
-  };
+  if (openai) {
+    return {
+      provider: "openai",
+      key: openai,
+      model: process.env.TOPICS_LLM_MODEL || "gpt-4o-mini",
+      base: (process.env.TOPICS_LLM_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, ""),
+    };
+  }
+  return null;
 }
 
 async function callLlm(config, catalog) {
   const user = `Clean this topic catalog:\n${JSON.stringify(catalog)}`;
+  const messages = [
+    { role: "system", content: systemPrompt() },
+    { role: "user", content: user },
+  ];
+
+  if (config.provider === "ollama") {
+    const res = await fetch(`${config.base}/api/chat`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        model: config.model,
+        stream: false,
+        format: "json",
+        options: { temperature: 0 },
+        messages,
+      }),
+    });
+    const body = await res.json();
+    if (!res.ok) throw new Error(`Ollama ${res.status}: ${JSON.stringify(body)}`);
+    return body.message?.content || "";
+  }
+
   if (config.provider === "anthropic") {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -222,21 +357,37 @@ async function callLlm(config, catalog) {
     return (body.content || []).map((part) => part.text || "").join("\n");
   }
 
+  if (config.provider === "gemini") {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${config.model}:generateContent?key=${config.key}`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: systemPrompt() }] },
+        contents: [{ role: "user", parts: [{ text: user }] }],
+        generationConfig: { temperature: 0, responseMimeType: "application/json" },
+      }),
+    });
+    const body = await res.json();
+    if (!res.ok) throw new Error(`Gemini ${res.status}: ${JSON.stringify(body)}`);
+    return (body.candidates || [])
+      .flatMap((candidate) => candidate.content?.parts || [])
+      .map((part) => part.text || "")
+      .join("\n");
+  }
+
+  const headers = { "content-type": "application/json" };
+  if (config.key) headers.authorization = `Bearer ${config.key}`;
+  const payload = {
+    model: config.model,
+    temperature: 0,
+    messages,
+  };
+  if (!String(config.base || "").includes("groq")) payload.response_format = { type: "json_object" };
   const res = await fetch(`${config.base}/chat/completions`, {
     method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${config.key}`,
-    },
-    body: JSON.stringify({
-      model: config.model,
-      temperature: 0,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: systemPrompt() },
-        { role: "user", content: user },
-      ],
-    }),
+    headers,
+    body: JSON.stringify(payload),
   });
   const body = await res.json();
   if (!res.ok) throw new Error(`OpenAI-compatible ${res.status}: ${JSON.stringify(body)}`);
@@ -244,17 +395,28 @@ async function callLlm(config, catalog) {
 }
 
 async function cleanupWithLlm(sidecar) {
-  const config = llmConfig();
+  const config = await resolveLlmConfig();
   if (!config) {
     throw new Error(
-      "No LLM credentials. Set OPENAI_API_KEY, ANTHROPIC_API_KEY, or TOPICS_LLM_API_KEY."
+      "No LLM available. Start `ollama serve` and `ollama pull llama3.2:3b`, or set GROQ_API_KEY / GEMINI_API_KEY / OPENAI_API_KEY."
     );
   }
   const catalog = catalogForPrompt(sidecar);
   console.log(`LLM cleanup: ${config.provider} ${config.model} (${catalog.length} topics)`);
   const raw = await callLlm(config, catalog);
-  const plan = parsePlan(raw);
+  const parsed = parsePlan(raw);
+  const plan = validatePlan(parsed, Object.keys(sidecar.topics), catalog.length);
+  if (plan.skipped.length) {
+    console.log(`  filtered ${plan.skipped.length} unsafe/unknown actions`);
+  }
+  const meaningful =
+    plan.drop.length || plan.merge.length || Object.keys(plan.rekind).length || Object.keys(plan.rename).length;
+  if (!meaningful) {
+    console.log("  no safe edits from the model; leaving catalog unchanged");
+    return sidecar;
+  }
   const result = applyCleanup(sidecar, plan);
+  result.log.skipped = [...plan.skipped, ...result.log.skipped];
   console.log(
     `  merged ${result.log.merged.length}, dropped ${result.log.dropped.length}, rekinned ${result.log.rekinned.length}, renamed ${result.log.renamed.length}`
   );
@@ -267,8 +429,9 @@ async function cleanupWithLlm(sidecar) {
 module.exports = {
   catalogForPrompt,
   parsePlan,
+  validatePlan,
   applyCleanup,
-  llmConfig,
+  resolveLlmConfig,
   cleanupWithLlm,
 };
 

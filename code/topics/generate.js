@@ -9,7 +9,7 @@
  * committed once). Generated per-topic Hugo stubs are a separate build
  * step: `node code/topics/pages.js`.
  *
- * Optional LLM merge/cleanup (not on Netlify):
+ * Optional LLM merge/cleanup (not on Netlify). Defaults to local Ollama:
  *   make topics-llm
  *   node code/topics/generate.js --llm
  */
