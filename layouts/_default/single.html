@@ -25,7 +25,12 @@
   {{ end }}
 
   {{ with .Content }}
-    {{ if or ( in . "^") ( in (replace .  "style>*" "style>ASTERIX" ) "*") }}
+    {{ $c := . }}
+    {{ $c = replaceRE `\$\$[^$]+\$\$` "" $c }}
+    {{ $c = replaceRE `\$[^$]+\$` "" $c }}
+    {{ $c = replaceRE `\[\^[^\]]+\]` "" $c }}
+    {{ $c = replace $c "style>*" "style>ASTERIX" }}
+    {{ if or (in $c "^") (in $c "*") }}
       {{ warnf "CONTENT.FORMATTING \tcontent/%s" $.File.Path }}
     {{ end }}
   {{ end }}
