@@ -196,6 +196,8 @@ Keys are site paths (`/img/YYYY/MM/foo.jpg`). Templates that consume the map: `l
 
 A hosted admin or Word ingest must run the equivalent of `imginfo` on a worker that has the actual image bytes, then commit `data/imgsize.json` (sidecar — do not write dimensions into the article).
 
+**Optional later:** store binaries on **S3** instead of Netlify Large Media. ImageEngine can origin from the bucket rather than `peacefulscience.org`. `data/imgsize.json` is still required for the Hugo build. This is not the same as hosting the whole site from processed HTML on S3.
+
 ## Environment variables
 
 Used by Make, functions, or Python (typically Netlify UI + local `.env`):

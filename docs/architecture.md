@@ -88,7 +88,7 @@ Homepage and cards use `partial "render"` which picks `layouts/partials/render/_
 - **CSS:** **Destination is Tailwind.** Today production still compiles Bootstrap 4 SCSS from `assets/css/main.scss` (plus Font Awesome) through Hugo `resources.ToCSS` + PostCSS (PurgeCSS, autoprefixer, cssnano). A parallel Tailwind pipeline exists (`sources/tailwind.css`, `tailwind.config.js`, `npm run tailwind` → `assets/css/tw.css`) but is **commented out** of `code/production` and `head.html`, and `tw.css` is gitignored. Cleanup should turn Tailwind on and migrate remaining Bootstrap/custom SCSS onto it — not delete the Tailwind files.
 - **JS:** `assets/js/turbo.js` is the entry. Hugo `js.Build` bundles Hotwired Turbo, navbar, TOC progress, YouTube player, and (empty) subscribe helpers. Search is a separate InstantSearch bundle on the search layout.
 - **Images / PDFs:** `static/img` and `static/pdf` are **Git LFS** (Netlify Large Media as the LFS store). **Netlify builds do not download LFS objects** — the clone has pointer files, not pixels. Hugo therefore cannot read image dimensions at build time. **`data/imgsize.json` is required sidecar:** keys like `/img/2024/07/foo.jpg` → `{width, height}`. Templates (`render-image.html`, `image` / `mediatext` shortcodes, header images) set `width`/`height` from that map. Adding or replacing an image is incomplete until `make imginfo` runs **where the real files exist** and the JSON is committed. Do not regenerate this file on Netlify (`imgsize.py` would skip pointers and empty the map). `data/pdfinfo.json` is git lastmod for uploaded PDFs (does not need file bytes). **Page PDFs** are Prince of `_prince` HTML — Lambda, or LFS at `static/pdf/<section>/<slug>.pdf` when over ~6 MB. See [build-and-deploy](build-and-deploy.md#article-pdfs-prince) and [images](build-and-deploy.md#git-lfs-and-image-sizes).
-- **Image CDN:** Production templates rewrite image URLs to ImageEngine (`8l2ic7fx.cdn.imgeng.in`) via `partials/imgcdn.html`. Local `hugo server` serves files from `static/` when they exist.
+- **Image CDN:** Production templates rewrite image URLs to ImageEngine (`8l2ic7fx.cdn.imgeng.in`) via `partials/imgcdn.html`. **Origin is the Netlify live site** (Large Media). If binaries move to S3, point ImageEngine at that bucket instead. Local `hugo server` serves files from `static/` when they exist.
 
 ### Data files (`data/`) — sidecar pattern
 
@@ -142,14 +142,14 @@ The PDF function only allows sections `articles`, `about`, and `prints`. Netlify
 
 ### Integrations (see also [build-and-deploy](build-and-deploy.md))
 
-- **Algolia** index `PeacefulScience` — Hugo always writes `algolia.json` on production BUILD. Upload runs only on the **DAILY** hook when the Hugo log contains `TODAY` (`atomic-algolia`). Git-push production does not upload. Client search uses InstantSearch (`assets/js/search.js`).
-- **Crossref** — Hugo always emits three XML batches during BUILD. Deposit (`doMDUpload`) runs only on **DAILY** + `TODAY`. **Assigning** a new DOI (`make doi`) is local: it only edits `data/doi.json`, which must be committed before a build can show or deposit it.
+- **Algolia** index `PeacefulScience` — **still the live search backend.** Hugo always writes `algolia.json` on production BUILD. Upload runs only on the **DAILY** hook when the Hugo log contains `TODAY` (`atomic-algolia`). That hook is still configured and wanted. Git-push production does not upload.
+- **Crossref** — **account active.** Hugo always emits three XML batches during BUILD. Deposit (`doMDUpload`) runs only on **DAILY** + `TODAY`. **Admins assign** DOIs (`make doi` locally → `data/doi.json`); that file must be committed before a build can show or deposit a new id.
 - **Discourse** — **integration defunct.** `share_discourse.py` / `DISCOURSE` task: do not restore. Many articles still have `commenturl` and a “Discuss on Forum” button; treat as leftover UI. `content/forum/` is a marketing page. Body links to `discourse.peacefulscience.org` are ordinary URLs.
 - **Mailchimp** — on-site subscribe forms POST to Mailchimp. Composing a campaign is `make news` on a laptop, not the Netlify build.
 - **OneSignal** — web push, still configured with WordPress plugin SDK paths.
 - **Google Tag Manager** `GTM-KDF8R85` loads in production (`head.html` + noscript in `baseof.html`), gated on `config.yml` `googleAnalytics: G-BHPH29YM44`. **`turbo:load` still calls Universal Analytics `ga('send', 'pageview')`**, which is defunct. Near-term: remove UA and push real pageviews on Turbo navigations ([goals](goals.md#tracking-near-term)). View-count sidecars (`update_analytics.py`, `byviews.html`) are UA v3 leftovers.
 - **Netlify Forms** — `content/contact.html`.
-- **CMS admin UI** — Decap files at `static/admin/` (`/admin/`) and Forestry at `.forestry/` are **not working**. Editing is GitHub only.
+- **CMS admin UI** — Decap at `static/admin/` and Forestry at `.forestry/` are **not working**. Editing is GitHub only. **Stack undecided**; candidate is Decap + GitHub Actions for sidecar processes ([goals](goals.md) §1).
 
 ## Notable template behaviors
 

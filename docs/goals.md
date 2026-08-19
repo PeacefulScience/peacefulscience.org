@@ -30,6 +30,10 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 - **Page PDFs are Prince of `_prince` HTML.** On-demand Lambda for typical pages; if the PDF would be **> ~6 MB**, generate locally and commit Git LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the main site **and** in that Prince HTML.
 - **Image dimensions live in `data/imgsize.json`.** Netlify does not download LFS; `make imginfo` is local (or a worker that has the bytes).
 - **Near-term: tracking.** Remove defunct Universal Analytics. Keep (and fix) live tag loading so Turbo navigations count.
+- **Crossref is active; admins mint DOIs** (CLI today). Deposit is DAILY + `TODAY`.
+- **Algolia `PeacefulScience` is the live search index.** Daily upload hook is still wanted.
+- **Netlify LFS / Large Media is in use.** Optional later: S3 for binaries; point ImageEngine origin at the bucket. `imgsize.json` stays.
+- **Admin stack undecided.** Candidate: Decap + GitHub Actions for sidecar jobs on update (not auto-DOI on every save).
 
 ---
 
@@ -68,7 +72,7 @@ This does not need Word ingest or an admin UI.
 
 | Concern | Why it is hard in this repo | What an admin must do |
 | --- | --- | --- |
-| **DOI control** | `code/doi.py` mints `10.54739/xxxx` into `data/doi.json` (sidecar; not front matter). Deposit is a **later** DAILY Netlify step, and only if Hugo logged `TODAY`. Assigning twice, assigning the wrong path, or depositing without a commit all break Crossref. | Explicit “assign DOI” with preview of the path key (`/articles/foo/`), collision check, and a commit of `doi.json` **before** the page is treated as published. Never mint as a silent side effect of save. Never write the DOI into the article file. |
+| **DOI control** | `code/doi.py` mints `10.54739/xxxx` into `data/doi.json` (sidecar; not front matter). **Crossref is active.** **Admins mint.** Deposit is a **later** DAILY Netlify step, and only if Hugo logged `TODAY`. | Explicit “assign DOI” (admin action) with preview of the path key (`/articles/foo/`), collision check, and a commit of `doi.json` **before** the page is treated as published. Never mint as a silent side effect of save (including a Decap save). Never write the DOI into the article file. |
 | **Front matter** | Schemas differ by **section and subfolder** ([front-matter](front-matter.md)). Authors are **lists of strings** (slugs or display names), not `{role, slug}` maps. `prints/` vs `prints/excerpts/` vs `prints/deleted/` are three page types. | Form (or generated YAML) **per folder**, validated against the corpus schema. Cascade from `_index.md` must stay visible (e.g. `prints/deleted` sets `rss: false`). |
 | **Shortcodes** | Custom `amazon`, `image`, `youtube` (overrides Hugo), `mediatext`, `pdf`, `facebook`, `footnotes2refs`, plus built-in `tweet` / `vimeo`. One broken `twitter` tag. ([shortcodes](shortcodes.md)) | Palette / helpers that insert the **site** shortcodes, not generic Markdown. `amazon` must stash ASINs (book backrefs). `youtube` must use the site player overlay, not Hugo’s embed. **Every shortcode must also render in Prince `_prince` HTML** (print CSS / fallbacks for JS embeds). |
 | **Autofill from the web** | Hard-to-find fields: Amazon ASIN, ISBN, Crossref/DOI metadata, YouTube IDs, author affiliations, book covers (`functions/bookcover.js`). `functions/cite.js` already resolves DOI.org + Manubot → CSL-JSON. `data/citation.json` is a cache. | Lookups land in **sidecar** JSON (extend `citation.json` / new maps). The admin may *propose* shortcodes or ISBN in the article; committing those is an editorial save (and *should* bump lastmod). Do not silently patch published files with resolved metadata. |
@@ -76,11 +80,13 @@ This does not need Word ingest or an admin UI.
 | **Categories** | Taxonomy pages in `content/categories/`. `featured` and `gae` are `hidden: true`. `tags` is in `config.yml` but unused. Homepage buckets are **hard-coded** in `layouts/index.html`. | Auto-suggest into sidecar (or an admin review queue). Editor-chosen `categories:` in front matter is editorial, not generated. Do not invent slugs that have no `_index.md`. |
 | **New authors** | Missing `content/authors/<slug>/` warns `AUTHOR.MISSING`. Corpus mixes slugs (`swamidass`) and display names (`Dennis Venema`, `Peaceful Science`). | Create author page (bio, affiliation, optional `orcid` / social) when a byline is new; keep display-name bylines valid until a slug exists. |
 | **Page PDFs** | Lambda Prince of `_prince` HTML fails when the PDF is **> ~6 MB**. Those files must be generated locally and committed to LFS at `static/pdf/<section>/<slug>.pdf`. | Host Prince or a worker that writes LFS; do not invent a second layout. Same `_prince` HTML as the Lambda. |
-| **Images** | Files in `static/img/` are Git LFS. **Netlify does not download LFS** in the build, so Hugo cannot measure them. `image` / `mediatext` / Markdown images / header images read `data/imgsize.json`. | Any upload path must write the LFS object **and** patch `imgsize.json` (Pillow on the real bytes). Do not run `make imginfo` in the Netlify build. |
+| **Images** | Files in `static/img/` are Git LFS (**Netlify Large Media, still in use**). **Netlify does not download LFS** in the build. Templates read `data/imgsize.json`. Optional later: S3 + ImageEngine origin on the bucket. | Upload must write the object **and** patch `imgsize.json`. Do not run `make imginfo` in the Netlify Hugo build. GitHub Actions (admin candidate) need smudged LFS or an S3 fetch. |
 
 ### Design implication
 
-The admin cannot be “Decap with the current `config.yml`.” It has to own **git writes** for human edits under `content/` **and** generated maps under `data/` (`doi.json` today; later entities, citations, social ids), plus **hosted** equivalents of `make doi` / image metadata. Mailchimp campaign compose can stay out of v1 if newsletters remain rare; subscribe forms already work in the browser. Campaign ids currently written into newsletter front matter (`mailchimp.campaign_id`) are the pattern **not** to copy — they belong in sidecar data too.
+The admin stack is **not chosen**. A candidate: **Decap** (or similar Git CMS) for markdown in the browser, plus **GitHub Actions** that run on those commits to update sidecar data (`imginfo` when images change; **explicit** DOI mint, not every save; later citations/entities). Decap’s current `static/admin/` config is not enough by itself (per-folder schemas, shortcodes, Prince). Forestry remains leftover.
+
+Actions (or any worker) must have **real image bytes** to run Pillow — Netlify’s Hugo build will not. Mailchimp campaign compose can stay out of v1. Campaign ids in newsletter front matter should move to sidecar data.
 
 A Word ingest (goal 8) is the primary **create** path; the admin is the **review / enrich / assign DOI / publish** path.
 
@@ -121,7 +127,7 @@ DOI **assignment** stays a separate, gated action (goal 1). Improving XML must n
 
 ## 3. Algolia indexing and search page
 
-**Intent:** search should stay current, cover the right corpus, and be usable (filters, ranking, pagination, shareable URLs).
+**Intent:** search should stay current, cover the right corpus, and be usable (filters, ranking, pagination, shareable URLs). **Algolia index `PeacefulScience` is still the live backend.** The daily hook still uploads (when Hugo logs `TODAY`).
 
 ### What exists
 
@@ -212,7 +218,7 @@ Metalsmith and Next.js have been considered in other Peaceful Science repos. Thi
 
 ### Why a daily rebuild exists today
 
-`functions/daily-build.js` POSTs `DAILY` so Crossref deposit and Algolia **upload** can run when Hugo logs `TODAY`. Git-push production already builds HTML but **does not** deposit or reindex. The daily job is a side-effect scheduler, not a requirement of Hugo itself.
+`functions/daily-build.js` POSTs `DAILY` so Crossref deposit and Algolia **upload** can run when Hugo logs `TODAY`. **That hook is still configured and wanted.** Git-push production already builds HTML but **does not** deposit or reindex. The daily job is a side-effect scheduler, not a requirement of Hugo itself.
 
 ### What a port must still provide
 
@@ -232,13 +238,15 @@ Stay on Hugo if the admin + Word pipeline can commit markdown here and only the 
 
 Port (Next, Metalsmith, or S3+JS) if the goal is **true incremental publish** and avoiding Hugo’s full graph (related pages, taxonomy lists, Crossref batches, Algolia dump). That is a large rewrite of templates and shortcodes; do it **after** the content contract (front matter + shortcodes + DOI + citations) is encoded so the new engine cannot drift.
 
-Processed-content-on-S3 is compatible with **keeping** Hugo as the processor: Hugo (or a worker) renders **one** page → upload HTML/JSON → the public app does not rebuild. Related-article modules and homepage slices then need a small index document, not a full site generate. Those derived objects are sidecars too: do not round-trip generated topics/citations back into the source markdown.
+Media can move to **S3** (with ImageEngine origin pointed at the bucket) **without** porting the site off Hugo. That is a separate, smaller cut than “processed HTML on S3 + dynamic JS.”
 
 ---
 
 ## 8. Word → publication format (highest near-term)
 
 **Intent:** authors already submit **Word**; editors already use **Google Docs** ([Author's Guide](https://peacefulscience.org/authors-guide-and-call-for-submissions/)). There is **no** conversion pipeline in this repo. Manual copy into Hugo markdown is the bottleneck the admin UI cannot skip.
+
+**Input format (`.docx` vs Google Docs API) is deferred** until this implementation starts. The target output below does not change.
 
 ### Target output
 
@@ -254,7 +262,7 @@ A file that would pass a future admin validator:
 
 ### Pipeline sketch
 
-1. Accept `.docx` (and optionally a Google Doc export).
+1. Accept `.docx` and/or a Google Doc export (**choose at implementation start**).
 2. Convert to markdown (pandoc or equivalent), preserving footnotes and heading levels.
 3. Classify figures vs inline images; emit `{{< image ... >}}`; write files under `static/img/` and update `data/imgsize.json` from the real bytes.
 4. Detect ISBNs, Amazon URLs, DOIs, YouTube URLs → shortcodes in the **new** file (first ingest) and citation lookups in sidecar JSON.
@@ -279,12 +287,12 @@ Zotero is already recommended to authors; if the Word file contains a Zotero bib
 
 ## Decisions still needed
 
-See [open questions](open-questions.md) § Product direction. The blocking ones for implementation:
+See [open questions](open-questions.md). What still blocks a large implementation:
 
-1. Admin stack (custom app vs GitHub-backed CMS vs hosted Git gateway).
-2. Who may mint DOIs, and whether prints-only vs articles too.
-3. Which social networks to post to (**not Discourse**).
-4. Whether a content-repo split is required before admin, or only after.
-5. Stay on Hugo with incremental side effects vs S3+JS vs Next.
-6. Word path: `.docx` only vs Google Docs API as well.
-7. Tracking: keep GTM `GTM-KDF8R85` + GA4 vs a single `gtag` snippet (UA is out either way).
+1. **Admin stack** (undecided). Candidate: Decap + GitHub Actions for sidecar processes. DOI mint stays explicit.
+2. Which social networks to post to (**not Discourse**).
+3. Content-repo split: before admin, or after Word ingest.
+4. Keep Hugo vs S3-processed-HTML / Next (media-on-S3 can happen first without a port).
+5. Tracking snippet: GTM+GA4 vs single `gtag` (UA is out either way).
+
+**Deferred to the Word-ingest implementation start:** `.docx` vs Google Docs API.
