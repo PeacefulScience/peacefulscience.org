@@ -8,7 +8,7 @@ This folder describes how [peacefulscience.org](https://peacefulscience.org/) is
 | [Content model](content-model.md) | Sections, taxonomies, and how pages relate |
 | [Front matter](front-matter.md) | Per-section and per-subfolder YAML schemas (corpus scan + template check) |
 | [Shortcodes](shortcodes.md) | Custom and built-in Hugo shortcodes actually used in content |
-| [Build and deploy](build-and-deploy.md) | Netlify `make production` vs local Make; Prince PDFs (Lambda vs LFS when >6 MB) |
+| [Build and deploy](build-and-deploy.md) | Netlify `make production` vs local Make; Prince PDFs; LFS + `imgsize.json` |
 | [Product goals](goals.md) | Admin UI, Word ingest, Crossref, Algolia, Tailwind CSS, sidecar data; AMP and Discourse integration are defunct |
 | [Legacy and unused code](legacy.md) | Confirmed-defunct (AMP, Discourse share) plus other leftover candidates |
 | [Open questions](open-questions.md) | Things to confirm with maintainers before changing behavior |

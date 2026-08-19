@@ -27,6 +27,7 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 - **AMP is defunct.** Do not emit AMP pages. `layouts/_default/baseof.amp.html` and `config/amp/outputs.yml` are deletion candidates.
 - **Discourse integration is defunct.** Do not restore `share_discourse.py`, the `DISCOURSE` postbuild task, or auto-`commenturl`. Historical forum URLs in article bodies and existing `commenturl` values can stay as ordinary links until a later content pass. Goal 5 (social posts) does **not** include Discourse.
 - **Page PDFs are Prince of `_prince` HTML.** On-demand Lambda for typical pages; if the PDF would be **> ~6 MB**, generate locally and commit Git LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the main site **and** in that Prince HTML.
+- **Image dimensions live in `data/imgsize.json`.** Netlify does not download LFS; `make imginfo` is local (or a worker that has the bytes).
 
 ---
 
@@ -232,7 +233,7 @@ A file that would pass a future admin validator:
 
 1. Accept `.docx` (and optionally a Google Doc export).
 2. Convert to markdown (pandoc or equivalent), preserving footnotes and heading levels.
-3. Classify figures vs inline images; emit `{{< image ... >}}`.
+3. Classify figures vs inline images; emit `{{< image ... >}}`; write files under `static/img/` and update `data/imgsize.json` from the real bytes.
 4. Detect ISBNs, Amazon URLs, DOIs, YouTube URLs → shortcodes in the **new** file (first ingest) and citation lookups in sidecar JSON.
 5. Draft YAML from the author’s guide fields (bio → author page; topic areas → category suggestions in the admin, not a generated `tags:` rewrite loop).
 6. Open in the admin for human edit, DOI assign (sidecar), and publish.
