@@ -211,4 +211,7 @@ Martin Luther King, Jr., [_Pilgrimage to Nonviolence_](https://kinginstitute.sta
      Ibid. 
 
 [^18]:
-     Ibid.  
+     Ibid.
+
+[^19]:
+     Ibid.

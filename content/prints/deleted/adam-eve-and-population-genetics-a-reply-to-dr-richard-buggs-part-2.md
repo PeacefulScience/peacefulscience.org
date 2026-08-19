@@ -99,7 +99,7 @@ Accordingly, we can see from these studies that Dr. Buggs’s hypothesis – tha
 
 Venema, D.R. and McKnight, S (2017). [Adam and the Genome: Reading Scripture After Genetic Science.](/books/adam-genome) Brazos, Grand Rapids.
 
-[Adam, Eve, and Population Genetics](/series/biologos-deleted) (Blog Series)
+[Adam, Eve, and Population Genetics](/series/deleted-biologos/) (Blog Series)
 {.red-strike}
 
 S. Joshua Swamidass, [Three Stories on Adam](/articles/three-stories-on-adam/), Peaceful Science, 2018. [https://doi.org/10.54739/3doe](https://doi.org/10.54739/3doe)

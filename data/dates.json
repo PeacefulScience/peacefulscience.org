@@ -1393,7 +1393,7 @@
   },
   "content/prints/aar-miller-gae.md": {
     "created": 1641522930,
-    "modified": 1643126535
+    "modified": 1787166186
   },
   "content/prints/biologos-uturn-adam-eve-position.md": {
     "created": 1630347768,
@@ -1413,11 +1413,11 @@
   },
   "content/prints/deleted/adam-eve-and-population-genetics-a-reply-to-dr-richard-buggs-part-1.md": {
     "created": 1650904255,
-    "modified": 1650904255
+    "modified": 1787166186
   },
   "content/prints/deleted/adam-eve-and-population-genetics-a-reply-to-dr-richard-buggs-part-2.md": {
     "created": 1650904255,
-    "modified": 1650904255
+    "modified": 1787166186
   },
   "content/prints/deleted/adam-eve-apologetics-and-christian-witness.md": {
     "created": 1650902220,
@@ -1565,7 +1565,7 @@
   },
   "content/prints/misreading-mlk.md": {
     "created": 1645986941,
-    "modified": 1645997732
+    "modified": 1787166186
   },
   "content/prints/origns-yec.md": {
     "created": 1649633808,
@@ -1741,7 +1741,7 @@
   },
   "content/articles/how-jesus-changed-life.md": {
     "created": 1687051667,
-    "modified": 1692986683
+    "modified": 1787166186
   },
   "content/articles/examining-yec-claims-tonto-group-cambrian-1.md": {
     "created": 1716862861,
@@ -1781,7 +1781,7 @@
   },
   "content/articles/when-sin-begin-review.md": {
     "created": 1732724600,
-    "modified": 1732810488
+    "modified": 1787166186
   },
   "content/newsletter/wheaton-fellows.md": {
     "created": 1739250863,
@@ -1802,5 +1802,9 @@
   "content/newsletter/haarsma-review.md": {
     "created": 1742152660,
     "modified": 1742152878
+  },
+  "content/newsletter/ingebritsen.md": {
+    "created": 1692992853,
+    "modified": 1787166186
   }
 }
