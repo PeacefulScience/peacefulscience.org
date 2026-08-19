@@ -70,3 +70,5 @@ venv/
 *.swp
 *.swo
 *~
+# Generated topic stubs. Sidecar: data/topics.json. Index: content/topics/_index.md
+content/topics/*/

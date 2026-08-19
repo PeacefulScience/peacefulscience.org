@@ -565,6 +565,17 @@ article p:last-child {
   background-color: rgba(200,200,200,.5);
 }
 
+.topic-link {
+  @extend .tag-link;
+  background-color: rgba(0, 64, 0, 0.12);
+}
+
+.topic-kind {
+  @extend .badge;
+  @extend .text-muted;
+  text-transform: capitalize;
+}
+
 .breadcrumb-item {
   a {
     @extend .text-dark;

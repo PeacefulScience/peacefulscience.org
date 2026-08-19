@@ -7,7 +7,7 @@ node_bundler = "esbuild"
 included_files = ["prince", "prince-engine/**", "contrib/**", "fonts/**", "lib/**", "etc/**"]
 
 [build]
-command = "hugo -b $URL"
+command = "node code/topics/pages.js && hugo -b $URL"
 publish = "public/"
 NODE_VERSION = "20.15.1"
 
@@ -23,10 +23,10 @@ AWS_LAMBDA_JS_RUNTIME = "nodejs20.x"
 HUGO_ENV = "production"
 
 [context.branch-deploy]
-command = "hugo -b $DEPLOY_PRIME_URL --buildDrafts -F"
+command = "node code/topics/pages.js && hugo -b $DEPLOY_PRIME_URL --buildDrafts -F"
 
 [context.deploy-preview]
-command = "hugo -b $DEPLOY_PRIME_URL --buildDrafts -F"
+command = "node code/topics/pages.js && hugo -b $DEPLOY_PRIME_URL --buildDrafts -F"
 
 [dev]
 command =  "make -j 10 dev"

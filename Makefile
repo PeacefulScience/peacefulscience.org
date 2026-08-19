@@ -3,9 +3,15 @@ ifneq (,$(wildcard ./.env))
     export
 endif
 
-.PHONY: crossref pdf doi info imginfo pdfinfo news
+.PHONY: crossref pdf doi info imginfo pdfinfo news topics topic-pages
 
 all: imginfo pdfinfo production
+
+topics:
+	node code/topics/generate.js
+
+topic-pages:
+	node code/topics/pages.js
 
 algolia: 
 	hugo -e index
@@ -49,6 +55,7 @@ princeclean:
 	rm -rf `zipinfo -1  prince-14.2-aws-lambda.zip`
 
 hugo-watch:
+	node code/topics/pages.js
 	hugo -w 
 
 tailwind-watch:

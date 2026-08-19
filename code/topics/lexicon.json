@@ -1,0 +1,247 @@
+{
+  "people": [
+    {
+      "title": "Nathan Lents",
+      "aliases": ["Nathan H. Lents", "Nathan Lents"]
+    },
+    {
+      "title": "Deborah Haarsma",
+      "aliases": ["Deborah Haarsma", "President Haarsma"]
+    },
+    {
+      "title": "Michael Behe",
+      "aliases": ["Michael Behe", "Behe"]
+    },
+    {
+      "title": "Hugh Ross",
+      "aliases": ["Hugh Ross"]
+    },
+    {
+      "title": "Andrew Snelling",
+      "aliases": ["Andrew Snelling", "Snelling"]
+    },
+    {
+      "title": "Tim Keller",
+      "aliases": ["Tim Keller", "Timothy Keller"]
+    },
+    {
+      "title": "Alan Templeton",
+      "aliases": ["Alan Templeton"]
+    },
+    {
+      "title": "Ajit Varki",
+      "aliases": ["Ajit Varki", "Varki"]
+    },
+    {
+      "title": "John Inazu",
+      "aliases": ["John Inazu"]
+    },
+    {
+      "title": "William Dembski",
+      "aliases": ["William Dembski", "Dembski"]
+    },
+    {
+      "title": "Francis Collins",
+      "aliases": ["Francis Collins"]
+    },
+    {
+      "title": "Richard Dawkins",
+      "aliases": ["Richard Dawkins", "Dawkins"]
+    },
+    {
+      "title": "Ken Ham",
+      "aliases": ["Ken Ham"]
+    },
+    {
+      "title": "Todd Wood",
+      "aliases": ["Todd Wood"]
+    },
+    {
+      "title": "Ann Gauger",
+      "aliases": ["Ann Gauger"]
+    },
+    {
+      "title": "William Lane Craig",
+      "aliases": ["William Lane Craig", "WLC"]
+    },
+    {
+      "title": "Kenneth R. Miller",
+      "aliases": ["Kenneth R. Miller", "Ken Miller"]
+    },
+    {
+      "title": "Stephen Meyer",
+      "aliases": ["Stephen Meyer", "Stephen C. Meyer"]
+    },
+    {
+      "title": "Darrel Falk",
+      "aliases": ["Darrel Falk"]
+    },
+    {
+      "title": "Dennis Venema",
+      "aliases": ["Dennis Venema"]
+    },
+    {
+      "title": "Michael Heiser",
+      "aliases": ["Michael Heiser", "Mike Heiser"]
+    },
+    {
+      "title": "James Tour",
+      "aliases": ["James Tour", "James M. Tour"]
+    }
+  ],
+  "organizations": [
+    {
+      "title": "BioLogos",
+      "aliases": ["BioLogos"]
+    },
+    {
+      "title": "Reasons to Believe",
+      "aliases": ["Reasons to Believe", "RTB"]
+    },
+    {
+      "title": "Reasonable Faith",
+      "aliases": ["Reasonable Faith"]
+    },
+    {
+      "title": "Discovery Institute",
+      "aliases": ["Discovery Institute"]
+    },
+    {
+      "title": "American Scientific Affiliation",
+      "aliases": ["American Scientific Affiliation", "ASA"]
+    },
+    {
+      "title": "AAAS",
+      "aliases": ["AAAS", "American Association for the Advancement of Science"]
+    },
+    {
+      "title": "John Templeton Foundation",
+      "aliases": ["John Templeton Foundation", "Templeton Foundation", "JTF"]
+    },
+    {
+      "title": "IVP Academic",
+      "aliases": ["IVP Academic", "InterVarsity Press"]
+    },
+    {
+      "title": "Museum of the Bible",
+      "aliases": ["Museum of the Bible"]
+    },
+    {
+      "title": "Answers in Genesis",
+      "aliases": ["Answers in Genesis", "AiG"]
+    },
+    {
+      "title": "Peaceful Science",
+      "aliases": ["Peaceful Science"]
+    }
+  ],
+  "works": [
+    {
+      "slug": "genealogical-adam-eve",
+      "title": "The Genealogical Adam and Eve",
+      "aliases": [
+        "The Genealogical Adam and Eve",
+        "Genealogical Adam and Eve",
+        "GAE"
+      ]
+    },
+    {
+      "title": "Adam and the Genome",
+      "aliases": ["Adam and the Genome"]
+    },
+    {
+      "title": "Kitzmiller v. Dover",
+      "aliases": ["Kitzmiller v. Dover", "Kitzmiller", "Dover Trial"]
+    },
+    {
+      "title": "Darwin's Black Box",
+      "aliases": ["Darwin's Black Box"]
+    },
+    {
+      "title": "On the Origin of Species",
+      "aliases": ["On the Origin of Species"]
+    }
+  ],
+  "topics": [
+    {
+      "title": "Genealogical ancestry",
+      "aliases": ["genealogical ancestry", "genealogical ancestors", "universal ancestry"]
+    },
+    {
+      "title": "Genetic ancestry",
+      "aliases": ["genetic ancestry", "genetic ancestors"]
+    },
+    {
+      "title": "Young Earth Creationism",
+      "aliases": ["Young Earth Creationism", "young-earth creationism", "Young Earth Creationist", "Young Earth Creationists", "YEC"]
+    },
+    {
+      "title": "Old Earth Creationism",
+      "aliases": ["Old Earth Creationism", "old-earth creationism"]
+    },
+    {
+      "title": "Intelligent Design",
+      "aliases": ["Intelligent Design", "intelligent design"]
+    },
+    {
+      "title": "Theistic evolution",
+      "aliases": ["theistic evolution", "Theistic Evolution", "evolutionary creation"]
+    },
+    {
+      "title": "Common descent",
+      "aliases": ["common descent", "Common Descent"]
+    },
+    {
+      "title": "Historical Adam",
+      "aliases": ["historical Adam", "Historical Adam"]
+    },
+    {
+      "title": "Adam and Eve",
+      "aliases": ["Adam and Eve"]
+    },
+    {
+      "title": "Image of God",
+      "aliases": ["image of God", "Image of God", "imago Dei"]
+    },
+    {
+      "title": "Methodological naturalism",
+      "aliases": ["methodological naturalism", "Methodological Naturalism"]
+    },
+    {
+      "title": "De novo Adam",
+      "aliases": ["de novo Adam", "de novo creation", "created de novo"]
+    },
+    {
+      "title": "Neanderthals",
+      "aliases": ["Neanderthal", "Neanderthals"]
+    },
+    {
+      "title": "Tonto Group",
+      "aliases": ["Tonto Group"]
+    },
+    {
+      "title": "Grand Canyon",
+      "aliases": ["Grand Canyon"]
+    },
+    {
+      "title": "Original sin",
+      "aliases": ["original sin", "Original Sin"]
+    },
+    {
+      "title": "Human uniqueness",
+      "aliases": ["human uniqueness", "human exceptionalism"]
+    },
+    {
+      "title": "Artificial intelligence",
+      "aliases": ["artificial intelligence", "Artificial Intelligence"]
+    },
+    {
+      "title": "Race",
+      "aliases": ["race and ancestry"]
+    },
+    {
+      "title": "Population genetics",
+      "aliases": ["population genetics"]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{{ $out := slice }}
+{{ with site.Data.topics }}
+  {{ with index .pages $.RelPermalink }}
+    {{ $out = . }}
+  {{ end }}
+{{ end }}
+{{ return $out }}
