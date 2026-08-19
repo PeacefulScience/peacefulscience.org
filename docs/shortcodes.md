@@ -77,7 +77,7 @@ Figure caption.
 | 0 | `src` (site path or URL; `imgurl` warns if missing) | required |
 | 1 | CSS class on `<figure>` | `aside-xl-right` |
 
-Corpus classes: default `aside-xl-right` (68), `aside-xl-wide` (51), `aside-xl-wide del` (2). Always a matching `{{% /image %}}` or `{{< /image >}}`. Inner caption is `RenderString` if non-whitespace. 80 uses `{{%`, 41 use `{{<`.
+Corpus classes: default `aside-xl-right` (68), `aside-xl-wide` (51), `aside-xl-wide del` (2). Always a matching `{{% /image %}}` or `{{< /image >}}`. Inner caption is `RenderString` if non-whitespace. 80 uses `{{%`, 41 use `{{<`. Width/height come from `data/imgsize.json` (required; Netlify has no LFS bytes).
 
 ### `mediatext`
 

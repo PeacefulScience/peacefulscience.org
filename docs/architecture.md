@@ -87,7 +87,7 @@ Homepage and cards use `partial "render"` which picks `layouts/partials/render/_
 
 - **CSS:** **Destination is Tailwind.** Today production still compiles Bootstrap 4 SCSS from `assets/css/main.scss` (plus Font Awesome) through Hugo `resources.ToCSS` + PostCSS (PurgeCSS, autoprefixer, cssnano). A parallel Tailwind pipeline exists (`sources/tailwind.css`, `tailwind.config.js`, `npm run tailwind` → `assets/css/tw.css`) but is **commented out** of `code/production` and `head.html`, and `tw.css` is gitignored. Cleanup should turn Tailwind on and migrate remaining Bootstrap/custom SCSS onto it — not delete the Tailwind files.
 - **JS:** `assets/js/turbo.js` is the entry. Hugo `js.Build` bundles Hotwired Turbo, navbar, TOC progress, YouTube player, and (empty) subscribe helpers. Search is a separate InstantSearch bundle on the search layout.
-- **Images / PDFs:** `static/img` and `static/pdf`, stored in **Git LFS** and served through **Netlify Large Media**. `data/imgsize.json` / `data/pdfinfo.json` record dimensions / last-modified. **Page PDFs** (download button on articles/prints/about) are Prince output of the `print` (`_prince`) HTML — on-demand via `functions/pdf`, or a committed LFS file at `static/pdf/<section>/<slug>.pdf` when the PDF would exceed the Lambda **6 MB** limit. See [build-and-deploy](build-and-deploy.md#article-pdfs-prince).
+- **Images / PDFs:** `static/img` and `static/pdf` are **Git LFS** (Netlify Large Media as the LFS store). **Netlify builds do not download LFS objects** — the clone has pointer files, not pixels. Hugo therefore cannot read image dimensions at build time. **`data/imgsize.json` is required sidecar:** keys like `/img/2024/07/foo.jpg` → `{width, height}`. Templates (`render-image.html`, `image` / `mediatext` shortcodes, header images) set `width`/`height` from that map. Adding or replacing an image is incomplete until `make imginfo` runs **where the real files exist** and the JSON is committed. Do not regenerate this file on Netlify (`imgsize.py` would skip pointers and empty the map). `data/pdfinfo.json` is git lastmod for uploaded PDFs (does not need file bytes). **Page PDFs** are Prince of `_prince` HTML — Lambda, or LFS at `static/pdf/<section>/<slug>.pdf` when over ~6 MB. See [build-and-deploy](build-and-deploy.md#article-pdfs-prince) and [images](build-and-deploy.md#git-lfs-and-image-sizes).
 - **Image CDN:** Production templates rewrite image URLs to ImageEngine (`8l2ic7fx.cdn.imgeng.in`) via `partials/imgcdn.html`. Local `hugo server` serves files from `static/` when they exist.
 
 ### Data files (`data/`) — sidecar pattern
@@ -99,7 +99,7 @@ Canonical example: **`doi.json`**. Keys are permalinks (`/articles/foo/`). `part
 | File | Purpose |
 | --- | --- |
 | `doi.json` | Path → DOI under prefix `10.54739` |
-| `imgsize.json` | Image width/height (binaries, not articles) |
+| `imgsize.json` | Image width/height. **Required at Netlify build** because LFS files are not downloaded. Update with every new/changed image (`make imginfo` locally). |
 | `pdfinfo.json` | Static PDF lastmod for the sitemap |
 | `dates.json` | Created/modified unix times from git (Husky pre-commit on `content/`) |
 | `urlmap.json` | URL rewrites used by the link render hook |
@@ -121,7 +121,7 @@ Analytics JSON (`mostread.json`, `trending.json`, `ytd.json`) is gitignored and,
 | `render.js` | Post-process every HTML file: run `script[render]`, strip `[remove]`, optional MathJax, collect CSS classes |
 | `doi.py` | **CLI only** (`make doi`). Writes `data/doi.json`. Not called on Netlify. |
 | `newsletter/` | **CLI only** (`make news`). MJML + Mailchimp campaign upsert. Not called on Netlify. |
-| `imgsize.py` / `pdfinfo.py` | **CLI only** (`make imginfo` / `pdfinfo`). Refresh committed JSON. |
+| `imgsize.py` / `pdfinfo.py` | **CLI only** (`make imginfo` / `pdfinfo`). Refresh committed JSON. `imginfo` **must** run on a machine that has smudged LFS files. |
 | `document.py` | Parse Markdown front matter (newsletter CLI; also used by the defunct Discourse share script) |
 | `update_analytics.py` | UA v3 → cache JSON (`ANALYTICS` task only) |
 | `extract.js` | RDF extract; commented out of production |

@@ -8,6 +8,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 - **No working front-end admin:** Decap (`/admin/`) and Forestry are in the repo but **not operational**. Publishing and corrections go through **Git / GitHub**.
 - **DOI assign vs deposit:** minting IDs is local `make doi` (writes `data/doi.json`, **not** the article file). Crossref *deposit* is the DAILY Netlify hook, and only if Hugo logged `TODAY`.
 - **Sidecar data:** auto-generated fields follow the DOI pattern (`data/*.json` keyed by path/URL) so they do not clobber the article’s git last-modified (`enableGitInfo`). Editorial body/front-matter edits are supposed to change lastmod.
+- **Image sizes:** adding an image requires updating `data/imgsize.json` (`make imginfo` locally). Netlify **does not download LFS files**, so the build cannot measure `static/img/`. Do not regenerate that JSON on Netlify.
 - **Mailchimp campaigns:** local `make news` only. The Netlify build does not call Mailchimp. Subscribe forms on the site are separate (browser POST to Mailchimp).
 - **AMP is defunct.** No AMP output. Safe to delete `layouts/_default/baseof.amp.html` and `config/amp/`.
 - **CSS: Tailwind.** Prefer Tailwind; migrate all remaining CSS (today production is still Bootstrap 4 SCSS). The Tailwind toolchain is the destination, not leftover.
@@ -33,7 +34,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 9. **OneSignal:** Should web push stay? The implementation still points at WordPress plugin paths.
 10. **Analytics:** UA v3 code cannot work as written. Is GTM/GA4 the only analytics now? Can `update_analytics.py`, `byviews.html`, and the analytics git repo hook be removed?
 11. **MathJax, cite/bookcover functions:** which of these are still required in production? (**AMP: defunct.** **Tailwind: keep and migrate all CSS onto it.**)
-12. **Netlify Large Media / Git LFS:** Netlify has been winding Large Media down. Is it still enabled on this site, and is there a preferred replacement for images/PDFs?
+12. **Netlify Large Media / Git LFS:** Confirmed: **Netlify does not download LFS** in the build; that is why `imgsize.json` is committed. Remaining: Large Media is being wound down — is it still enabled, and is there a preferred replacement for storing the binaries (S3, etc.) while keeping the sidecar?
 
 ## Build behavior
 

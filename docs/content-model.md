@@ -87,11 +87,13 @@ New articles: copy an existing file in the same folder (not a different prints s
 
 ## Media
 
-Put images in `static/img/` (often `static/img/YYYY/MM/`). They are Git LFS objects. After adding images, regenerate sizes:
+Put images in `static/img/` (often `static/img/YYYY/MM/`). They are Git LFS objects. **Netlify does not download LFS**, so the production Hugo build cannot read width/height from the files. After adding or changing images, you **must** refresh the sidecar and commit it with the image:
 
 ```bash
-make imginfo
+make imginfo    # writes data/imgsize.json from the real files on your machine
 ```
+
+Skipping that step ships pages with no `width`/`height` on `<img>` even if the picture appears via ImageEngine. Never run `make imginfo` on Netlify.
 
 PDFs:
 

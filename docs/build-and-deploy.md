@@ -21,7 +21,7 @@ From `netlify.toml`:
 | deploy-preview | same as branch-deploy | no | no |
 | default `[build].command` | `hugo -b $URL` | no | no |
 
-`make production` is **not** `make all`. `make all` is local (`imginfo` + `pdfinfo` + `production`). Netlify never regenerates `data/imgsize.json` or `data/pdfinfo.json`.
+`make production` is **not** `make all`. `make all` is local (`imginfo` + `pdfinfo` + `production`). Netlify never regenerates `data/imgsize.json` or `data/pdfinfo.json` — and **must not**, because it does not download LFS files.
 
 If `PRINCE=./prince` is set in the Netlify env, `make production` first downloads/unzips the Prince Lambda zip (for the on-demand PDF **function**). It does not stamp article PDFs into `public/` at build time except when a matching file already exists under `static/pdf/` (see [Article PDFs](#article-pdfs-prince)).
 
@@ -90,7 +90,7 @@ make news INPUT=content/newsletter/foo.md
 | `doi` | **no** | `python code/doi.py` — mint `10.54739/xxxx` into `data/doi.json` (must be committed). Converts `content/articles/foo.md` → `/articles/foo/` as the map key. Does not talk to Crossref. |
 | `news` | **no** | `python -m code.newsletter` — MJML via mjml.io, create/update Mailchimp campaign, write `mailchimp.campaign_id` back into the markdown, `open newsletter.html`. Send-to-list is commented out; it sends **test** emails. Writing the id into the article is the pattern **not** to extend (use sidecar data; see [goals](goals.md)). |
 | `pdf` | **no** | Makefile calls `code/pdf ${INPUT}`, but **that script is not in the repo**. Oversized PDFs: local Prince on `_prince` HTML (below). |
-| `imginfo` / `pdfinfo` | **no** | Refresh `data/imgsize.json` / `data/pdfinfo.json`; commit the JSON |
+| `imginfo` / `pdfinfo` | **no** | Refresh `data/imgsize.json` / `data/pdfinfo.json`; commit the JSON. **`imginfo` needs the real LFS images** (Pillow). Never run it on Netlify. |
 | `algolia` | **no** | Separate from the DAILY task: `hugo -e index` then `npm run algolia` using `config/index/outputs.yml` |
 | `crossref` / `crossref-nocheck` | **no** | Local deposit of `public/.xref/{conf,posted,book}.xml` with XSD check. Production DAILY deposits `_cache/xref/*.xml` without `xmllint`. |
 | `links` | **no** | `HUGO_LINKS=1 hugo -F` dump |
@@ -175,6 +175,26 @@ Husky (installed on `npm install`):
 - **pre-push / post-checkout / post-commit / post-merge:** Git LFS
 
 `.gitattributes` sends `*.pdf`, `*.jpg`, `*.jpeg`, `*.png`, `*.webp` (and a broken `gif` line) to LFS. `.lfsconfig` points LFS at Netlify Large Media (`https://<site-id>.netlify.app/.netlify/large-media`).
+
+### Git LFS and image sizes
+
+Netlify **does not download LFS files** for the Hugo build. `static/img/` in that clone is pointer text, not pixels. Production therefore cannot call Pillow / ImageMagick to measure images.
+
+**Adding or replacing an image always includes the sidecar:**
+
+```bash
+# after putting files in static/img/… (LFS)
+make imginfo          # python code/imgsize.py → data/imgsize.json
+# commit the image (LFS pointer) AND data/imgsize.json
+```
+
+Keys are site paths (`/img/YYYY/MM/foo.jpg`). Templates that consume the map: `layouts/_default/_markup/render-image.html`, `layouts/shortcodes/image.html`, `mediatext.html`, header images in `single.html`. Without a row, `width`/`height` are omitted (layout shift). ImageEngine still serves the file at request time via Large Media; the sidecar is what the **build** can see.
+
+`imgurl.html` `fileExists` can still succeed on a pointer file, so it will **not** catch a forgotten `imginfo`. `imgsize.py` silently skips unreadable files (`except: pass`).
+
+`pdfinfo` only runs `git log` on paths, so it does not need PDF bytes. Page-PDF LFS files still need to be uploaded so the Netlify CDN can serve them; that is separate from measuring images.
+
+A hosted admin or Word ingest must run the equivalent of `imginfo` on a worker that has the actual image bytes, then commit `data/imgsize.json` (sidecar — do not write dimensions into the article).
 
 ## Environment variables
 

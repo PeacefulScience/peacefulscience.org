@@ -19,6 +19,8 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 
 **Sidecar data (DOI pattern):** auto-generated fields belong in `data/*.json` (or an equivalent store), keyed by page path or URL, **not** written back into the article’s front matter or body. `config.yml` has `enableGitInfo: true`, so Hugo `.Lastmod` (page “modified” date, sitemap, Algolia `lastmod`, JSON-LD `dateModified`) is the last **git commit of that markdown file**. Touching the article to store a DOI, detected entities, resolved citations, or a social-post id would bump “modified” even when the prose did not change. See [architecture](architecture.md) § Sidecar data.
 
+This is also **load-bearing for images:** Netlify **does not download Git LFS files** during the Hugo build. Templates cannot open `static/img/…` to read width/height. Adding an image **requires** updating `data/imgsize.json` (`make imginfo` locally, where the real files exist) and committing that JSON with the LFS pointer. Skipping the sidecar means missing `width`/`height` on the live site (layout shift) even if ImageEngine still serves the file. Never regenerate `imgsize.json` on Netlify — Pillow would see pointer files, skip them, and wipe the map.
+
 ### Confirmed stack decisions
 
 - **CSS: Tailwind.** Prefer Tailwind for all styling. Production still compiles Bootstrap 4 via `assets/css/main.scss`; the Tailwind pipeline (`sources/tailwind.css` → `assets/css/tw.css`) exists but is commented out of `code/production` and `head.html`. A cleanup should **migrate remaining CSS to Tailwind**, not delete the Tailwind tooling. Print/Prince CSS in `single.print.html` is a separate sheet and must keep working (or be ported deliberately).
@@ -50,6 +52,7 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 | **Categories** | Taxonomy pages in `content/categories/`. `featured` and `gae` are `hidden: true`. `tags` is in `config.yml` but unused. Homepage buckets are **hard-coded** in `layouts/index.html`. | Auto-suggest into sidecar (or an admin review queue). Editor-chosen `categories:` in front matter is editorial, not generated. Do not invent slugs that have no `_index.md`. |
 | **New authors** | Missing `content/authors/<slug>/` warns `AUTHOR.MISSING`. Corpus mixes slugs (`swamidass`) and display names (`Dennis Venema`, `Peaceful Science`). | Create author page (bio, affiliation, optional `orcid` / social) when a byline is new; keep display-name bylines valid until a slug exists. |
 | **Page PDFs** | Lambda Prince of `_prince` HTML fails when the PDF is **> ~6 MB**. Those files must be generated locally and committed to LFS at `static/pdf/<section>/<slug>.pdf`. | Host Prince or a worker that writes LFS; do not invent a second layout. Same `_prince` HTML as the Lambda. |
+| **Images** | Files in `static/img/` are Git LFS. **Netlify does not download LFS** in the build, so Hugo cannot measure them. `image` / `mediatext` / Markdown images / header images read `data/imgsize.json`. | Any upload path must write the LFS object **and** patch `imgsize.json` (Pillow on the real bytes). Do not run `make imginfo` in the Netlify build. |
 
 ### Design implication
 
@@ -223,7 +226,7 @@ A file that would pass a future admin validator:
 - Body as Goldmark markdown (`unsafe` HTML only where the site already allows it).
 - Shortcodes: `image` for figures, `amazon` for books, `youtube` / `vimeo` for video, footnotes that match **both** `single.html` sidenotes and `single.print.html` (Prince). JS embeds need a print fallback.
 - Internal links suggested, not silently rewritten.
-- Images extracted, named, and (until media moves to S3) placed where `imgsize.json` / ImageEngine expect them.
+- Images extracted, named, placed under `static/img/`, and **`data/imgsize.json` updated from the real files** (Netlify will not have LFS bytes to measure). Then ImageEngine / `imgcdn`.
 
 ### Pipeline sketch
 
@@ -241,7 +244,7 @@ Zotero is already recommended to authors; if the Word file contains a Zotero bib
 ## Cross-cutting constraints
 
 - **Page PDFs are Prince of `_prince` HTML**, not the main site and not Word export. Lambda for normal sizes; **> ~6 MB → local Prince + `static/pdf/<section>/<slug>.pdf` (LFS)**. Shortcodes must render in both HTML outputs.
-- **Sidecar data for generated fields:** follow `data/doi.json`. Auto topics, resolved citations, social ids, image metrics, and similar must not be written into article markdown. That keeps `.Lastmod` (git info) as “the prose last changed.” First-time Word ingest **creates** the article, so that commit *should* set lastmod. Later enrichment must not. Baked PDFs go in `static/pdf/`, not the article.
+- **Sidecar data for generated fields:** follow `data/doi.json`. Auto topics, resolved citations, social ids, image metrics, and similar must not be written into article markdown. That keeps `.Lastmod` (git info) as “the prose last changed.” First-time Word ingest **creates** the article, so that commit *should* set lastmod. Later enrichment must not. Baked PDFs go in `static/pdf/`, not the article. **New images always update `data/imgsize.json`** — Netlify never sees LFS bytes.
 - **DOI minting is two-phase:** write `data/doi.json` (or successor store), then deposit XML. The admin and any S3 pipeline must not collapse those phases. The DOI never needs to live in front matter (`getdoi` already warns `DOI.OLD` when it does).
 - **Per-folder schemas and shortcodes are the publication format.** Word ingest and any new backend emit that format; they do not invent a parallel CMS schema.
 - **TODAY-gated DAILY tasks** are the current way to avoid depositing/indexing on every push. Incremental side effects should replace that gate rather than adding more full-site rebuilds.
