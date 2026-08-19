@@ -328,7 +328,7 @@ Generated abstracts/entities still go in sidecar JSON so git lastmod stays hones
 - **AMP and Discourse integration are defunct.** Do not spend implementation time reviving them.
 - **Universal Analytics is defunct.** Remove it in the near-term tracking pass; do not rebuild features on UA Reporting API v3.
 - **Git remains the audit log** until a port says otherwise. Suggest Changes / pull requests should keep working for readers even after editors get an admin.
-- **JSON-LD stays the mini-language.** Goal 9 improves cascades and directives; it does not restore `layouts/partials/seo/structured/`. **`/_prince/` print HTML is Prince-only** — keep it out of the index (`robots.txt` Disallow, meta `noindex`, `X-Robots-Tag`). Do not sitemap it, do not add JSON-LD or canonical-as-self, do not treat it as an AMP-style alternate.
+- **JSON-LD stays the mini-language.** Goal 9 improves cascades and directives; it does not restore `layouts/partials/seo/structured/`. **`/_prince/` print HTML is Prince-only** — keep it out of the index (`robots.txt` Disallow, meta `noindex`, `X-Robots-Tag`). Do not sitemap it, do not add JSON-LD or canonical-as-self, do not treat it as an AMP-style alternate. **Keep Schema.org microdata** on the print layout for Prince.
 
 ## Decisions still needed
 

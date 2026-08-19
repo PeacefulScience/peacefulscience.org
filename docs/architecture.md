@@ -73,7 +73,7 @@ This site does **not** use a Hugo theme in `config.yml`. The `themes/hyde-x` git
 - `layouts/_default/list.html` — section and taxonomy lists
 - `layouts/index.html` — homepage composition (latest, featured, topic slices)
 - `layouts/books/single.html` — book pages with Amazon cover and related articles
-- `layouts/_default/single.print.html` + `baseof.print.html` — Prince input HTML at `/_prince/…` (not a public page; `noindex` + robots Disallow). Do not index this output.
+- `layouts/_default/single.print.html` + `baseof.print.html` — Prince input HTML at `/_prince/…` (not a public page; `noindex` + robots Disallow). Keep Schema.org microdata for Prince. Do not index this output.
 - `layouts/_default/list.algolia.json` — search index
 - `layouts/_default/index.redir` — Netlify `_redirects`
 - `layouts/_default/home.xref*.xml` — Crossref DOI deposit XML

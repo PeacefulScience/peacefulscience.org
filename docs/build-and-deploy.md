@@ -113,7 +113,7 @@ There is **one** correct PDF layout: Hugo’s `print` output format (`config.yml
 
 Do not print the main site HTML. Do not use a second stylesheet or Word’s PDF export for these page PDFs.
 
-**`/_prince/` is not for humans or crawlers.** It exists so Prince (Lambda or local) can fetch print-styled HTML. Search and AI must not index it. Blocking: `layouts/robots.txt` `Disallow: /_prince/`, meta `noindex` on `baseof.print.html`, `X-Robots-Tag` on `/_prince/*` in `static/_headers`. Not in the sitemap. Print output is `notAlternative` (Hugo must not advertise it as `rel=alternate`). The PDF Lambda and local `prince` fetch that URL directly and ignore robots.
+**`/_prince/` is not for humans or crawlers.** It exists so Prince (Lambda or local) can fetch print-styled HTML. Search and AI must not index it. Blocking: `layouts/robots.txt` `Disallow: /_prince/`, meta `noindex` on `baseof.print.html`, `X-Robots-Tag` on `/_prince/*` in `static/_headers`. Not in the sitemap. Print output is `notAlternative` (Hugo must not advertise it as `rel=alternate`). **Schema.org microdata stays** on `baseof.print.html` (`itemscope` / `itemtype`); Prince uses it. The PDF Lambda and local `prince` fetch that URL directly and ignore robots.
 
 **On-demand (typical pages):** `_redirects` has `/pdf/* /.netlify/builders/pdf 200`. `functions/pdf` fetches `https://peacefulscience.org/_prince/<section>/<slug>/`, runs Prince, returns the PDF. Allowed sections: `articles`, `prints`, `about`. Netlify/AWS Lambda **response bodies max out at 6 MB**. Long, image-heavy articles produce PDFs larger than that and the function fails. The handler also base64-encodes the file, so a PDF near 6 MB can fail even if slightly under.
 
