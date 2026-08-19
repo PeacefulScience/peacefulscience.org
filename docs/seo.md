@@ -71,7 +71,7 @@ Article-shaped pages also set `headline`, `datePublished` / `dateModified`, `ima
 
 ## JSON-LD defects (highest leverage)
 
-Template/cascade bugs. Several were fixed in a later hygiene pass (cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`). Remaining:
+Template/cascade bugs. Several were fixed in later hygiene passes (cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, title/description unescape). Remaining:
 
 ### SearchAction does not drive search
 
@@ -145,7 +145,7 @@ Sidecar rule still applies: generated SEO fields (entities, resolved citations, 
 
 Independent of Word ingest. Order is technical, not calendar.
 
-1. **JSON-LD hygiene:** done for cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, empty `twitter:creator`. Title/description escaping is a separate follow-up.
+1. **JSON-LD hygiene:** done for cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, empty `twitter:creator`, title/description unescape then `jsonify`.
 2. **SearchAction + InstantSearch routing** (shared with goal 3).
 3. **Head/snippet quality:** description no longer falls back to `.Kind`; OG/Twitter images both use ImageEngine. Optional BreadcrumbList; PDF sitemap policy still open.
 4. **Delete unused** `layouts/partials/seo/structured/` (and `seo/main.html` if still unreferenced).
