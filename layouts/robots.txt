@@ -1,3 +1,5 @@
-User-agent: * 
+User-agent: *
 Disallow: **/page/*
+# Print HTML is Prince input only (PDF intermediate). Do not index.
+Disallow: /_prince/
 Sitemap: {{ "sitemap.xml" | absURL }}
