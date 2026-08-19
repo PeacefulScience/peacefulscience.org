@@ -45,7 +45,7 @@ This is a **candidate list** for a later cleanup, not a deletion plan. Confirm e
 
 `package.json` includes packages that templates/scripts may not need on the critical path, for example:
 
-- `@google-cloud/language`, `citeproc`, `zotero-translators`, `puppeteer`, `onesignal` (npm) vs the CDN SDK in `onesignal.js`
+- `@google-cloud/language` (unused; candidate for goal 4 entity detection), `citeproc` / `zotero-translators` (unused; candidate for goal 2 citations), `puppeteer`, `onesignal` (npm) vs the CDN SDK in `onesignal.js`
 - `"package.json": "^2.0.1"` (almost certainly accidental)
 - `atomic-algolia-fixed` listed in dependencies while the `algolia` script calls `atomic-algolia`
 
@@ -55,7 +55,7 @@ Hugo is several major versions behind; a “cleanup” that also upgrades Hugo i
 
 ## What *is* still on the hot path
 
-Keep these unless product direction changes:
+Keep these unless product direction in [goals](goals.md) replaces them:
 
 - `code/production`, `render.js`, usercache plugin
 - Algolia index generation + `search.js`

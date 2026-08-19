@@ -4,6 +4,8 @@ Peaceful Science is a content site about science, faith, and the question *what 
 
 The published site is **static HTML** hosted on **Netlify**. Hugo renders Markdown into `public/`. A post-render Node step mutates that HTML. Netlify also runs a few on-demand functions. There is **no working front-end admin**; the source of edits is this git repo.
 
+Intended direction (admin UI, Word ingest, Crossref/Algolia, possible S3/backend change) is in [goals](goals.md).
+
 ```mermaid
 flowchart LR
   subgraph source [This repo]

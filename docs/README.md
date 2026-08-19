@@ -9,6 +9,7 @@ This folder describes how [peacefulscience.org](https://peacefulscience.org/) is
 | [Front matter](front-matter.md) | Per-section and per-subfolder YAML schemas (corpus scan + template check) |
 | [Shortcodes](shortcodes.md) | Custom and built-in Hugo shortcodes actually used in content |
 | [Build and deploy](build-and-deploy.md) | What Netlify `make production` actually runs vs local-only Make (DOI, Mailchimp) |
+| [Product goals](goals.md) | Admin UI, Crossref, Algolia, entities, social, content-repo split, backend/S3, Word ingest |
 | [Legacy and unused code](legacy.md) | Likely-dead paths to confirm before a cleanup refactor |
 | [Open questions](open-questions.md) | Things to confirm with maintainers before changing behavior |
 
