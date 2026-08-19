@@ -16,3 +16,14 @@ There is a direct and preferred way to suggest specific corrections. At the bott
 
 In some cases, before proposing specific corrections, it may be better to [create an “issue”](https://github.com/PeacefulScience/peacefulscience.org/issues) where a potential problem can be discussed.
 
+## For developers
+
+This is a [Hugo](https://gohugo.io/) site hosted on [Netlify](https://app.netlify.com/sites/peacefulscience/deploys). Content lives in `content/` and is published by committing to git (there is no working in-site admin UI).
+
+Developer docs:
+
+- [How the repo is put together](docs/architecture.md)
+- [Content model and front matter](docs/content-model.md)
+- [Local build and Netlify deploy](docs/build-and-deploy.md)
+- [Index of all developer docs](docs/README.md)
+
