@@ -1,1 +1,1 @@
-{{ return (.Page.Title | markdownify | plainify) }}
+{{ return (.Page.Title | markdownify | plainify | htmlUnescape) }}
