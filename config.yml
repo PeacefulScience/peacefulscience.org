@@ -58,10 +58,6 @@ outputformats:
     baseName: _redirects
     isPlainText: true
     notAlternative: true
-  precompute:
-    notAlternative: true
-    weight: 1
-    permalinkable: False
   HTML:
     weight: 2 
   xrefposted:

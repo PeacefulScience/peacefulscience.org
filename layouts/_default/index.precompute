@@ -1,8 +1,0 @@
-
-{{- warnf "Precomputing views..." }}
-{{- $PAGES := partialCached "byviews" . }}
-{{- range $key, $value := $PAGES.Lookup -}}
-{{ printf "%s\t%d\t%d\t%f" $key $value.Sessions $value.Views (mul $value.Trending 1.0) }}
-{{ end -}}
-{{- warnf "DONE" }}
-

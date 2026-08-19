@@ -4,7 +4,7 @@ Pinned versions (from `netlify.toml` / `runtime.txt`):
 
 - Hugo **0.97.3**
 - Node **20.15.1** (functions runtime `nodejs20.x`)
-- Python **3.8** listed in `runtime.txt`. The default production path (`BUILD` only) does **not** call Python. Python is for local CLI (`doi`, `news`, `imginfo`). The `DISCOURSE` hook is **defunct**. The `ANALYTICS` hook is **defunct Universal Analytics** (near-term delete).
+- Python **3.8** listed in `runtime.txt`. The default production path (`BUILD` only) does **not** call Python. Python is for local CLI (`doi`, `news`, `imginfo`). The `DISCOURSE` hook is **defunct**. The old `ANALYTICS` UA hook is **deleted**.
 
 The site was written against Hugo 0.97 APIs (`getJSON`, `.Site.IsServer`, `resources.ToCSS`, etc.). Newer Hugo will likely require template updates.
 
@@ -44,7 +44,7 @@ if TASKS == "DAILY":
 | --- | --- | --- |
 | Git push / merge to the production branch | `BUILD` | Hugo `--minify`, `render.js`, stash `.xref` + `algolia.json` + `_redirects` in `_cache/`. **No** Crossref, Algolia upload, Mailchimp, or DOI writes. |
 | Scheduled function `functions/daily-build.js` (`0 14 * * *`) POSTs body `DAILY` to `BUILD_HOOK` | `BUILD CROSSREF ALGOLIA` | Same as BUILD, then **if** `_cache/hugo.log` contains `TODAY`: deposit Crossref XML and run `npm run algolia`. |
-| Manual build hook with a custom body | whatever you post (`ANALYTICS`, `CACHE`, …) | See hooks below. Do not use `DISCOURSE`. |
+| Manual build hook with a custom body | whatever you post (`CACHE`, …) | See hooks below. Do not use `DISCOURSE`. |
 
 `TODAY` is a Hugo `warnf` from `single.html` when `PublishDate` is today’s date. No new page today → daily Crossref/Algolia steps are skipped even on the DAILY hook.
 
@@ -53,7 +53,7 @@ if TASKS == "DAILY":
 ### BUILD steps (the path every production deploy takes)
 
 1. `mkdir _cache`
-2. `code/prebuild.hook` — no-ops unless `TASKS` contains `ANALYTICS` or `CACHE` (neither is on git-push or DAILY)
+2. `code/prebuild.hook` — no-ops unless `TASKS` contains `CACHE` (not on git-push or DAILY)
 3. `hugo -b $URL --minify` (if `CONTEXT` is not `production`, it would use `-DF` and `$DEPLOY_URL`; Netlify production sets `CONTEXT=production` and `HUGO_ENV=production`)
 4. `node code/render.js` — glob `public/**/*.html`, **including `public/_prince/`**. Runs `script[render]`, strips `[remove]` (including the browser MathJax `<script>` tags), then **renders** TeX (inline `$…$` and display) to SVG when the page has `[mathjax]`. Math is not stripped. Prince later fetches that HTML, not raw Hugo.
 5. Move `public/.xref` → `_cache/xref`, `public/algolia.json` → `_cache`, copy `_redirects`
@@ -65,7 +65,6 @@ If `BUILD` is missing from `TASKS`, postbuild still runs but the script **exits 
 
 | Token | Hook | What |
 | --- | --- | --- |
-| `ANALYTICS` | prebuild | **Defunct UA.** `update_analytics.py` (Reporting API v3). Do not enable. Near-term delete. |
 | `CACHE` | prebuild | copy `_cache` into `public/` |
 | `CROSSREF` | postbuild | `curl` each `_cache/xref/*.xml` to Crossref `doMDUpload` |
 | `ALGOLIA` | postbuild | `ALGOLIA_INDEX_FILE=_cache/algolia.json npm run algolia` (`atomic-algolia`) |
@@ -167,7 +166,6 @@ Configured in `config.yml` `outputformats` / `outputs`:
 | `redir` | `public/_redirects` | Aliases + function proxies |
 | `xrefposted` / `xrefbook` / `xrefconf` | `public/.xref/*.xml` | Crossref deposits |
 | `RSS` | home | Feed |
-| `precompute` | unused in default outputs | View-count dump |
 
 `config/index/outputs.yml` is an alternate environment (`hugo -e index`) that emits only Algolia. `config/amp/outputs.yml` would add AMP pages; **AMP is defunct** and is not in the default `outputs`.
 
@@ -217,7 +215,6 @@ Used by Make, functions, or Python (typically Netlify UI + local `.env`):
 | `BUILD_HOOK` | Daily rebuild function |
 | `DISCOURSE_API` | **Defunct** (was forum posting) |
 | `MAILCHIMP_*` / `MJML_*` | **CLI only** (`make news`), not the Netlify build |
-| `GA_SERVICE` | **Defunct** (`ANALYTICS` task / UA v3) |
 
 The Algolia **search-only** app id / key are hardcoded in `assets/js/search.js` (normal for a public InstantSearch client).
 
@@ -229,4 +226,4 @@ The Algolia **search-only** app id / key are hardcoded in `assets/js/search.js` 
 
 ## Python packages
 
-`requirements.txt`: YAML/HTML parsing (`ruamel.yaml`, `bs4`, `lxml`, `plim`, `mako`, `markdown2`), Mailchimp, Bottle (Plim adapter), Google API client (analytics), numpy, python-dotenv. `code/imgsize.py` uses Pillow (`PIL`) which is **not** listed in `requirements.txt`.
+`requirements.txt`: YAML/HTML parsing (`ruamel.yaml`, `bs4`, `lxml`, `plim`, `mako`, `markdown2`), Mailchimp, Bottle (Plim adapter), python-dotenv. `code/imgsize.py` uses Pillow (`PIL`) which is **not** listed in `requirements.txt`.

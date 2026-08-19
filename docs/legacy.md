@@ -8,7 +8,7 @@ This is a **candidate list** for a later cleanup. Items marked **confirmed defun
 | --- | --- |
 | AMP | `layouts/_default/baseof.amp.html`, `config/amp/outputs.yml`, `ampcssframework` comments in SCSS. Not in default `outputs`. Do not revive. |
 | Discourse integration | `share_discourse.py`, Makefile/`code/production` `DISCOURSE` task, `DISCOURSE_API`. DAILY already omits it. Do not restore auto-post or treat `commenturl` as required. Historical forum URLs in markdown can wait for a content pass. |
-| Universal Analytics | `code/update_analytics.py` (Reporting API v3); `ANALYTICS` prebuild / `GA_SERVICE`; `layouts/partials/byviews.html` + `PeacefulScience/analytics`. `ga('send')` on `turbo:load` is gone (`dataLayer` `page_view` instead). Near-term: delete the rest ([goals](goals.md#tracking-near-term)). |
+| Universal Analytics | **Deleted:** `update_analytics.py`, `ANALYTICS` prebuild / `GA_SERVICE`, `byviews.html`, unused `precompute` output. `turbo:load` uses `dataLayer` `page_view`. |
 
 ## High confidence leftovers
 
@@ -37,7 +37,6 @@ This is a **candidate list** for a later cleanup. Items marked **confirmed defun
 | Mailchimp send | `send_newsletter` is commented out; CLI (`make news`) still creates/updates campaigns and sends **test** emails. **Not** invoked by Netlify. |
 | `content/news/` | Single 2019 staff note; not in the main nav |
 | `package.json` `"directories": { "test": "test" }` | No `test/` tree in repo (`test*` is gitignored) |
-| `layouts/_default/index.precompute` | `precompute` output format is defined but not listed in default `outputs` |
 | `layouts/partials/lastmod.html` + empty `data/lastmod.json` | Override helper; `single.html` uses `.Lastmod` (git info) directly |
 | `layouts/partials/seo/structured/*.html`, `seo/main.html` | Unused by `head.html`. Wrong field names (`author` singular, `tags`). Goal 9: delete in cleanup; do not merge into the live jsonld mini-language |
 
