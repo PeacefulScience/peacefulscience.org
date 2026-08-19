@@ -28,7 +28,7 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 - **CSS: Tailwind.** Prefer Tailwind for all styling. Production still compiles Bootstrap 4 via `assets/css/main.scss`; the Tailwind pipeline (`sources/tailwind.css` → `assets/css/tw.css`) exists but is commented out of `code/production` and `head.html`. A cleanup should **migrate remaining CSS to Tailwind**, not delete the Tailwind tooling. Print/Prince CSS in `single.print.html` is a separate sheet and must keep working (or be ported deliberately).
 - **AMP is defunct.** Do not emit AMP pages. `layouts/_default/baseof.amp.html` and `config/amp/outputs.yml` are deletion candidates.
 - **Discourse integration is defunct.** Do not restore `share_discourse.py`, the `DISCOURSE` postbuild task, or auto-`commenturl`. Historical forum URLs in article bodies and existing `commenturl` values can stay as ordinary links until a later content pass. Goal 5 (social posts) does **not** include Discourse.
-- **Page PDFs are Prince of `_prince` HTML.** On-demand Lambda for typical pages; if the PDF would be **> ~6 MB**, generate locally and commit Git LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the main site **and** in that Prince HTML. Production **`render.js` still runs on `_prince/`** (cleanup scripts, MathJax) before Prince fetches it. **`/_prince/` is not a public page:** block indexing (robots + `noindex` + `X-Robots-Tag`). The public artifact is `/pdf/…`.
+- **Page PDFs are Prince of `_prince` HTML.** On-demand Lambda for typical pages; if the PDF would be **> ~6 MB**, generate locally and commit Git LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the main site **and** in that Prince HTML. Production **`render.js` still runs on `_prince/`** (footnote rewrite, strip `[remove]` scripts, **render** TeX to SVG) before Prince fetches it. **`/_prince/` is not a public page:** block indexing (robots + `noindex` + `X-Robots-Tag`). The public artifact is `/pdf/…`.
 - **Image dimensions live in `data/imgsize.json`.** Netlify does not download LFS; `make imginfo` is local (or a worker that has the bytes).
 - **Near-term: tracking.** Remove defunct Universal Analytics. Keep (and fix) live tag loading so Turbo navigations count.
 - **Crossref is active; admins mint DOIs** (CLI today). Deposit is DAILY + `TODAY`.
@@ -228,7 +228,7 @@ Metalsmith and Next.js have been considered in other Peaceful Science repos. Thi
 | --- | --- | --- |
 | Markdown + per-folder front matter + shortcodes | Hugo | Parser + the same shortcode semantics (`amazon`, `youtube`, `image`, …) |
 | DOI / citation / entity maps | `data/*.json` sidecars | Same: generated maps stay off the article files so source lastmod stays honest |
-| Print/PDF | Prince from `/_prince/` HTML **after `render.js`**; LFS override when >6 MB | Same print HTML + same cleanup pass. Lambda 6 MB limit still applies unless PDFs are stored as objects. |
+| Print/PDF | Prince from `/_prince/` HTML **after `render.js`**; LFS override when >6 MB | Same print HTML + same `render.js` pass (scripts stripped; math **rendered** to SVG). Lambda 6 MB limit still applies unless PDFs are stored as objects. |
 | Cite / book covers | Netlify functions | Any origin (Lambda, S3+CloudFront functions) |
 | Redirects, aliases, ImageEngine | Hugo + `_redirects` | Equivalent routing |
 | MathJax / dropcaps / sidenotes | `render.js` | Same post-process or a component |

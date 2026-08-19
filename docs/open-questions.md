@@ -45,7 +45,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 
 ## Build behavior
 
-13. **Should deploy previews run `code/render.js`?** They currently do not, so dropcaps/sidenotes/MathJax **and `/_prince/` Prince input** differ from production. Page PDFs from a preview would skip that cleanup.
+13. **Should deploy previews run `code/render.js`?** They currently do not, so dropcaps/sidenotes/**rendered math** **and `/_prince/` Prince input** differ from production. Page PDFs from a preview would skip that pass.
 14. **Should the default (non-production) Netlify command stay as bare `hugo`?** That also skips Make, Prince, and post-render.
 15. **Daily scheduled rebuild?** **Answered: yes**, still configured and wanted. It remains the automated Crossref deposit + Algolia upload path (gated on `TODAY`). Goal 7 still wants to replace full daily rebuilds with incremental side effects later.
 16. **Python on Netlify:** `runtime.txt` is 3.8. Default `BUILD` does not call Python. **DISCOURSE and ANALYTICS (UA) are defunct.** Python remains for local CLI (`doi`, `news`, `imginfo`) if those stay in this repo.

@@ -4,7 +4,7 @@ Custom shortcodes live in `layouts/shortcodes/`. Content also uses a few **Hugo 
 
 `{{< … >}}` is raw HTML (usual for embeds). `{{% … %}}` runs the inner markdown through Goldmark (usual for `image` / `amazon-caption` captions). Both appear in the corpus; mixing them is common and not always necessary.
 
-**Every shortcode must work in two outputs:** the main site (`layouts/_default/single.html`) and Prince (`layouts/_default/single.print.html` → `/_prince/…`, then PDF). **`/_prince/` is not indexed** (Prince intermediate only). Production **`render.js` still runs on `_prince/` HTML** (`script[render]` / `[remove]` / MathJax) before Prince fetches it — Prince has no browser JS, so that cleanup is required. Prefer HTML + images + CSS that `single.print.html` already styles (`aside-xl-right`, `amazon-xl-right`, footnotes, `.d-print-none`). JS widgets (`youtube`, `facebook`, `tweet`, `pdf`, `vimeo`) need a print fallback (poster, caption, or URL) — today several of them are wrapped in `d-print-none` and **vanish** from the PDF. New shortcodes (and Word ingest) cannot be site-only.
+**Every shortcode must work in two outputs:** the main site (`layouts/_default/single.html`) and Prince (`layouts/_default/single.print.html` → `/_prince/…`, then PDF). **`/_prince/` is not indexed** (Prince intermediate only). Production **`render.js` still runs on `_prince/` HTML** before Prince fetches it: `script[render]`, strip `[remove]` scripts, **render** TeX (including inline `$…$`) to SVG. Prince has no browser JS; math must already be SVG. Prefer HTML + images + CSS that `single.print.html` already styles (`aside-xl-right`, `amazon-xl-right`, footnotes, `.d-print-none`). JS widgets (`youtube`, `facebook`, `tweet`, `pdf`, `vimeo`) need a print fallback (poster, caption, or URL) — today several of them are wrapped in `d-print-none` and **vanish** from the PDF. New shortcodes (and Word ingest) cannot be site-only.
 
 Markdown images `![alt](/img/…)` are **not** shortcodes. They go through `layouts/_default/_markup/render-image.html` (CDN + `aside-xl-right` figure). Prefer that or `image` when you need a caption/class.
 
@@ -203,7 +203,7 @@ Hugo’s built-in `youtube` is **not** used as-is; the custom file shadows it. B
 
 ## Prince and the main site
 
-Page PDFs are Prince of `/_prince/…` HTML, not Chrome “print this page.” The print template inlines its own CSS (`single.print.html`). **`code/render.js` still runs on that HTML** (same `public/**/*.html` glob as the main site): print `script[render remove]` rewrites footnotes for Prince; `[remove]` scripts are stripped so Prince never has to execute them; MathJax is inlined when needed. Shortcodes share `.Content` with the site, so markup has to survive Hugo, `render.js`, and Prince.
+Page PDFs are Prince of `/_prince/…` HTML, not Chrome “print this page.” The print template inlines its own CSS (`single.print.html`). **`code/render.js` still runs on that HTML** (same `public/**/*.html` glob as the main site): print `script[render remove]` rewrites footnotes for Prince; `[remove]` **scripts** are stripped so Prince never executes them; TeX (including inline `$…$`) is **rendered to SVG**, not stripped. Shortcodes share `.Content` with the site, so markup has to survive Hugo, `render.js`, and Prince.
 
 | Shortcode | Site | Prince today |
 | --- | --- | --- |
