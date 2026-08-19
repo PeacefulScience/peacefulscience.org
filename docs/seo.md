@@ -33,8 +33,10 @@ Twitter image uses the raw `absURL`; OG image goes through ImageEngine (`imgcdn`
 
 ### Robots and sitemap
 
-- `layouts/robots.txt`: `Disallow: **/page/*` (pagination); points at `sitemap.xml`. No AI-crawler rules (`GPTBot`, `Google-Extended`, etc.).
-- `layouts/sitemap.xml`: skips `private`. Floors `<lastmod>` at `params.sitemap_min_date` (`2021-09-10`). Also lists HTML PDF URLs (`/pdf/…`) and every file in `data/pdfinfo.json`. Print HTML (`/_prince/…`) is **not** in the sitemap; `baseof.print.html` has `robots noindex`.
+- `layouts/robots.txt`: `Disallow: **/page/*` (pagination) and **`Disallow: /_prince/`** (Prince PDF input — not a public page). Sitemap pointer. No AI-crawler rules (`GPTBot`, `Google-Extended`, etc.).
+- `static/_headers`: `X-Robots-Tag: noindex, nofollow, noarchive` on `/_prince/*` (Prince and the PDF Lambda still fetch; they are not search crawlers).
+- `layouts/sitemap.xml`: skips `private`. Floors `<lastmod>` at `params.sitemap_min_date` (`2021-09-10`). Also lists HTML PDF URLs (`/pdf/…`) and every file in `data/pdfinfo.json`. Print HTML (`/_prince/…`) is **not** in the sitemap.
+- `layouts/_default/baseof.print.html`: `noindex, nofollow, noarchive`. **Keep Schema.org microdata** (`itemscope` / `itemtype`) — Prince uses it when building the PDF. Still no `head.html`, so no public canonical, OG, or JSON-LD on the print URL. `config.yml` `outputformats.print` is `notAlternative` / `permalinkable: false`.
 
 Google largely ignores `changefreq`. Flooring lastmod hides real git dates on older pages (sidecar policy still wants those dates honest when they *are* shown).
 
@@ -137,7 +139,7 @@ JSON-LD `description` / `title` partials run `htmlEscape` **before** `jsonify`, 
 | Titles | `<title>` is the page title only (no site name). Distinct article titles are fine; thin taxonomy titles are weaker. |
 | Snippets | Fallback to `.Kind` on pages with no description. Most articles have `description:`; enforce it in the admin validator (goal 1 / 8). |
 | Duplicate PDFs | Sitemap includes `/pdf/…` at the same priority as HTML. Google may index the PDF instead of the article. Prefer HTML as canonical; PDF as alternate (already a `rel="alternate"`). Consider dropping PDF locs from the sitemap or giving them lower priority. |
-| `_prince` HTML | `noindex` on the print layout is correct. Keep it. Do not advertise those URLs. |
+| `_prince` HTML | **Prince intermediate only — must not be indexed.** Public page is the article HTML; public download is `/pdf/…`. Block with `robots.txt` Disallow, meta `noindex`, and `X-Robots-Tag`. Do not sitemap, do not emit JSON-LD or a self-canonical, do not advertise as `rel=alternate`. **Keep Schema.org microdata** on the print layout; Prince uses it. Production **`render.js` still runs** on these files (scripts stripped; inline TeX **rendered** to SVG) before Prince fetches them. |
 | AMP | Defunct; not in outputs. Do not revive for SEO. |
 | Pagination | Disallowed in robots; good. |
 | Internal links | Related module + series help. Entity detection (goal 4) should suggest links into sidecar data, not rewrite bodies on a loop. |
@@ -163,7 +165,7 @@ Extra, AI-specific layers (decide which to ship; see [open questions](open-quest
    - `/llms.txt` (and optionally `/llms-full.txt`) listing cornerstone URLs and a one-line description of the site.
    - Optional `text/markdown` alternate or a `/raw/…` path so crawlers are not forced through Turbo/Bootstrap HTML. Hugo can emit a markdown output format; keep it off print/PDF layouts.
 5. **Visible structure:** real `h1` (page title), heading hierarchy, author byline in HTML not only JSON-LD. AI browsers and overviews quote visible text.
-6. **Crawler policy:** today’s `robots.txt` allows all user-agents except `**/page/*`. Decide whether to allow training crawlers (`GPTBot`, `Google-Extended`, `CCBot`, …) or only retrieval crawlers. That is a policy choice, not a ranking trick.
+6. **Crawler policy:** today’s `robots.txt` allows all user-agents except pagination (`**/page/*`) and **`/_prince/`** (Prince input). Decide whether to allow training crawlers (`GPTBot`, `Google-Extended`, `CCBot`, …) or only retrieval crawlers. That is a policy choice, not a ranking trick. Do not lift the `/_prince/` disallow for AI.
 7. **Do not** block Googlebot while allowing AI bots, or the opposite, without an explicit decision. AMP, Discourse, and UA leftovers are irrelevant to this.
 
 Sidecar rule still applies: generated SEO fields (entities, resolved citations, maybe an `abstract`) go in `data/*.json`, not the article file, so git lastmod stays “the prose changed.”
@@ -189,6 +191,6 @@ Validate with [Google Rich Results Test](https://search.google.com/test/rich-res
 
 - Keep the **mini-language** (`= permalink`, `= authors`, `= copy /jsonld/…`). Do not go back to hard-coded `seo/structured/*.html`.
 - Generated fields stay in **sidecar** JSON ([goals](goals.md) sidecar rule).
-- Print HTML stays `noindex`.
+- Print HTML (`/_prince/`) is **Prince input only**. Keep it out of search and AI indexes: `robots.txt` Disallow, meta `noindex`, `X-Robots-Tag`. Do not add JSON-LD or a self-canonical there. **Do keep Schema.org microdata** (`itemscope` / `itemtype` on `baseof.print.html`); Prince uses that when generating the PDF.
 - AMP stays defunct.
 - Highwire metas can stay for Scholar unless a later pass proves they conflict with JSON-LD; they are not a substitute for valid `sameAs` / `identifier`.

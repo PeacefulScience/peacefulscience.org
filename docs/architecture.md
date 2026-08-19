@@ -73,7 +73,7 @@ This site does **not** use a Hugo theme in `config.yml`. The `themes/hyde-x` git
 - `layouts/_default/list.html` — section and taxonomy lists
 - `layouts/index.html` — homepage composition (latest, featured, topic slices)
 - `layouts/books/single.html` — book pages with Amazon cover and related articles
-- `layouts/_default/single.print.html` + `baseof.print.html` — Prince XML print stylesheet for PDF generation
+- `layouts/_default/single.print.html` + `baseof.print.html` — Prince input HTML at `/_prince/…` (not a public page; `noindex` + robots Disallow). Keep Schema.org microdata for Prince. **`render.js` still runs on these files** (footnotes, strip `[remove]` scripts, **render** MathJax to SVG) before Prince fetches them. Do not index this output.
 - `layouts/_default/list.algolia.json` — search index
 - `layouts/_default/index.redir` — Netlify `_redirects`
 - `layouts/_default/home.xref*.xml` — Crossref DOI deposit XML
@@ -118,7 +118,7 @@ Analytics JSON (`mostread.json`, `trending.json`, `ytd.json`) is gitignored. It 
 | `production` | What Netlify production runs: TASKS (default `BUILD`) → prebuild → hugo → render.js → postbuild |
 | `prebuild.hook` | Optional `CACHE`. `ANALYTICS` is **defunct UA** — do not enable. |
 | `postbuild.hook` | Optional `CROSSREF` / `ALGOLIA` (DAILY, gated on `TODAY`). `DISCOURSE` still exists in the script and is **defunct** — do not enable. |
-| `render.js` | Post-process every HTML file: run `script[render]`, strip `[remove]`, optional MathJax, collect CSS classes |
+| `render.js` | Post-process **every** `public/**/*.html` file, **including `_prince/`**: run `script[render]`, strip `[remove]` (browser scripts), **render** TeX to SVG when `[mathjax]` is set (inline math is rendered, not stripped), collect CSS classes. Prince PDFs use this HTML. |
 | `doi.py` | **CLI only** (`make doi`). Writes `data/doi.json`. Not called on Netlify. |
 | `newsletter/` | **CLI only** (`make news`). MJML + Mailchimp campaign upsert. Not called on Netlify. |
 | `imgsize.py` / `pdfinfo.py` | **CLI only** (`make imginfo` / `pdfinfo`). Refresh committed JSON. `imginfo` **must** run on a machine that has smudged LFS files. |
@@ -133,7 +133,7 @@ Routed from `layouts/partials/redirects.html` / `_redirects`:
 
 | Function | Path | What it does |
 | --- | --- | --- |
-| `pdf/index.js` | `/pdf/*` | On-demand Prince PDF from `/_prince/...` HTML. Fails if the PDF is over ~**6 MB**; those pages need a committed LFS file at `static/pdf/<section>/<slug>.pdf` |
+| `pdf/index.js` | `/pdf/*` | On-demand Prince PDF from live `/_prince/...` HTML (**after `render.js`**). Fails if the PDF is over ~**6 MB**; those pages need a committed LFS file at `static/pdf/<section>/<slug>.pdf` |
 | `cite.js` | `/cite/*` | Citation JSON from DOI.org or Manubot |
 | `bookcover.js` | `/img/bookcover/*` | Proxy Amazon cover images |
 | `daily-build.js` | scheduled `0 14 * * *` | POST `"DAILY"` to `BUILD_HOOK` to rebuild |

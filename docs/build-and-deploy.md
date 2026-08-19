@@ -55,7 +55,7 @@ if TASKS == "DAILY":
 1. `mkdir _cache`
 2. `code/prebuild.hook` — no-ops unless `TASKS` contains `ANALYTICS` or `CACHE` (neither is on git-push or DAILY)
 3. `hugo -b $URL --minify` (if `CONTEXT` is not `production`, it would use `-DF` and `$DEPLOY_URL`; Netlify production sets `CONTEXT=production` and `HUGO_ENV=production`)
-4. `node code/render.js` (MathJax, `script[render]`, dropcaps/sidenotes)
+4. `node code/render.js` — glob `public/**/*.html`, **including `public/_prince/`**. Runs `script[render]`, strips `[remove]` (including the browser MathJax `<script>` tags), then **renders** TeX (inline `$…$` and display) to SVG when the page has `[mathjax]`. Math is not stripped. Prince later fetches that HTML, not raw Hugo.
 5. Move `public/.xref` → `_cache/xref`, `public/algolia.json` → `_cache`, copy `_redirects`
 6. `code/postbuild.hook` — Crossref / Algolia only if those tokens are in `TASKS` **and** `TODAY` is in the Hugo log. The `DISCOURSE` branch is defunct.
 
@@ -73,7 +73,7 @@ If `BUILD` is missing from `TASKS`, postbuild still runs but the script **exits 
 
 ### Deploy previews
 
-Branch and PR deploys skip Make and `render.js`, so dropcaps, sidenotes, and MathJax will not match production.
+Branch and PR deploys skip Make and `render.js`, so dropcaps, sidenotes, **rendered math**, and **Prince input** (`/_prince/`) will not match production. Do not judge page PDFs from a deploy preview.
 
 ## Local Make: operations Netlify does not run
 
@@ -112,6 +112,10 @@ make news INPUT=content/newsletter/foo.md
 There is **one** correct PDF layout: Hugo’s `print` output format (`config.yml` `outputformats.print`, `path: _prince`). Templates: `layouts/_default/single.print.html` + `baseof.print.html`. Articles, prints, and about cascade `outputs: [HTML, print]`. The download URL is always `getpdf`: `/pdf` + permalink + `.pdf` (example: `/articles/foo/` → `/pdf/articles/foo.pdf`).
 
 Do not print the main site HTML. Do not use a second stylesheet or Word’s PDF export for these page PDFs.
+
+**Prince does not see raw Hugo.** Production BUILD writes `_prince` HTML, then `code/render.js` processes **every** `public/**/*.html` file, including `public/_prince/`. That pass runs `script[render]` (print footnotes vs site sidenotes/dropcaps), strips `[remove]` (browser scripts, including the MathJax CDN tags — Prince has no JS), and **renders** TeX to SVG when `[mathjax]` is present (`render_mathjax` in `code/render.js`). Inline math (`$…$`) is rendered, not stripped. The Lambda and local `prince` fetch that **post-`render.js`** HTML from the live `/_prince/` URL.
+
+**`/_prince/` is not for humans or crawlers.** It exists so Prince (Lambda or local) can fetch that cleaned print HTML. Search and AI must not index it. Blocking: `layouts/robots.txt` `Disallow: /_prince/`, meta `noindex` on `baseof.print.html`, `X-Robots-Tag` on `/_prince/*` in `static/_headers`. Not in the sitemap. Print output is `notAlternative` (Hugo must not advertise it as `rel=alternate`). **Schema.org microdata stays** on `baseof.print.html` (`itemscope` / `itemtype`); Prince uses it. The PDF Lambda and local `prince` fetch that URL directly and ignore robots.
 
 **On-demand (typical pages):** `_redirects` has `/pdf/* /.netlify/builders/pdf 200`. `functions/pdf` fetches `https://peacefulscience.org/_prince/<section>/<slug>/`, runs Prince, returns the PDF. Allowed sections: `articles`, `prints`, `about`. Netlify/AWS Lambda **response bodies max out at 6 MB**. Long, image-heavy articles produce PDFs larger than that and the function fails. The handler also base64-encodes the file, so a PDF near 6 MB can fail even if slightly under.
 
@@ -158,7 +162,7 @@ Configured in `config.yml` `outputformats` / `outputs`:
 | Format | Where | Use |
 | --- | --- | --- |
 | `HTML` | normal pages | Site |
-| `print` | `public/_prince/...` | Prince input for page PDFs (site HTML is a different output; do not print that) |
+| `print` | `public/_prince/...` | Prince input only — **do not index**. Public download is `/pdf/…`. Still runs through `render.js`. |
 | `Algolia` | `public/algolia.json` | Search index |
 | `redir` | `public/_redirects` | Aliases + function proxies |
 | `xrefposted` / `xrefbook` / `xrefconf` | `public/.xref/*.xml` | Crossref deposits |
