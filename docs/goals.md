@@ -157,9 +157,10 @@ DOI **assignment** stays a separate, gated action (goal 1). Improving XML must n
 
 ### What exists
 
+- Prototype on PR #60: sidecar `data/topics.json`, local `make topics` / `make topics-llm`, build-time gitignored stubs, Hugo chips and `/topics/` pages. See [topics.md](topics.md). **Do not write detections into article markdown.**
 - `@google-cloud/language` is in `package.json` and **never imported**.
 - `tags` taxonomy is configured and unused.
-- JSON-LD `mentions` already walks scratch `"Links"` (same bag as Crossref; see [SEO](seo.md)).
+- JSON-LD `mentions` already walks scratch `"Links"` (same bag as Crossref; see [SEO](seo.md)). JSON-LD `about` now also includes sidecar topic URLs.
 - Homepage topic slices are hard-coded, not data-driven.
 
 ### Design notes

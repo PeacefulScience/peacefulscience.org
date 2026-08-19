@@ -13,6 +13,7 @@ This folder describes how [peacefulscience.org](https://peacefulscience.org/) is
 | [SEO, JSON-LD, AI](seo.md) | Live structured data, ranking gaps, AI utilization; JSON-LD defects (`sameas`, DOI, SearchAction) |
 | [Legacy and unused code](legacy.md) | Confirmed-defunct (AMP, Discourse share) plus other leftover candidates |
 | [Open questions](open-questions.md) | Things to confirm with maintainers before changing behavior |
+| [Auto topics](topics.md) | Goal 4 prototype: sidecar, build stubs, template links; handoff for PR #60 |
 
 The public README at the repo root is aimed at **readers** (copyright and how to suggest corrections). This folder is aimed at **people changing the site**.
 

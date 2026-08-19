@@ -2,8 +2,12 @@
 "use strict";
 
 /**
- * Materialize gitignored Hugo stubs under content/topics/<slug>/ from
- * data/topics.json. Does not regenerate the committed section index
+ * Materialize gitignored Hugo stubs under content/topics/t-<slug>/ from
+ * data/topics.json. The t- prefix is required: Hugo 0.97.3 GetPage is
+ * ambiguous when a topic slug matches a book or category basename.
+ * Public URL is still /topics/<slug>/ via front-matter `url`.
+ *
+ * Does not regenerate the committed section index
  * (content/topics/_index.md) and does not rewrite article markdown.
  *
  * Page↔topic links are rendered by Hugo templates from the sidecar,

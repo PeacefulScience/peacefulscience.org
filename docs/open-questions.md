@@ -70,7 +70,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 26. **Content-repo split:** required before admin ships, or only after Word ingest + DOI-as-a-service exist?
 27. **Backend:** keep Hugo and move only side effects (Algolia/Crossref/social) off the daily rebuild vs processed content on S3 + dynamic JS vs Next/Metalsmith? Media-on-S3 (goal 12) can happen without a full backend port.
 28. **Word ingest?** **Defer to implementation start:** `.docx` vs Google Docs API (editors already use Docs). Not a blocker for tracking, Tailwind, or Algolia/Crossref work.
-29. **Entity detection provider:** reuse `@google-cloud/language`, or another NLP/LLM path that writes suggested topics into **sidecar** JSON (not into the article on each run)?
+29. **Entity detection provider:** prototype in [topics.md](topics.md) uses a local gazetteer + optional LLM cleanup into `data/topics.json`. Still open: which hosted model (if any) for catalog cleanup; Google Cloud NLP package remains unused.
 30. **`partials/lastmod.html` / `data/lastmod.json`:** unused override path. Keep for correcting bad git dates, or delete once sidecar enrichment is the norm?
 31. **Newsletter `mailchimp.campaign_id`:** move to sidecar like DOIs, or leave the six existing front-matter values as a one-off?
 32. **Restore `code/pdf`?** Makefile still expects it. Until then, local `prince` on the live `_prince` URL is the documented oversized-PDF path.
