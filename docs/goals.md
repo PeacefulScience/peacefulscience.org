@@ -35,7 +35,7 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 - **Algolia `PeacefulScience` is the live search index.** Daily upload hook is still wanted.
 - **Netlify LFS / Large Media is in use.** Optional later: S3 for binaries; point ImageEngine origin at the bucket. `imgsize.json` stays.
 - **Admin stack undecided.** Candidate: Decap + GitHub Actions for sidecar jobs on update (not auto-DOI on every save).
-- **JSON-LD: keep the mini-language; fix it.** Do not revive unused `seo/structured` partials. Highest-leverage bugs: `sameas` vs `sameAs`, DOI `identifier`, author `notnews` inside Person graphs. See [seo.md](seo.md).
+- **JSON-LD: keep the mini-language; fix it.** Cascade keys are Schema.org camelCase (`sameAs`). DOI `identifier`, Organization `@id` `#organization`, author `notnews` is page-level. See [seo.md](seo.md).
 
 ---
 
@@ -46,14 +46,14 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 ### What exists
 
 - **GTM** `GTM-KDF8R85` in `layouts/partials/head.html` and a noscript iframe in `baseof.html` (skipped on `hugo server`). Injection is gated on `config.yml` `googleAnalytics: G-BHPH29YM44` (a GA4 id used only as a truthy flag).
-- On `turbo:load`, the same script calls **`ga('send', 'pageview', …)`** — Universal Analytics. UA shut down in 2023; that call does nothing useful. Turbo already swapped the page, so GTM’s default first-load pageview also misses in-app navigations.
+- On `turbo:load`, push a `page_view` to `dataLayer` with the new path so GTM can count in-app navigations. Do **not** call Universal Analytics `ga('send')`.
 - **`code/update_analytics.py`** talks to Analytics Reporting API **v3** (`ga:pageviews`, profile `125738398`). Dead. Optional `ANALYTICS` prebuild task; not on git-push or DAILY.
 - **`layouts/partials/byviews.html`** `getJSON`s `PeacefulScience/analytics` (`mostread.json` / `trending.json`). Homepage “by views” in `single.html` is commented out.
 
 ### What to do
 
-1. **Remove defunct UA:** `ga('send')`; `update_analytics.py`; `ANALYTICS` / `GA_SERVICE`; `byviews.html` and the unused `PeacefulScience/analytics` fetch; Python Analytics client deps if nothing else uses them.
-2. **Improve tracking:** keep GTM (or a single GA4 `gtag`) and push a page_view on `turbo:load` with the new path (`dataLayer` or `gtag('event','page_view')`). Load tags independently of the old `googleAnalytics` Hugo param, or rename that param so it is not a UA leftover.
+1. **Remove remaining defunct UA:** `update_analytics.py`; `ANALYTICS` / `GA_SERVICE`; `byviews.html` and the unused `PeacefulScience/analytics` fetch; Python Analytics client deps if nothing else uses them. (`ga('send')` on `turbo:load` is already replaced with a `dataLayer` `page_view`.)
+2. **Improve tracking:** keep GTM (or a single GA4 `gtag`). Confirm GTM has a trigger on the `page_view` event. Load tags independently of the old `googleAnalytics` Hugo param, or rename that param so it is not a UA leftover.
 3. Do not restore view-count widgets from UA data.
 
 This does not need Word ingest or an admin UI.
@@ -76,7 +76,7 @@ This does not need Word ingest or an admin UI.
 | --- | --- | --- |
 | **DOI control** | `code/doi.py` mints `10.54739/xxxx` into `data/doi.json` (sidecar; not front matter). **Crossref is active.** **Admins mint.** Deposit is a **later** DAILY Netlify step, and only if Hugo logged `TODAY`. | Explicit “assign DOI” (admin action) with preview of the path key (`/articles/foo/`), collision check, and a commit of `doi.json` **before** the page is treated as published. Never mint as a silent side effect of save (including a Decap save). Never write the DOI into the article file. |
 | **Front matter** | Schemas differ by **section and subfolder** ([front-matter](front-matter.md)). Authors are **lists of strings** (slugs or display names), not `{role, slug}` maps. `prints/` vs `prints/excerpts/` vs `prints/deleted/` are three page types. | Form (or generated YAML) **per folder**, validated against the corpus schema. Cascade from `_index.md` must stay visible (e.g. `prints/deleted` sets `rss: false`). |
-| **Shortcodes** | Custom `amazon`, `image`, `youtube` (overrides Hugo), `mediatext`, `pdf`, `facebook`, `footnotes2refs`, plus built-in `tweet` / `vimeo`. One broken `twitter` tag. ([shortcodes](shortcodes.md)) | Palette / helpers that insert the **site** shortcodes, not generic Markdown. `amazon` must stash ASINs (book backrefs). `youtube` must use the site player overlay, not Hugo’s embed. **Every shortcode must also render in Prince `_prince` HTML** (print CSS / fallbacks for JS embeds). |
+| **Shortcodes** | Custom `amazon`, `image`, `youtube` (overrides Hugo), `mediatext`, `pdf`, `facebook`, `footnotes2refs`, plus built-in `tweet` / `vimeo`. ([shortcodes](shortcodes.md)) | Palette / helpers that insert the **site** shortcodes, not generic Markdown. `amazon` must stash ASINs (book backrefs). `youtube` must use the site player overlay, not Hugo’s embed. **Every shortcode must also render in Prince `_prince` HTML** (print CSS / fallbacks for JS embeds). |
 | **Autofill from the web** | Hard-to-find fields: Amazon ASIN, ISBN, Crossref/DOI metadata, YouTube IDs, author affiliations, book covers (`functions/bookcover.js`). `functions/cite.js` already resolves DOI.org + Manubot → CSL-JSON. `data/citation.json` is a cache. | Lookups land in **sidecar** JSON (extend `citation.json` / new maps). The admin may *propose* shortcodes or ISBN in the article; committing those is an editorial save (and *should* bump lastmod). Do not silently patch published files with resolved metadata. |
 | **Internal links** | Link render hook records destinations on page scratch. Related content uses Hugo `related` + `series`. Editorial policy already says editors may add related links without asking. | Auto-suggested related URLs live in sidecar data; templates can inject a “related” module without touching the article. Inserting links **into the body** is an editorial accept and should update lastmod. |
 | **Categories** | Taxonomy pages in `content/categories/`. `featured` and `gae` are `hidden: true`. `tags` is in `config.yml` but unused. Homepage buckets are **hard-coded** in `layouts/index.html`. | Auto-suggest into sidecar (or an admin review queue). Editor-chosen `categories:` in front matter is editorial, not generated. Do not invent slugs that have no `_index.md`. |
@@ -134,7 +134,7 @@ DOI **assignment** stays a separate, gated action (goal 1). Improving XML must n
 ### What exists
 
 - Index built every production BUILD: `layouts/_default/list.algolia.json` for sections `articles`, `prints`, `about`, `newsletter`.
-- Fields include up to 90k characters of `.Plain`, a full HTML `render` card, author **titles**, category **titles**, and a duplicate `"section"` key in the dict (harmless in Go but sloppy).
+- Fields include up to 90k characters of `.Plain`, a full HTML `render` card, author **titles**, and category **titles**.
 - **Upload** only on DAILY when Hugo logged `TODAY`. Editing an old article and pushing to git **does not** update Algolia.
 - Search UI: `layouts/_default/search.html` + `assets/js/search.js` InstantSearch. Facets: **categories** and **authors** only. Pagination widget is commented out (infinite scroll instead). `routing: false`. Search-only keys are hardcoded in the JS bundle.
 
@@ -286,29 +286,23 @@ This is **not** a new structured-data stack. Keep the JSON-LD mini-language (`= 
 - One JSON-LD blob per page from `layouts/partials/jsonld.html`. Section indexes cascade Schema.org types: `Article`, `ScholarlyArticle`, `Book`, `Person`, `CreativeWorkSeries`, home `WebSite` + `SearchAction`, publisher `Organization` in `content/jsonld/peacefulscience.md`.
 - Head already has canonical, OG/Twitter, Highwire `citation_*`, DOI metas, PDF alternate, `Googlebot-News` via `notnews`.
 - `mentions` = markdown links on scratch `"Links"` only (same limitation as Crossref).
-- DOI is stuffed into the `sameas` directive list, not emitted as `identifier`.
+- DOI also goes in JSON-LD `identifier` (`= identifier` on the article cascade). `sameAs` still lists `https://doi.org/…`.
 - Robots: `**/page/*` (pagination) and **`/_prince/`** (Prince input; not a public page). Sitemap lists HTML and PDF URLs, not print HTML. Print layout + `X-Robots-Tag` also `noindex`.
 
 ### Gaps that block both ranking and AI
 
 | Gap | Effect |
 | --- | --- |
-| Cascade key `sameas` (lowercase) on articles/books/WebPage | Schema.org / Google expect `sameAs`. DOI, aliases, Amazon, ISBN on those types are **ignored**. Person/Organization already use `sameAs`. |
-| `notnews: true` inside authors `cascade.jsonld` | Invalid Person property; author pages also miss page-level `Googlebot-News` `noindex` (books set `notnews` correctly, beside `jsonld`). |
-| No JSON-LD `identifier` for DOI | Scholar/AI have to infer identity from a misspelled `sameas` list. Head `citation_doi` is not a substitute. |
-| `image` is a bare CDN URL | Prefer `ImageObject` + width/height from `data/imgsize.json`. |
 | `SearchAction` URL vs InstantSearch `routing: false` | Sitelinks search and nav `?PeacefulScience[query]=` do not populate the search UI (shared with goal 3). |
-| Organization `@id` is the homepage URL | Collides with `WebSite` `@id`. |
-| Description fallback to `.Kind` | `"page"` / `"section"` as meta description. |
 | Authors without a slug page | Dropped from JSON-LD `author` and from Highwire `citation_author`. |
 | `mentions` / no `citation` | Link bag, not works cited. Goal 2 sidecar should feed ScholarlyArticle `citation`. |
 | No `llms.txt` / markdown alternate | Optional AI copy; policy decision (open questions). |
 
 ### What to do
 
-1. **JSON-LD hygiene** (near-term, templates only): rename `sameas` → `sameAs` in cascades; move author `notnews` out of `jsonld`; distinct Organization `@id`; DOI as `identifier`; `ImageObject`; stop `htmlEscape` before `jsonify` in jsonld string partials; empty `twitter:creator`.
+1. **JSON-LD hygiene** (templates): cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, empty `twitter:creator` — implemented. Title/description escaping is a follow-up. Remaining: SearchAction/InstantSearch routing with goal 3.
 2. **SearchAction + InstantSearch routing** with goal 3.
-3. **Snippets / sitemap:** never fall back to `.Kind`; consistent OG/Twitter images; decide whether PDF URLs belong in the sitemap at article priority.
+3. **Snippets / sitemap:** description no longer falls back to `.Kind`; decide whether PDF URLs belong in the sitemap at article priority.
 4. **Richer graphs** after goals 2 and 4: `citation` from resolved references; `about` / `mentions` as `Thing`s from the entity sidecar — not from rewriting article `tags:`.
 5. **AI copies** (`llms.txt`, optional markdown output) only if maintainers want them. Do not block Googlebot as a side effect.
 6. Validate with Rich Results Test + Schema Markup Validator on **article, print, book, author, home**.

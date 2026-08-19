@@ -18,7 +18,8 @@ cascade:
     image: = headerimage
     mentions: = mentions
     publisher: = copy /jsonld/peacefulscience
-    sameas: = sameas
+    sameAs: = sameas
+    identifier: = identifier
     isBasedOn: = basedon
     about: = about
     isPartOf: = series

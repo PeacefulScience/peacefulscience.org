@@ -1,0 +1,8 @@
+{{ $out := default nil }}
+
+{{ with partial "getdoi" .Page }}
+  {{ $doi := replaceRE `https?://doi.org/` "" . }}
+  {{ $out = dict "@type" "PropertyValue" "propertyID" "DOI" "value" $doi }}
+{{ end }}
+
+{{ return $out }}

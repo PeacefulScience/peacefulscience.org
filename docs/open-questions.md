@@ -14,7 +14,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 - **CSS: Tailwind.** Prefer Tailwind; migrate all remaining CSS (today production is still Bootstrap 4 SCSS). The Tailwind toolchain is the destination, not leftover.
 - **Discourse integration is defunct.** Do not restore `share_discourse.py` / `DISCOURSE` postbuild / auto-`commenturl`. Historical forum links in content can remain until cleaned up.
 - **Page PDFs:** Prince of `_prince` HTML **after `render.js`**. Lambda until **~6 MB**; larger files → local Prince + LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the site and in Prince. **`/_prince/` must not be indexed** (robots Disallow + `noindex` + `X-Robots-Tag`); it is the Prince intermediate, not a public URL.
-- **Tracking (near-term):** remove defunct Universal Analytics (`ga('send')`, `update_analytics.py`, `byviews.html`). Improve remaining GTM/GA4 so Turbo navigations count.
+- **Tracking (near-term):** `turbo:load` pushes `page_view` on `dataLayer`. Still remove leftover UA: `update_analytics.py`, `byviews.html`. Confirm GTM triggers on that event.
 - **Crossref account is active.** Admins mint DOIs (today: `make doi` → `data/doi.json`). Deposit remains DAILY + `TODAY`.
 - **Algolia** index `PeacefulScience` is still the live search backend. Daily hook still runs and is wanted.
 - **Netlify Large Media / LFS is in use.** Optional later: store binaries on S3 and point ImageEngine at S3 instead of the Netlify origin. `imgsize.json` stays either way.
@@ -39,7 +39,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 
 8. **Algolia?** **Answered: yes**, `PeacefulScience` is still the live search backend. Daily upload is still gated on `TODAY` (freshness is still a gap for goal 3).
 9. **OneSignal:** Should web push stay? The implementation still points at WordPress plugin paths.
-10. **Analytics?** **Answered: UA is defunct — remove it.** Near-term work: delete `ga('send')`, `update_analytics.py`, `ANALYTICS`/`GA_SERVICE`, `byviews.html`. Improve GTM (`GTM-KDF8R85`) / GA4 (`G-BHPH29YM44`) so `turbo:load` records pageviews. Do not rebuild most-read widgets on UA data. Remaining: keep GTM+GA4 vs a single `gtag` snippet.
+10. **Analytics?** **Answered: UA is defunct — remove leftovers.** `turbo:load` already pushes `page_view` on `dataLayer`. Still delete `update_analytics.py`, `ANALYTICS`/`GA_SERVICE`, `byviews.html`. Remaining: keep GTM+GA4 vs a single `gtag` snippet; confirm GTM listens for `page_view`.
 11. **MathJax, cite/bookcover functions:** which of these are still required in production? (**AMP: defunct.** **Tailwind: keep and migrate all CSS onto it.**)
 12. **Netlify Large Media / Git LFS?** **Answered: still in use.** Build still does not download LFS (`imgsize.json` required). Open to **S3 for binaries** later if helpful; ImageEngine can then origin from S3 instead of the Netlify live site. Sidecar dimensions stay.
 

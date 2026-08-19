@@ -51,7 +51,6 @@
              "weight" .Weight 
              "section" .Section
              "wordcount" .WordCount 
-             "section" .Section 
              "authors" $authors
              "categories" $cat
              "image" $image

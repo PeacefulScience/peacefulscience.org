@@ -1,11 +1,19 @@
-{{ $out := .Page.Params.headerimage.src  | default nil }}
+{{ $src := .Page.Params.headerimage.src | default nil }}
+{{ $out := default nil }}
 
-{{ with .Params.amazon }}
-  {{ $out = partial `imgcdn`  ( printf `/img/bookcover/%s`  (index . 0) )  }}
+{{ with .Page.Params.amazon }}
+  {{ $src = printf `/img/bookcover/%s` (index . 0) }}
 {{ end }}
 
 {{ with .Page.Params.headerimage.src }}
-  {{ $out = .   | partial "imgcdn" }}
+  {{ $src = . }}
+{{ end }}
+
+{{ with $src }}
+  {{ $out = dict "@type" "ImageObject" "url" (. | partial "imgcdn") }}
+  {{ with index site.Data.imgsize . }}
+    {{ $out = merge $out (dict "width" .width "height" .height) }}
+  {{ end }}
 {{ end }}
 
 {{ return $out }}

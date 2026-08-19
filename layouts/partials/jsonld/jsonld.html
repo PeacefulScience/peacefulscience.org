@@ -13,7 +13,7 @@
     {{ $out = (dict) }}
     {{ range $key, $val := .Input }}
       {{ with partial "jsonld/jsonld" (dict "Page" $.Page "Input" $val ) }} 
-        {{ $out =  merge $out (dict $key . ) }}}
+        {{ $out =  merge $out (dict $key . ) }}
       {{ end }}
     {{ end }}
     
