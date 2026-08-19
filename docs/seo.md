@@ -71,7 +71,7 @@ Article-shaped pages also set `headline`, `datePublished` / `dateModified`, `ima
 
 ## JSON-LD defects (highest leverage)
 
-Template/cascade bugs. Several were fixed in a later hygiene pass (cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, `htmlUnescape` after `plainify` then `jsonify`). Remaining:
+Template/cascade bugs. Several were fixed in a later hygiene pass (cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`). Remaining:
 
 ### SearchAction does not drive search
 
@@ -97,7 +97,7 @@ Organization `sameAs` lists Facebook, YouTube, Twitter only. Nav also links Patr
 | BreadcrumbList | Unused old partial is also wrong (skips position 2). Add a correct one in the live system if wanted |
 | `speakable` | Low value; Google support is narrow — skip unless there is a specific product need |
 
-JSON-LD `description` / `title` are `markdownify | plainify | htmlUnescape`, then `jsonify`. `htmlEscape` after `plainify` double-encodes Goldmark entities (`&amp;` → `&amp;amp;`). Do not unescape meta descriptions: that path also falls back to `subtitle`/`Summary` and was not shown broken in JSON-LD.
+JSON-LD `description` / `title` are still `markdownify | plainify | htmlEscape` then `jsonify`. Leave that pipeline alone until a follow-up shows a concrete broken string and that changing it does not create new ones.
 
 ---
 
@@ -145,7 +145,7 @@ Sidecar rule still applies: generated SEO fields (entities, resolved citations, 
 
 Independent of Word ingest. Order is technical, not calendar.
 
-1. **JSON-LD hygiene:** done for cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, `htmlUnescape` then `jsonify`, empty `twitter:creator`.
+1. **JSON-LD hygiene:** done for cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, empty `twitter:creator`. Title/description escaping is a separate follow-up.
 2. **SearchAction + InstantSearch routing** (shared with goal 3).
 3. **Head/snippet quality:** description no longer falls back to `.Kind`; OG/Twitter images both use ImageEngine. Optional BreadcrumbList; PDF sitemap policy still open.
 4. **Delete unused** `layouts/partials/seo/structured/` (and `seo/main.html` if still unreferenced).
