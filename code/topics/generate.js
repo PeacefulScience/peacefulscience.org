@@ -8,18 +8,28 @@
  * build, and it never writes content/topics/_index.md (that index is
  * committed once). Generated per-topic Hugo stubs are a separate build
  * step: `node code/topics/pages.js`.
+ *
+ * Optional LLM merge/cleanup (not on Netlify):
+ *   make topics-llm
+ *   node code/topics/generate.js --llm
  */
 
 const fs = require("fs");
 const path = require("path");
 const { ROOT, sourceDocuments } = require("./lib");
 const { buildSidecar } = require("./extract");
+const { cleanupWithLlm } = require("./cleanup");
 
 const OUT = path.join(ROOT, "data", "topics.json");
+const wantLlm = process.argv.includes("--llm") || process.env.TOPICS_LLM === "1";
 
-function main() {
+async function main() {
   const docs = sourceDocuments();
-  const sidecar = buildSidecar(docs);
+  let sidecar = buildSidecar(docs);
+  if (wantLlm) {
+    sidecar = await cleanupWithLlm(sidecar);
+  }
+
   const payload = {
     pages: sidecar.pages,
     topics: sidecar.topics,
@@ -34,4 +44,7 @@ function main() {
   console.log(`  ${topicCount} topics across ${pageCount} pages (${docs.length} scanned)`);
 }
 
-main();
+main().catch((err) => {
+  console.error(err.message || err);
+  process.exit(1);
+});

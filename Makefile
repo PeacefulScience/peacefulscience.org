@@ -3,12 +3,15 @@ ifneq (,$(wildcard ./.env))
     export
 endif
 
-.PHONY: crossref pdf doi info imginfo pdfinfo news topics topic-pages
+.PHONY: crossref pdf doi info imginfo pdfinfo news topics topics-llm topic-pages
 
 all: imginfo pdfinfo production
 
 topics:
 	node code/topics/generate.js
+
+topics-llm:
+	node code/topics/generate.js --llm
 
 topic-pages:
 	node code/topics/pages.js
