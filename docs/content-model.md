@@ -53,8 +53,10 @@ Books, newsletters, author/category/series terms, and `prints/deleted/` do not f
 
 - Start article body at `##` (H2). The first paragraph after the header may get a dropcap via a `script[render]` block in `single.html`.
 - Editor notes: `<div class="editor-note">...</div>` (skipped for dropcap, styled distinctly in print CSS).
-- Images: Markdown `![alt](/img/...)` or the `{{% image "/img/..." "aside-xl-wide" %}}` shortcode. Paths should be site-root (`/img/...`), not `static/img/...`.
-- YouTube: `headerimage.youtube` or `{{< youtube ID >}}`.
+- Images: Markdown `![alt](/img/...)` or the `image` / `mediatext` shortcodes. Paths should be site-root (`/img/...`), not `static/img/...`.
+- YouTube in the body: `{{< youtube ID >}}` (custom shortcode → site player). Header videos use `headerimage.youtube`.
+- Book covers in the body: `{{< amazon ASIN >}}`.
+- Full shortcode list, arguments, and usage counts: [shortcodes.md](shortcodes.md).
 - Citations: Markdown footnotes (`[^1]`) become sidenotes on wide screens; DOI links without link text are rendered with `partials/doi.html`.
 - Internal links should be site paths or full `peacefulscience.org` URLs so the render hook can resolve titles and track backrefs.
 

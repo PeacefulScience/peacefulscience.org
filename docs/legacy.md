@@ -16,6 +16,7 @@ This is a **candidate list** for a later cleanup, not a deletion plan. Confirm e
 | `layouts/single1.html` | Alternate single template; no `layout: single1` found in content |
 | `assets/js/subscribe.js` | Empty file, still imported from `turbo.js` |
 | `assets/js/fontvar.js` | Not imported by `turbo.js` |
+| `nolinklist` shortcode | Zero uses; prints hide the link list with `design.linklist: false` |
 | `layouts/partials/params.html` + `params_override_lookup.html` | `params.html` is not included from other templates; it also calls a partial name (`params_override`) that does not match the file name |
 
 ## Likely-stale features (behavior still in tree)
