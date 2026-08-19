@@ -30,7 +30,7 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 - **Discourse integration is defunct.** Do not restore `share_discourse.py`, the `DISCOURSE` postbuild task, or auto-`commenturl`. Historical forum URLs in article bodies and existing `commenturl` values can stay as ordinary links until a later content pass. Goal 5 (social posts) does **not** include Discourse.
 - **Page PDFs are Prince of `_prince` HTML.** On-demand Lambda for typical pages; if the PDF would be **> ~6 MB**, generate locally and commit Git LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the main site **and** in that Prince HTML. Production **`render.js` still runs on `_prince/`** (footnote rewrite, strip `[remove]` scripts, **render** TeX to SVG) before Prince fetches it. **`/_prince/` is not a public page:** block indexing (robots + `noindex` + `X-Robots-Tag`). The public artifact is `/pdf/…`.
 - **Image dimensions live in `data/imgsize.json`.** Netlify does not download LFS; `make imginfo` is local (or a worker that has the bytes).
-- **Near-term: tracking.** Remove defunct Universal Analytics. Keep (and fix) live tag loading so Turbo navigations count.
+- **Near-term: tracking.** Universal Analytics leftovers are deleted. Keep (and fix) live GTM tag loading so Turbo navigations count.
 - **Crossref is active; admins mint DOIs** (CLI today). Deposit is DAILY + `TODAY`.
 - **Algolia `PeacefulScience` is the live search index.** Daily upload hook is still wanted.
 - **Netlify LFS / Large Media is in use.** Optional later: S3 for binaries; point ImageEngine origin at the bucket. `imgsize.json` stays.
@@ -46,15 +46,12 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 ### What exists
 
 - **GTM** `GTM-KDF8R85` in `layouts/partials/head.html` and a noscript iframe in `baseof.html` (skipped on `hugo server`). Injection is gated on `config.yml` `googleAnalytics: G-BHPH29YM44` (a GA4 id used only as a truthy flag).
-- On `turbo:load`, push a `page_view` to `dataLayer` with the new path so GTM can count in-app navigations. Do **not** call Universal Analytics `ga('send')`.
-- **`code/update_analytics.py`** talks to Analytics Reporting API **v3** (`ga:pageviews`, profile `125738398`). Dead. Optional `ANALYTICS` prebuild task; not on git-push or DAILY.
-- **`layouts/partials/byviews.html`** `getJSON`s `PeacefulScience/analytics` (`mostread.json` / `trending.json`). Homepage “by views” in `single.html` is commented out.
+- On `turbo:load`, push a `page_view` to `dataLayer` with the new path so GTM can count in-app navigations.
 
 ### What to do
 
-1. **Remove remaining defunct UA:** `update_analytics.py`; `ANALYTICS` / `GA_SERVICE`; `byviews.html` and the unused `PeacefulScience/analytics` fetch; Python Analytics client deps if nothing else uses them. (`ga('send')` on `turbo:load` is already replaced with a `dataLayer` `page_view`.)
-2. **Improve tracking:** keep GTM (or a single GA4 `gtag`). Confirm GTM has a trigger on the `page_view` event. Load tags independently of the old `googleAnalytics` Hugo param, or rename that param so it is not a UA leftover.
-3. Do not restore view-count widgets from UA data.
+1. **Improve tracking:** keep GTM (or a single GA4 `gtag`). Confirm GTM has a trigger on the `page_view` event. Load tags independently of the old `googleAnalytics` Hugo param, or rename that param so it is not a UA leftover name.
+2. Do not restore view-count widgets from UA data.
 
 This does not need Word ingest or an admin UI.
 
@@ -320,7 +317,7 @@ Generated abstracts/entities still go in sidecar JSON so git lastmod stays hones
 - **TODAY-gated DAILY tasks** are the current way to avoid depositing/indexing on every push. Incremental side effects should replace that gate rather than adding more full-site rebuilds.
 - **CSS is Tailwind.** New UI and any CSS cleanup migrate off Bootstrap 4 / `main.scss` onto Tailwind. Do not treat `sources/tailwind.css` as dead code.
 - **AMP and Discourse integration are defunct.** Do not spend implementation time reviving them.
-- **Universal Analytics is defunct.** Remove it in the near-term tracking pass; do not rebuild features on UA Reporting API v3.
+- **Universal Analytics leftovers are deleted.** Do not rebuild features on UA Reporting API v3.
 - **Git remains the audit log** until a port says otherwise. Suggest Changes / pull requests should keep working for readers even after editors get an admin.
 - **JSON-LD stays the mini-language.** Goal 9 improves cascades and directives; it does not restore `layouts/partials/seo/structured/`. **`/_prince/` print HTML is Prince-only** — keep it out of the index (`robots.txt` Disallow, meta `noindex`, `X-Robots-Tag`). Do not sitemap it, do not add JSON-LD or canonical-as-self, do not treat it as an AMP-style alternate. **Keep Schema.org microdata** on the print layout for Prince.
 

@@ -3,9 +3,6 @@
 {{ end }}
 
 {{ define "main" }}
-  {{/* $vlookup := index (partialCached "byviews" .).Lookup  */}}
-  {{/* $views := index $vlookup .RelPermalink "Views" */}}
-  
   {{ if eq (now.Format "2006-01-02") (.PublishDate.Format "2006-01-02")  }}
     {{ if (.Params.rss | default true ) }}
       {{ warnf "TODAY %s" .File.Path }}

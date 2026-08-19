@@ -113,7 +113,7 @@ JSON-LD `description` / `title` are `markdownify | plainify | htmlUnescape` then
 | Pagination | Disallowed in robots; good. |
 | Internal links | Related module + series help. Entity detection (goal 4) should suggest links into sidecar data, not rewrite bodies on a loop. |
 | Author E-E-A-T | Strong when a slug page exists (ORCID, sameAs). Weak for display-name bylines. |
-| Core Web Vitals | ImageEngine + width/height from `imgsize.json` help CLS. Turbo SPA: `turbo:load` pushes `page_view` on `dataLayer` (GTM). UA `ga('send')` is gone; `update_analytics.py` is still leftover. Font preload is a single face from the live origin. |
+| Core Web Vitals | ImageEngine + width/height from `imgsize.json` help CLS. Turbo SPA: `turbo:load` pushes `page_view` on `dataLayer` (GTM). Universal Analytics leftovers are deleted. Font preload is a single face from the live origin. |
 | News | `notnews` on books and authors (page-level cascade). |
 | Scholar | `citation_journal_title` is always “Peaceful Science”, including books. Fine for essays; noisy for Book pages. Highwire dates use `.Date`, JSON-LD `datePublished` uses `PublishDate` — keep those aligned. |
 

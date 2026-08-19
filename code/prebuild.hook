@@ -1,16 +1,6 @@
 set -e
 set -o pipefail
 
-if [[ "${TASKS}" == *"ANALYTICS"* ]] 
-then
-  echo
-  echo ANALYTICS task...
-  touch _cache/_redirects
-  python code/update_analytics.py || echo FALIED.;
-  cp _cache/*.json data/
-  echo
-fi
-
 if [[ "${TASKS}" == *"CACHE"* ]]
 then
   echo

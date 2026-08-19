@@ -107,7 +107,7 @@ Canonical example: **`doi.json`**. Keys are permalinks (`/articles/foo/`). `part
 | `lastmod.json` | Optional lastmod overrides (`partials/lastmod.html`; currently empty, and the partial is unused by `single.html`) |
 | `tweet.json` / `tweetAPI.json` | Tweet embed caches |
 
-Analytics JSON (`mostread.json`, `trending.json`, `ytd.json`) is gitignored. It came from **defunct** UA (`update_analytics.py` / `PeacefulScience/analytics`). Near-term: delete that path; do not treat it as live data.
+Analytics JSON (`mostread.json`, `trending.json`, `ytd.json`) from Universal Analytics was gitignored and is **deleted** with `update_analytics.py` / `byviews.html`. Do not restore view-count widgets from UA data.
 
 **Counterexample:** `make news` writes `mailchimp.campaign_id` into the newsletter markdown. New generated ids should follow `doi.json` instead. Product rule: [goals](goals.md) (sidecar data).
 
@@ -116,14 +116,13 @@ Analytics JSON (`mostread.json`, `trending.json`, `ytd.json`) is gitignored. It 
 | Script | Role |
 | --- | --- |
 | `production` | What Netlify production runs: TASKS (default `BUILD`) → prebuild → hugo → render.js → postbuild |
-| `prebuild.hook` | Optional `CACHE`. `ANALYTICS` is **defunct UA** — do not enable. |
+| `prebuild.hook` | Optional `CACHE`. |
 | `postbuild.hook` | Optional `CROSSREF` / `ALGOLIA` (DAILY, gated on `TODAY`). `DISCOURSE` still exists in the script and is **defunct** — do not enable. |
 | `render.js` | Post-process **every** `public/**/*.html` file, **including `_prince/`**: run `script[render]`, strip `[remove]` (browser scripts), **render** TeX to SVG when `[mathjax]` is set (inline math is rendered, not stripped), collect CSS classes. Prince PDFs use this HTML. |
 | `doi.py` | **CLI only** (`make doi`). Writes `data/doi.json`. Not called on Netlify. |
 | `newsletter/` | **CLI only** (`make news`). MJML + Mailchimp campaign upsert. Not called on Netlify. |
 | `imgsize.py` / `pdfinfo.py` | **CLI only** (`make imginfo` / `pdfinfo`). Refresh committed JSON. `imginfo` **must** run on a machine that has smudged LFS files. |
 | `document.py` | Parse Markdown front matter (newsletter CLI; also used by the defunct Discourse share script) |
-| `update_analytics.py` | **Defunct UA** (Reporting API v3). Near-term delete. |
 | `extract.js` | RDF extract; commented out of production |
 | `wordpress.py` / `wp-migrate.py` | WordPress migration leftovers |
 
@@ -147,7 +146,7 @@ The PDF function only allows sections `articles`, `about`, and `prints`. Netlify
 - **Discourse** — **integration defunct.** `share_discourse.py` / `DISCOURSE` task: do not restore. Many articles still have `commenturl` and a “Discuss on Forum” button; treat as leftover UI. `content/forum/` is a marketing page. Body links to `discourse.peacefulscience.org` are ordinary URLs.
 - **Mailchimp** — on-site subscribe forms POST to Mailchimp. Composing a campaign is `make news` on a laptop, not the Netlify build.
 - **OneSignal** — web push, still configured with WordPress plugin SDK paths.
-- **Google Tag Manager** `GTM-KDF8R85` loads in production (`head.html` + noscript in `baseof.html`), gated on `config.yml` `googleAnalytics: G-BHPH29YM44`. **`turbo:load` still calls Universal Analytics `ga('send', 'pageview')`**, which is defunct. Near-term: remove UA and push real pageviews on Turbo navigations ([goals](goals.md#tracking-near-term)). View-count sidecars (`update_analytics.py`, `byviews.html`) are UA v3 leftovers.
+- **Google Tag Manager** `GTM-KDF8R85` loads in production (`head.html` + noscript in `baseof.html`), gated on `config.yml` `googleAnalytics: G-BHPH29YM44`. On `turbo:load`, push `page_view` on `dataLayer`. Universal Analytics leftovers (`update_analytics.py`, `byviews.html`, `ANALYTICS` / `GA_SERVICE`) are deleted.
 - **Netlify Forms** — `content/contact.html`.
 - **CMS admin UI** — Decap at `static/admin/` and Forestry at `.forestry/` are **not working**. Editing is GitHub only. **Stack undecided**; candidate is Decap + GitHub Actions for sidecar processes ([goals](goals.md) §1).
 

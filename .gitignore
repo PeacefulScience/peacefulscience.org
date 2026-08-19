@@ -9,9 +9,6 @@ newsletter.mjml
 yarn.lock
 .git_old
 .direnv
-data/mostread.json
-data/trending.json
-data/ytd.json
 newsletter_id.txt
 _cache
 __pycache__

@@ -14,7 +14,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 - **CSS: Tailwind.** Prefer Tailwind; migrate all remaining CSS (today production is still Bootstrap 4 SCSS). The Tailwind toolchain is the destination, not leftover.
 - **Discourse integration is defunct.** Do not restore `share_discourse.py` / `DISCOURSE` postbuild / auto-`commenturl`. Historical forum links in content can remain until cleaned up.
 - **Page PDFs:** Prince of `_prince` HTML **after `render.js`**. Lambda until **~6 MB**; larger files → local Prince + LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the site and in Prince. **`/_prince/` must not be indexed** (robots Disallow + `noindex` + `X-Robots-Tag`); it is the Prince intermediate, not a public URL.
-- **Tracking (near-term):** `turbo:load` pushes `page_view` on `dataLayer`. Still remove leftover UA: `update_analytics.py`, `byviews.html`. Confirm GTM triggers on that event.
+- **Tracking:** `turbo:load` pushes `page_view` on `dataLayer`. Universal Analytics leftovers (`update_analytics.py`, `byviews.html`, `ANALYTICS` / `GA_SERVICE`) are deleted. Confirm GTM triggers on that event.
 - **Crossref account is active.** Admins mint DOIs (today: `make doi` → `data/doi.json`). Deposit remains DAILY + `TODAY`.
 - **Algolia** index `PeacefulScience` is still the live search backend. Daily hook still runs and is wanted.
 - **Netlify Large Media / LFS is in use.** Optional later: store binaries on S3 and point ImageEngine at S3 instead of the Netlify origin. `imgsize.json` stays either way.
@@ -25,7 +25,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 ## Product and ownership
 
 1. **Who is actively maintaining the site today?** Is this still the primary publishing workflow, or is the site mostly archival?
-2. **What should a refactor optimize for?** **Answered as product direction** in [goals](goals.md): hosted admin, Word ingest, Crossref, Algolia, SEO/JSON-LD/AI, Tailwind, sidecar data. **Near-term:** remove defunct Universal Analytics and fix Turbo pageview tracking; JSON-LD hygiene (goal 9). AMP and Discourse integration are out of scope (delete, do not revive).
+2. **What should a refactor optimize for?** **Answered as product direction** in [goals](goals.md): hosted admin, Word ingest, Crossref, Algolia, SEO/JSON-LD/AI, Tailwind, sidecar data. **Near-term:** Universal Analytics leftovers are deleted; keep Turbo `page_view` tracking. AMP and Discourse integration are out of scope (delete, do not revive).
 3. **Discourse comments / auto-post?** **Answered: integration is defunct.** Do not restore auto-posting. `commenturl` / “Discuss on Forum” are leftover UI. The forum site may still exist independently; this repo should not treat it as a publishing dependency.
 
 ## Publishing workflow
@@ -39,7 +39,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 
 8. **Algolia?** **Answered: yes**, `PeacefulScience` is still the live search backend. Daily upload is still gated on `TODAY` (freshness is still a gap for goal 3).
 9. **OneSignal:** Should web push stay? The implementation still points at WordPress plugin paths.
-10. **Analytics?** **Answered: UA is defunct — remove leftovers.** `turbo:load` already pushes `page_view` on `dataLayer`. Still delete `update_analytics.py`, `ANALYTICS`/`GA_SERVICE`, `byviews.html`. Remaining: keep GTM+GA4 vs a single `gtag` snippet; confirm GTM listens for `page_view`.
+10. **Analytics?** **Answered: UA leftovers deleted.** `turbo:load` already pushes `page_view` on `dataLayer`. Remaining: keep GTM+GA4 vs a single `gtag` snippet; confirm GTM listens for `page_view`.
 11. **MathJax, cite/bookcover functions:** which of these are still required in production? (**AMP: defunct.** **Tailwind: keep and migrate all CSS onto it.**)
 12. **Netlify Large Media / Git LFS?** **Answered: still in use.** Build still does not download LFS (`imgsize.json` required). Open to **S3 for binaries** later if helpful; ImageEngine can then origin from S3 instead of the Netlify live site. Sidecar dimensions stay.
 
@@ -48,7 +48,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 13. **Should deploy previews run `code/render.js`?** They currently do not, so dropcaps/sidenotes/**rendered math** **and `/_prince/` Prince input** differ from production. Page PDFs from a preview would skip that pass.
 14. **Should the default (non-production) Netlify command stay as bare `hugo`?** That also skips Make, Prince, and post-render.
 15. **Daily scheduled rebuild?** **Answered: yes**, still configured and wanted. It remains the automated Crossref deposit + Algolia upload path (gated on `TODAY`). Goal 7 still wants to replace full daily rebuilds with incremental side effects later.
-16. **Python on Netlify:** `runtime.txt` is 3.8. Default `BUILD` does not call Python. **DISCOURSE and ANALYTICS (UA) are defunct.** Python remains for local CLI (`doi`, `news`, `imginfo`) if those stay in this repo.
+16. **Python on Netlify:** `runtime.txt` is 3.8. Default `BUILD` does not call Python. **DISCOURSE is defunct. The old ANALYTICS (UA) hook is deleted.** Python remains for local CLI (`doi`, `news`, `imginfo`) if those stay in this repo.
 
 ## Content policy (for later refactors that touch templates)
 
