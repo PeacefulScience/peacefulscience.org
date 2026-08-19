@@ -25,6 +25,7 @@ This is a **candidate list** for a later cleanup. Items marked **confirmed defun
 | `assets/js/fontvar.js` | Not imported by `turbo.js` |
 | `nolinklist` shortcode | Zero uses; prints hide the link list with `design.linklist: false` |
 | `layouts/partials/params.html` + `params_override_lookup.html` | `params.html` is not included from other templates; it also calls a partial name (`params_override`) that does not match the file name |
+| `code/pdf` (Makefile `make pdf`) | Target still calls this script; **file is not in the repo**. Oversized PDFs are Prince on `_prince` HTML → `static/pdf/<section>/<slug>.pdf`. |
 
 ## Likely-stale features (behavior still in tree)
 
@@ -64,7 +65,7 @@ Keep these unless product direction in [goals](goals.md) replaces them:
 - `code/production`, `render.js`, usercache plugin
 - Algolia index generation + `search.js`
 - Crossref XML layouts + `data/doi.json`
-- Print layouts + `functions/pdf`
+- Print layouts + `functions/pdf` + LFS override path `static/pdf/<section>/<slug>.pdf` when the PDF would exceed ~6 MB
 - Image CDN partials + `data/imgsize.json`
 - Suggest Changes / GitHub links
 - Mailchimp embed forms (even if the Python campaign CLI is unused)

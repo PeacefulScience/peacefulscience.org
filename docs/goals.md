@@ -21,9 +21,10 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 
 ### Confirmed stack decisions
 
-- **CSS: Tailwind.** Prefer Tailwind for all styling. Production still compiles Bootstrap 4 via `assets/css/main.scss`; the Tailwind pipeline (`sources/tailwind.css` → `assets/css/tw.css`) exists but is commented out of `code/production` and `head.html`. A cleanup should **migrate remaining CSS to Tailwind**, not delete the Tailwind tooling.
+- **CSS: Tailwind.** Prefer Tailwind for all styling. Production still compiles Bootstrap 4 via `assets/css/main.scss`; the Tailwind pipeline (`sources/tailwind.css` → `assets/css/tw.css`) exists but is commented out of `code/production` and `head.html`. A cleanup should **migrate remaining CSS to Tailwind**, not delete the Tailwind tooling. Print/Prince CSS in `single.print.html` is a separate sheet and must keep working (or be ported deliberately).
 - **AMP is defunct.** Do not emit AMP pages. `layouts/_default/baseof.amp.html` and `config/amp/outputs.yml` are deletion candidates.
 - **Discourse integration is defunct.** Do not restore `share_discourse.py`, the `DISCOURSE` postbuild task, or auto-`commenturl`. Historical forum URLs in article bodies and existing `commenturl` values can stay as ordinary links until a later content pass. Goal 5 (social posts) does **not** include Discourse.
+- **Page PDFs are Prince of `_prince` HTML.** On-demand Lambda for typical pages; if the PDF would be **> ~6 MB**, generate locally and commit Git LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the main site **and** in that Prince HTML.
 
 ---
 
@@ -43,11 +44,12 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 | --- | --- | --- |
 | **DOI control** | `code/doi.py` mints `10.54739/xxxx` into `data/doi.json` (sidecar; not front matter). Deposit is a **later** DAILY Netlify step, and only if Hugo logged `TODAY`. Assigning twice, assigning the wrong path, or depositing without a commit all break Crossref. | Explicit “assign DOI” with preview of the path key (`/articles/foo/`), collision check, and a commit of `doi.json` **before** the page is treated as published. Never mint as a silent side effect of save. Never write the DOI into the article file. |
 | **Front matter** | Schemas differ by **section and subfolder** ([front-matter](front-matter.md)). Authors are **lists of strings** (slugs or display names), not `{role, slug}` maps. `prints/` vs `prints/excerpts/` vs `prints/deleted/` are three page types. | Form (or generated YAML) **per folder**, validated against the corpus schema. Cascade from `_index.md` must stay visible (e.g. `prints/deleted` sets `rss: false`). |
-| **Shortcodes** | Custom `amazon`, `image`, `youtube` (overrides Hugo), `mediatext`, `pdf`, `facebook`, `footnotes2refs`, plus built-in `tweet` / `vimeo`. One broken `twitter` tag. ([shortcodes](shortcodes.md)) | Palette / helpers that insert the **site** shortcodes, not generic Markdown. `amazon` must stash ASINs (book backrefs). `youtube` must use the site player overlay, not Hugo’s embed. |
+| **Shortcodes** | Custom `amazon`, `image`, `youtube` (overrides Hugo), `mediatext`, `pdf`, `facebook`, `footnotes2refs`, plus built-in `tweet` / `vimeo`. One broken `twitter` tag. ([shortcodes](shortcodes.md)) | Palette / helpers that insert the **site** shortcodes, not generic Markdown. `amazon` must stash ASINs (book backrefs). `youtube` must use the site player overlay, not Hugo’s embed. **Every shortcode must also render in Prince `_prince` HTML** (print CSS / fallbacks for JS embeds). |
 | **Autofill from the web** | Hard-to-find fields: Amazon ASIN, ISBN, Crossref/DOI metadata, YouTube IDs, author affiliations, book covers (`functions/bookcover.js`). `functions/cite.js` already resolves DOI.org + Manubot → CSL-JSON. `data/citation.json` is a cache. | Lookups land in **sidecar** JSON (extend `citation.json` / new maps). The admin may *propose* shortcodes or ISBN in the article; committing those is an editorial save (and *should* bump lastmod). Do not silently patch published files with resolved metadata. |
 | **Internal links** | Link render hook records destinations on page scratch. Related content uses Hugo `related` + `series`. Editorial policy already says editors may add related links without asking. | Auto-suggested related URLs live in sidecar data; templates can inject a “related” module without touching the article. Inserting links **into the body** is an editorial accept and should update lastmod. |
 | **Categories** | Taxonomy pages in `content/categories/`. `featured` and `gae` are `hidden: true`. `tags` is in `config.yml` but unused. Homepage buckets are **hard-coded** in `layouts/index.html`. | Auto-suggest into sidecar (or an admin review queue). Editor-chosen `categories:` in front matter is editorial, not generated. Do not invent slugs that have no `_index.md`. |
 | **New authors** | Missing `content/authors/<slug>/` warns `AUTHOR.MISSING`. Corpus mixes slugs (`swamidass`) and display names (`Dennis Venema`, `Peaceful Science`). | Create author page (bio, affiliation, optional `orcid` / social) when a byline is new; keep display-name bylines valid until a slug exists. |
+| **Page PDFs** | Lambda Prince of `_prince` HTML fails when the PDF is **> ~6 MB**. Those files must be generated locally and committed to LFS at `static/pdf/<section>/<slug>.pdf`. | Host Prince or a worker that writes LFS; do not invent a second layout. Same `_prince` HTML as the Lambda. |
 
 ### Design implication
 
@@ -191,7 +193,7 @@ Metalsmith and Next.js have been considered in other Peaceful Science repos. Thi
 | --- | --- | --- |
 | Markdown + per-folder front matter + shortcodes | Hugo | Parser + the same shortcode semantics (`amazon`, `youtube`, `image`, …) |
 | DOI / citation / entity maps | `data/*.json` sidecars | Same: generated maps stay off the article files so source lastmod stays honest |
-| Print/PDF | Prince from `/_prince/` HTML | Still need print CSS or a print pipeline |
+| Print/PDF | Prince from `/_prince/` HTML; LFS override when >6 MB | Same print HTML. Lambda 6 MB limit still applies unless PDFs are stored as objects. |
 | Cite / book covers | Netlify functions | Any origin (Lambda, S3+CloudFront functions) |
 | Redirects, aliases, ImageEngine | Hugo + `_redirects` | Equivalent routing |
 | MathJax / dropcaps / sidenotes | `render.js` | Same post-process or a component |
@@ -219,7 +221,7 @@ A file that would pass a future admin validator:
 - Authors as string list; new authors flagged.
 - `headerimage`, `description`, `publishdate` / `date`, `categories`, `commenturl` when known.
 - Body as Goldmark markdown (`unsafe` HTML only where the site already allows it).
-- Shortcodes: `image` for figures, `amazon` for books, `youtube` / `vimeo` for video, footnotes that match `single.html` sidenote behavior.
+- Shortcodes: `image` for figures, `amazon` for books, `youtube` / `vimeo` for video, footnotes that match **both** `single.html` sidenotes and `single.print.html` (Prince). JS embeds need a print fallback.
 - Internal links suggested, not silently rewritten.
 - Images extracted, named, and (until media moves to S3) placed where `imgsize.json` / ImageEngine expect them.
 
@@ -238,7 +240,8 @@ Zotero is already recommended to authors; if the Word file contains a Zotero bib
 
 ## Cross-cutting constraints
 
-- **Sidecar data for generated fields:** follow `data/doi.json`. Auto topics, resolved citations, social ids, image metrics, and similar must not be written into article markdown. That keeps `.Lastmod` (git info) as “the prose last changed.” First-time Word ingest **creates** the article, so that commit *should* set lastmod. Later enrichment must not.
+- **Page PDFs are Prince of `_prince` HTML**, not the main site and not Word export. Lambda for normal sizes; **> ~6 MB → local Prince + `static/pdf/<section>/<slug>.pdf` (LFS)**. Shortcodes must render in both HTML outputs.
+- **Sidecar data for generated fields:** follow `data/doi.json`. Auto topics, resolved citations, social ids, image metrics, and similar must not be written into article markdown. That keeps `.Lastmod` (git info) as “the prose last changed.” First-time Word ingest **creates** the article, so that commit *should* set lastmod. Later enrichment must not. Baked PDFs go in `static/pdf/`, not the article.
 - **DOI minting is two-phase:** write `data/doi.json` (or successor store), then deposit XML. The admin and any S3 pipeline must not collapse those phases. The DOI never needs to live in front matter (`getdoi` already warns `DOI.OLD` when it does).
 - **Per-folder schemas and shortcodes are the publication format.** Word ingest and any new backend emit that format; they do not invent a parallel CMS schema.
 - **TODAY-gated DAILY tasks** are the current way to avoid depositing/indexing on every push. Incremental side effects should replace that gate rather than adding more full-site rebuilds.

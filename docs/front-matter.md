@@ -100,7 +100,7 @@ Live JSON-LD is this system. Older `layouts/partials/seo/structured/*.html` and 
 
 `partials/getdoi.html` prefers `data/doi.json[RelPermalink]`, then `.Params.doi` (warns `DOI.OLD`). That sidecar pattern is the rule for **all** auto-generated page metadata ([goals](goals.md)): do not write DOIs, detected topics, citation resolution, or social ids back into the article, or git last-modified (`enableGitInfo`) will move on every enrichment pass.
 
-`getpdf.html` synthesizes `/pdf<path>.pdf` for sections `articles`, `prints`, `about`. A page-level `pdf:` key is **absent** from the corpus.
+`getpdf.html` synthesizes `/pdf<path>.pdf` for sections `articles`, `prints`, `about` (from `RelPermalink`). A page-level `pdf:` key is **absent** from the corpus (`PDF.OLD` if present). That URL is served either by the Prince Lambda or by a committed LFS file at `static/pdf/<section>/<slug>.pdf` when the generated PDF would exceed ~6 MB.
 
 ---
 

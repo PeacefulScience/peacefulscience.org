@@ -87,7 +87,7 @@ Homepage and cards use `partial "render"` which picks `layouts/partials/render/_
 
 - **CSS:** **Destination is Tailwind.** Today production still compiles Bootstrap 4 SCSS from `assets/css/main.scss` (plus Font Awesome) through Hugo `resources.ToCSS` + PostCSS (PurgeCSS, autoprefixer, cssnano). A parallel Tailwind pipeline exists (`sources/tailwind.css`, `tailwind.config.js`, `npm run tailwind` → `assets/css/tw.css`) but is **commented out** of `code/production` and `head.html`, and `tw.css` is gitignored. Cleanup should turn Tailwind on and migrate remaining Bootstrap/custom SCSS onto it — not delete the Tailwind files.
 - **JS:** `assets/js/turbo.js` is the entry. Hugo `js.Build` bundles Hotwired Turbo, navbar, TOC progress, YouTube player, and (empty) subscribe helpers. Search is a separate InstantSearch bundle on the search layout.
-- **Images / PDFs:** `static/img` and `static/pdf`, stored in **Git LFS** and served through **Netlify Large Media**. At build time, `data/imgsize.json` and `data/pdfinfo.json` record dimensions / last-modified for templates.
+- **Images / PDFs:** `static/img` and `static/pdf`, stored in **Git LFS** and served through **Netlify Large Media**. `data/imgsize.json` / `data/pdfinfo.json` record dimensions / last-modified. **Page PDFs** (download button on articles/prints/about) are Prince output of the `print` (`_prince`) HTML — on-demand via `functions/pdf`, or a committed LFS file at `static/pdf/<section>/<slug>.pdf` when the PDF would exceed the Lambda **6 MB** limit. See [build-and-deploy](build-and-deploy.md#article-pdfs-prince).
 - **Image CDN:** Production templates rewrite image URLs to ImageEngine (`8l2ic7fx.cdn.imgeng.in`) via `partials/imgcdn.html`. Local `hugo server` serves files from `static/` when they exist.
 
 ### Data files (`data/`) — sidecar pattern
@@ -133,12 +133,12 @@ Routed from `layouts/partials/redirects.html` / `_redirects`:
 
 | Function | Path | What it does |
 | --- | --- | --- |
-| `pdf/index.js` | `/pdf/*` | On-demand PDF via Prince from `/_prince/...` HTML |
+| `pdf/index.js` | `/pdf/*` | On-demand Prince PDF from `/_prince/...` HTML. Fails if the PDF is over ~**6 MB**; those pages need a committed LFS file at `static/pdf/<section>/<slug>.pdf` |
 | `cite.js` | `/cite/*` | Citation JSON from DOI.org or Manubot |
 | `bookcover.js` | `/img/bookcover/*` | Proxy Amazon cover images |
 | `daily-build.js` | scheduled `0 14 * * *` | POST `"DAILY"` to `BUILD_HOOK` to rebuild |
 
-The PDF function only allows sections `articles`, `about`, and `prints`. Netlify `included_files` in `netlify.toml` packs the Prince binary into the function bundle.
+The PDF function only allows sections `articles`, `about`, and `prints`. Netlify `included_files` in `netlify.toml` packs the Prince binary into the function bundle. Static files under `public/pdf/` (from `static/pdf/`) shadow this rewrite.
 
 ### Integrations (see also [build-and-deploy](build-and-deploy.md))
 

@@ -93,4 +93,9 @@ Put images in `static/img/` (often `static/img/YYYY/MM/`). They are Git LFS obje
 make imginfo
 ```
 
-PDFs that should be statically hosted go in `static/pdf/` (`make pdfinfo`). On-demand article PDFs do not live in git; they are generated from the `print` output format under `public/_prince/`.
+PDFs:
+
+- **Page PDFs** (the download chip on articles/prints/about): always Prince of the `_prince` HTML. Typical pages: on-demand Lambda. If the PDF would be **> ~6 MB**, generate locally with Prince and commit Git LFS at `static/pdf/<section>/<slug>.pdf` (same URL). Then `make pdfinfo`. See [build-and-deploy](build-and-deploy.md#article-pdfs-prince). Examples: Tonto Group articles.
+- **Uploaded documents** (errata, letters, scans): `static/pdf/…` as well, but **not** named like `articles/<slug>.pdf`. Linked from markdown / the `pdf` shortcode.
+
+Do not round-trip a page PDF into the article file.

@@ -26,7 +26,7 @@ Developer docs:
 - [Content model](docs/content-model.md)
 - [Front matter schemas (per folder)](docs/front-matter.md)
 - [Hugo shortcodes](docs/shortcodes.md)
-- [Local build and Netlify deploy](docs/build-and-deploy.md)
+- [Local build and Netlify deploy](docs/build-and-deploy.md) (includes Prince PDFs)
 - [Product goals](docs/goals.md)
 - [Index of all developer docs](docs/README.md)
 

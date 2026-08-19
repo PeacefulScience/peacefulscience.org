@@ -4,6 +4,8 @@ Custom shortcodes live in `layouts/shortcodes/`. Content also uses a few **Hugo 
 
 `{{< … >}}` is raw HTML (usual for embeds). `{{% … %}}` runs the inner markdown through Goldmark (usual for `image` / `amazon-caption` captions). Both appear in the corpus; mixing them is common and not always necessary.
 
+**Every shortcode must work in two outputs:** the main site (`layouts/_default/single.html`) and Prince (`layouts/_default/single.print.html` → `/_prince/…`, then PDF). Prince has no browser JS. Prefer HTML + images + CSS that `single.print.html` already styles (`aside-xl-right`, `amazon-xl-right`, footnotes, `.d-print-none`). JS widgets (`youtube`, `facebook`, `tweet`, `pdf`, `vimeo`) need a print fallback (poster, caption, or URL) — today several of them are wrapped in `d-print-none` and **vanish** from the PDF. New shortcodes (and Word ingest) cannot be site-only.
+
 Markdown images `![alt](/img/…)` are **not** shortcodes. They go through `layouts/_default/_markup/render-image.html` (CDN + `aside-xl-right` figure). Prefer that or `image` when you need a caption/class.
 
 ASINs passed to `amazon` / `amazon-caption` are recorded on the page scratch. Book pages with `pages_include_backrefs` use that to list related articles.
@@ -199,10 +201,27 @@ Hugo’s built-in `youtube` is **not** used as-is; the custom file shadows it. B
 
 ---
 
+## Prince and the main site
+
+Page PDFs are Prince of `/_prince/…` HTML, not Chrome “print this page.” The print template inlines its own CSS (`single.print.html`). Shortcodes share `.Content` with the site, so markup has to survive both.
+
+| Shortcode | Site | Prince today |
+| --- | --- | --- |
+| `image`, `mediatext` | Figure + ImageEngine | Same HTML; print CSS floats `aside-xl-*`. Images must be fetchable URLs (CDN). |
+| `amazon`, `amazon-caption` | Cover + affiliate link | Print CSS for `.amazon-xl-right`. Cover comes from `/img/bookcover/` (function). |
+| `footnotes2refs` | Marker; both templates rewrite footnotes | Same rewrite in `single.print.html`. |
+| `youtube`, `youtube-two` | Click-to-play overlay (`PlayVideo`) | Wrapper is `d-print-none` — **omitted from the PDF**. Needs a print fallback (poster + URL). |
+| `facebook`, `tweet`, `vimeo`, `pdf` | JS SDKs / iframes | Prince will not run those scripts. `pdf` (Adobe viewer) is useless on paper. |
+
+Admin UI, Word ingest, and any new shortcode must keep this table in mind. Oversized PDFs still use this same `_prince` HTML ([build-and-deploy](build-and-deploy.md#article-pdfs-prince)).
+
+---
+
 ## Implications for a later cleanup
 
 1. `image` vs `mediatext` vs Markdown images overlap; a single figure shortcode would be enough.
 2. `amazon` vs `amazon-caption` differ only in where the caption lives.
 3. `nolinklist` can go if `design.linklist` stays.
 4. Rename or fix the lone `twitter` call to `tweet`.
-5. Custom `youtube` vs Hugo `youtube`: the custom one is required for the site player; do not delete it thinking the built-in is enough.
+5. Custom `youtube` vs Hugo `youtube`: the custom one is required for the site player; do not delete it thinking the built-in is enough. Add a print fallback so Prince is not empty.
+6. `pdf` shortcode (Adobe embed) is for **uploaded** PDFs in the article body, not the page’s Prince download.

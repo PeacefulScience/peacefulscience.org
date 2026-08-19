@@ -12,6 +12,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 - **AMP is defunct.** No AMP output. Safe to delete `layouts/_default/baseof.amp.html` and `config/amp/`.
 - **CSS: Tailwind.** Prefer Tailwind; migrate all remaining CSS (today production is still Bootstrap 4 SCSS). The Tailwind toolchain is the destination, not leftover.
 - **Discourse integration is defunct.** Do not restore `share_discourse.py` / `DISCOURSE` postbuild / auto-`commenturl`. Historical forum links in content can remain until cleaned up.
+- **Page PDFs:** Prince of `_prince` HTML. Lambda until **~6 MB**; larger files → local Prince + LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the site and in Prince.
 
 ## Product and ownership
 
@@ -24,7 +25,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 4. **Which editor UI is canonical?** **Today: GitHub.** **Direction: a working admin UI** so editors do not need a local clone ([goals](goals.md) §1). Decap/Forestry as they sit cannot meet DOI control, per-folder schemas, or shortcode helpers. Remaining: custom admin vs a Git-backed CMS we extend; remove `/admin/` and `.forestry/` once that choice is made.
 5. **Are newsletters still sent from this repo** (`make news` / `python -m code.newsletter`)? Confirmed: that path is **not** in the Netlify build. Remaining: is the CLI still how campaigns are composed, or has that moved into Mailchimp’s UI?
 6. **Who assigns DOIs, and to which content?** Confirmed: assignment is **CLI** (`make doi` → `data/doi.json` commit). Deposit is DAILY Netlify. Remaining: is that CLI still used for new prints/articles? Is the Crossref account still active?
-7. **Are on-demand Prince PDFs (`/pdf/articles/...pdf`) still used?** If yes, is the Lambda Prince zip still the right way to ship the binary?
+7. **On-demand Prince PDFs?** **Answered: yes.** `/pdf/articles/…` is still the download URL. Typical pages: Lambda from `_prince` HTML. **If the PDF would be > ~6 MB**, generate locally with Prince of that same HTML and commit LFS at `static/pdf/<section>/<slug>.pdf` (Tonto Group articles already do this). Do not use the main site HTML. `code/pdf` is missing though `make pdf` still calls it.
 
 ## Integrations that may be dead
 
@@ -64,3 +65,4 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 29. **Entity detection provider:** reuse `@google-cloud/language`, or another NLP/LLM path that writes suggested topics into **sidecar** JSON (not into the article on each run)?
 30. **`partials/lastmod.html` / `data/lastmod.json`:** unused override path. Keep for correcting bad git dates, or delete once sidecar enrichment is the norm?
 31. **Newsletter `mailchimp.campaign_id`:** move to sidecar like DOIs, or leave the six existing front-matter values as a one-off?
+32. **Restore `code/pdf`?** Makefile still expects it. Until then, local `prince` on the live `_prince` URL is the documented oversized-PDF path.

@@ -23,7 +23,7 @@ From `netlify.toml`:
 
 `make production` is **not** `make all`. `make all` is local (`imginfo` + `pdfinfo` + `production`). Netlify never regenerates `data/imgsize.json` or `data/pdfinfo.json`.
 
-If `PRINCE=./prince` is set in the Netlify env, `make production` first downloads/unzips the Prince Lambda zip (for the on-demand PDF **function**). It does not stamp article PDFs into `public/` at build time. PDFs are built later by `functions/pdf` from `/_prince/` HTML.
+If `PRINCE=./prince` is set in the Netlify env, `make production` first downloads/unzips the Prince Lambda zip (for the on-demand PDF **function**). It does not stamp article PDFs into `public/` at build time except when a matching file already exists under `static/pdf/` (see [Article PDFs](#article-pdfs-prince)).
 
 Netlify Dev uses `make -j 10 dev`, which only `echo built` and sleeps — it is not a real watch server.
 
@@ -82,7 +82,6 @@ The Makefile loads `.env` if present. Targets `doi`, `news`, and `pdf` are **onl
 ```bash
 make doi INPUT=content/articles/foo.md
 make news INPUT=content/newsletter/foo.md
-make pdf INPUT=content/articles/foo.md
 ```
 
 | Target | Used by Netlify? | What it is |
@@ -90,6 +89,7 @@ make pdf INPUT=content/articles/foo.md
 | `production` | **yes** (production context only) | `code/production` as above |
 | `doi` | **no** | `python code/doi.py` — mint `10.54739/xxxx` into `data/doi.json` (must be committed). Converts `content/articles/foo.md` → `/articles/foo/` as the map key. Does not talk to Crossref. |
 | `news` | **no** | `python -m code.newsletter` — MJML via mjml.io, create/update Mailchimp campaign, write `mailchimp.campaign_id` back into the markdown, `open newsletter.html`. Send-to-list is commented out; it sends **test** emails. Writing the id into the article is the pattern **not** to extend (use sidecar data; see [goals](goals.md)). |
+| `pdf` | **no** | Makefile calls `code/pdf ${INPUT}`, but **that script is not in the repo**. Oversized PDFs: local Prince on `_prince` HTML (below). |
 | `imginfo` / `pdfinfo` | **no** | Refresh `data/imgsize.json` / `data/pdfinfo.json`; commit the JSON |
 | `algolia` | **no** | Separate from the DAILY task: `hugo -e index` then `npm run algolia` using `config/index/outputs.yml` |
 | `crossref` / `crossref-nocheck` | **no** | Local deposit of `public/.xref/{conf,posted,book}.xml` with XSD check. Production DAILY deposits `_cache/xref/*.xml` without `xmllint`. |
@@ -106,6 +106,38 @@ make pdf INPUT=content/articles/foo.md
 
 1. **Subscribe forms** on the live site (`layouts/partials/mailinglist.html`, modal) POST to Mailchimp’s public form endpoint. No Make, no Netlify function.
 2. **Campaign compose** is **CLI only** (`make news`). The Netlify build never creates or sends campaigns. Newsletter **pages** in `content/newsletter/` still render as HTML like any other section.
+
+### Article PDFs (Prince)
+
+There is **one** correct PDF layout: Hugo’s `print` output format (`config.yml` `outputformats.print`, `path: _prince`). Templates: `layouts/_default/single.print.html` + `baseof.print.html`. Articles, prints, and about cascade `outputs: [HTML, print]`. The download URL is always `getpdf`: `/pdf` + permalink + `.pdf` (example: `/articles/foo/` → `/pdf/articles/foo.pdf`).
+
+Do not print the main site HTML. Do not use a second stylesheet or Word’s PDF export for these page PDFs.
+
+**On-demand (typical pages):** `_redirects` has `/pdf/* /.netlify/builders/pdf 200`. `functions/pdf` fetches `https://peacefulscience.org/_prince/<section>/<slug>/`, runs Prince, returns the PDF. Allowed sections: `articles`, `prints`, `about`. Netlify/AWS Lambda **response bodies max out at 6 MB**. Long, image-heavy articles produce PDFs larger than that and the function fails. The handler also base64-encodes the file, so a PDF near 6 MB can fail even if slightly under.
+
+**Oversized fallback (commit to LFS):** run Prince **locally** on the same `_prince` HTML, write the PDF to Git LFS at the URL path under `static/`:
+
+```text
+static/pdf/<section>/<slug>.pdf
+```
+
+Example already in the repo: the Tonto Group series (`static/pdf/articles/examining-yec-claims-tonto-group-cambrian-{1,2,3}.pdf`). Hugo copies that to `public/pdf/...`. Netlify serves the static file **instead of** the function rewrite, so `/pdf/articles/<slug>.pdf` still matches `getpdf` / `citation_pdf_url`.
+
+After adding or replacing a baked PDF:
+
+```bash
+# Prefer the live print HTML (same input the Lambda uses):
+prince https://peacefulscience.org/_prince/articles/<slug>/ -o static/pdf/articles/<slug>.pdf
+
+make pdfinfo   # updates data/pdfinfo.json (sidecar lastmod for the sitemap)
+# commit the PDF (LFS) and data/pdfinfo.json — not the article markdown
+```
+
+That keeps article last-modified honest ([sidecar pattern](goals.md)). Other files under `static/pdf/` (errata, ASA letters, deleted-BioLogos captures) are **uploaded documents** linked from markdown, not Prince output of a page. Do not mix those paths with `static/pdf/articles/<slug>.pdf`.
+
+`make pdf INPUT=...` is supposed to wrap this but `code/pdf` is missing from the tree.
+
+**Shortcodes** must render in both `single.html` (site) and `single.print.html` (Prince). Print CSS lives in the print template (including `.d-print-none`). JS-only embeds need a print fallback. Details: [shortcodes](shortcodes.md#prince-and-the-main-site).
 
 ## Local development
 
@@ -126,7 +158,7 @@ Configured in `config.yml` `outputformats` / `outputs`:
 | Format | Where | Use |
 | --- | --- | --- |
 | `HTML` | normal pages | Site |
-| `print` | `public/_prince/...` | Prince input for PDFs |
+| `print` | `public/_prince/...` | Prince input for page PDFs (site HTML is a different output; do not print that) |
 | `Algolia` | `public/algolia.json` | Search index |
 | `redir` | `public/_redirects` | Aliases + function proxies |
 | `xrefposted` / `xrefbook` / `xrefconf` | `public/.xref/*.xml` | Crossref deposits |
