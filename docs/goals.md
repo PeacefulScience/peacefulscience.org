@@ -300,7 +300,7 @@ This is **not** a new structured-data stack. Keep the JSON-LD mini-language (`= 
 
 ### What to do
 
-1. **JSON-LD hygiene** (templates): cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, empty `twitter:creator` — implemented. Title/description escaping is a follow-up. Remaining: SearchAction/InstantSearch routing with goal 3.
+1. **JSON-LD hygiene** (templates): cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, empty `twitter:creator`, title/description unescape then `jsonify` — implemented. Remaining: SearchAction/InstantSearch routing with goal 3.
 2. **SearchAction + InstantSearch routing** with goal 3.
 3. **Snippets / sitemap:** description no longer falls back to `.Kind`; decide whether PDF URLs belong in the sitemap at article priority.
 4. **Richer graphs** after goals 2 and 4: `citation` from resolved references; `about` / `mentions` as `Thing`s from the entity sidecar — not from rewriting article `tags:`.
