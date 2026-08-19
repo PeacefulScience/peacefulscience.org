@@ -28,7 +28,7 @@ This is a **candidate list** for a later cleanup, not a deletion plan. Confirm e
 | Google Analytics UA in `update_analytics.py` / `byviews.html` | UA Reporting API v3 was shut down. Homepage view-count usage in `single.html` is commented out. `byviews.html` still `getJSON`s `PeacefulScience/analytics` |
 | OneSignal | Still injected in production `head.html`, with SDK paths under `/wp-content/plugins/onesignal-...` |
 | Discourse auto-share | `share_discourse.py` works, but DAILY tasks comment says “removed DISCOURSE for now” |
-| Mailchimp send | `send_newsletter` is commented out; CLI still creates/updates campaigns and sends **test** emails |
+| Mailchimp send | `send_newsletter` is commented out; CLI (`make news`) still creates/updates campaigns and sends **test** emails. **Not** invoked by Netlify. |
 | `content/news/` | Single 2019 staff note; not in the main nav |
 | `package.json` `"directories": { "test": "test" }` | No `test/` tree in repo (`test*` is gitignored) |
 | `layouts/_default/index.precompute` | `precompute` output format is defined but not listed in default `outputs` |

@@ -43,9 +43,9 @@ Books, newsletters, author/category/series terms, and `prints/deleted/` do not f
 
 **Prints** (`content/prints/`) are scholarly pre/post-prints. They get print output and ScholarlyArticle JSON-LD. **Subfolders are different types:** `prints/*.md` (talks/preprints), `prints/excerpts/` (book excerpts with `partof`), `prints/deleted/` (fair-use republications with `deletiondate` and `rss: false`).
 
-**Books** (`content/books/`) are not blog posts. They list related articles by Amazon ASIN backrefs (`pages_include_backrefs`) and optional explicit `pages`. Covers are fetched via `/img/bookcover/<ASIN>` (Netlify function).
+**Books** (`content/books/`) are not blog posts. They list related articles by Amazon ASIN backrefs (`cascade.pages_include_backrefs`) and inbound links. Covers are fetched via `/img/bookcover/<ASIN>` (Netlify function).
 
-**Newsletters** (`content/newsletter/`) are dated issues. Body Markdown plus a `pages:` list. `python -m code.newsletter content/newsletter/foo.md` builds HTML with MJML and upserts a Mailchimp campaign. The production site also lists them like articles.
+**Newsletters** (`content/newsletter/`) are dated issues. Body Markdown plus a `pages:` list. They build as HTML on Netlify like any other section. Creating the Mailchimp campaign is a **local** command (`make news INPUT=content/newsletter/foo.md`), not part of `make production`.
 
 **Authors / categories / series** are taxonomy term folders (`<slug>/_index.md`). Series grouping is by the `series:` field on articles/prints. Series *term* folders themselves split into several schemas (conference Crossref metadata vs title-only vs deleted-source archives).
 
@@ -78,7 +78,7 @@ Books, newsletters, author/category/series terms, and `prints/deleted/` do not f
 - **Decap CMS** files live at `static/admin/` (`/admin/`) but the admin UI is **not working yet**.
 - **Forestry** config in `.forestry/` is leftover from a discontinued product. Do not treat it as a publishing path.
 
-New articles: copy an existing file or use `hugo new` (`archetypes/default.md` is a stub: title, date, draft). Author and category pages should exist before they are referenced.
+New articles: copy an existing file in the same folder (not a different prints subfolder) or use `hugo new` (`archetypes/default.md` is only title/date/draft). Author pages are optional; missing slugs render as plain text.
 
 ## Media
 

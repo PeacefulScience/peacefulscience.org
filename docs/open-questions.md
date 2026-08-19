@@ -4,8 +4,10 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 
 ## Confirmed so far
 
-- **Hosting:** the live site is deployed on **Netlify** (site `peacefulscience`). Production builds run `make production` from `netlify.toml`.
-- **No working front-end admin:** Decap (`/admin/`) and Forestry are in the repo but **not operational**. Publishing and corrections go through **Git / GitHub** (including the on-page “Suggest Changes” link, which opens GitHub’s file editor).
+- **Hosting:** the live site is deployed on **Netlify** (site `peacefulscience`). Production git deploys run `make production` → `code/production` with `TASKS=BUILD` (Hugo + `render.js` only).
+- **No working front-end admin:** Decap (`/admin/`) and Forestry are in the repo but **not operational**. Publishing and corrections go through **Git / GitHub**.
+- **DOI assign vs deposit:** minting IDs is local `make doi` (writes `data/doi.json`). Crossref *deposit* is the DAILY Netlify hook, and only if Hugo logged `TODAY`.
+- **Mailchimp campaigns:** local `make news` only. The Netlify build does not call Mailchimp. Subscribe forms on the site are separate (browser POST to Mailchimp).
 
 ## Product and ownership
 
@@ -16,8 +18,8 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 ## Publishing workflow
 
 4. **Which editor UI is canonical?** **Answered: GitHub.** No in-site CMS is working. Remaining: should Decap be made to work later, or should `/admin/` and `.forestry/` be removed as dead UI?
-5. **Are newsletters still sent from this repo** (`python -m code.newsletter`), or has that moved entirely into Mailchimp’s own composer?
-6. **Who assigns DOIs, and to which content?** All new articles, prints only, or nothing new? Is the Crossref account still active?
+5. **Are newsletters still sent from this repo** (`make news` / `python -m code.newsletter`)? Confirmed: that path is **not** in the Netlify build. Remaining: is the CLI still how campaigns are composed, or has that moved into Mailchimp’s UI?
+6. **Who assigns DOIs, and to which content?** Confirmed: assignment is **CLI** (`make doi` → `data/doi.json` commit). Deposit is DAILY Netlify. Remaining: is that CLI still used for new prints/articles? Is the Crossref account still active?
 7. **Are on-demand Prince PDFs (`/pdf/articles/...pdf`) still used?** If yes, is the Lambda Prince zip still the right way to ship the binary?
 
 ## Integrations that may be dead
@@ -32,8 +34,8 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 
 13. **Should deploy previews run `code/render.js`?** They currently do not, so dropcaps/sidenotes/MathJax differ from production.
 14. **Should the default (non-production) Netlify command stay as bare `hugo`?** That also skips Make, Prince, and post-render.
-15. **Is the daily scheduled rebuild (`functions/daily-build.js` → `BUILD_HOOK`) still configured and wanted?**
-16. **Python on Netlify:** is `runtime.txt` (3.8) still needed for production, or only for local CLI tools?
+15. **Is the daily scheduled rebuild (`functions/daily-build.js` → `BUILD_HOOK`) still configured and wanted?** That is the only automated Crossref/Algolia upload path.
+16. **Python on Netlify:** `runtime.txt` is 3.8. Default `BUILD` does not call Python. Keep it only if ANALYTICS/DISCOURSE hooks are still used.
 
 ## Content policy (for later refactors that touch templates)
 

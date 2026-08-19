@@ -51,7 +51,7 @@ Markdown (and a few HTML) files with YAML front matter. Hugo sections:
 | `prints/excerpts/` | Book excerpts |
 | `prints/deleted/` | Archived copies of articles removed elsewhere |
 | `books/` | Book pages (Amazon IDs, related-article lists) |
-| `newsletter/` | Newsletter issues (also used to drive Mailchimp campaigns) |
+| `newsletter/` | Newsletter issue pages (HTML). Mailchimp *campaigns* are a local Make CLI, not the Netlify build |
 | `authors/` | Author bios; also a Hugo taxonomy |
 | `categories/`, `series/` | Taxonomy term pages |
 | `about/` | Mission, editorial policy, author's guide |
@@ -109,16 +109,16 @@ Analytics JSON (`mostread.json`, `trending.json`, `ytd.json`) is gitignored and,
 
 | Script | Role |
 | --- | --- |
-| `production` | Orchestrates TASKS: prebuild → hugo → render.js → postbuild |
-| `prebuild.hook` | Optional ANALYTICS / CACHE restore |
-| `postbuild.hook` | Optional CROSSREF deposit, ALGOLIA upload, DISCOURSE post |
+| `production` | What Netlify production runs: TASKS (default `BUILD`) → prebuild → hugo → render.js → postbuild |
+| `prebuild.hook` | Optional `ANALYTICS` / `CACHE` (not on git-push or DAILY) |
+| `postbuild.hook` | Optional `CROSSREF` / `ALGOLIA` / `DISCOURSE` (DAILY enables the first two, gated on `TODAY`) |
 | `render.js` | Post-process every HTML file: run `script[render]`, strip `[remove]`, optional MathJax, collect CSS classes |
-| `doi.py` | Assign a random unused DOI into `data/doi.json` |
-| `imgsize.py` / `pdfinfo.py` | Refresh image/PDF data files |
-| `document.py` | Parse a Markdown file's front matter (used by newsletter and Discourse) |
-| `newsletter/` | Render MJML → HTML and create/update a Mailchimp campaign |
-| `update_analytics.py` | Pull Google Analytics (Universal Analytics v3) into cache JSON |
-| `extract.js` | Dump JSON-LD as RDF (commented out of production) |
+| `doi.py` | **CLI only** (`make doi`). Writes `data/doi.json`. Not called on Netlify. |
+| `newsletter/` | **CLI only** (`make news`). MJML + Mailchimp campaign upsert. Not called on Netlify. |
+| `imgsize.py` / `pdfinfo.py` | **CLI only** (`make imginfo` / `pdfinfo`). Refresh committed JSON. |
+| `document.py` | Parse Markdown front matter (newsletter CLI and Discourse) |
+| `update_analytics.py` | UA v3 → cache JSON (`ANALYTICS` task only) |
+| `extract.js` | RDF extract; commented out of production |
 | `wordpress.py` / `wp-migrate.py` | WordPress migration leftovers |
 
 ### Netlify Functions (`functions/`)
@@ -136,10 +136,10 @@ The PDF function only allows sections `articles`, `about`, and `prints`. Netlify
 
 ### Integrations (see also [build-and-deploy](build-and-deploy.md))
 
-- **Algolia** index `PeacefulScience` — built from `algolia.json`, uploaded with `atomic-algolia`. Client search uses InstantSearch (`assets/js/search.js`).
-- **Crossref** — Hugo emits three XML batches (posted content, books, conferences). Deposited when TASKS includes CROSSREF and the Hugo log contains `TODAY` (pages published today).
-- **Discourse** — `commenturl` front matter plus “Discuss on Forum”. `share_discourse.py` can create a pinned topic; currently omitted from the DAILY task list.
-- **Mailchimp** — subscribe forms in layouts; newsletter CLI creates campaigns.
+- **Algolia** index `PeacefulScience` — Hugo always writes `algolia.json` on production BUILD. Upload runs only on the **DAILY** hook when the Hugo log contains `TODAY` (`atomic-algolia`). Git-push production does not upload. Client search uses InstantSearch (`assets/js/search.js`).
+- **Crossref** — Hugo always emits three XML batches during BUILD. Deposit (`doMDUpload`) runs only on **DAILY** + `TODAY`. **Assigning** a new DOI (`make doi`) is local: it only edits `data/doi.json`, which must be committed before a build can show or deposit it.
+- **Discourse** — `commenturl` front matter plus “Discuss on Forum”. `share_discourse.py` is a postbuild task that DAILY currently omits.
+- **Mailchimp** — on-site subscribe forms POST to Mailchimp. Composing a campaign is `make news` on a laptop, not the Netlify build.
 - **OneSignal** — web push, still configured with WordPress plugin SDK paths.
 - **Google Tag Manager** `GTM-KDF8R85` plus `googleAnalytics: G-BHPH29YM44` in config (the template still calls Universal Analytics `ga('send')` on Turbo navigations).
 - **Netlify Forms** — `content/contact.html`.
