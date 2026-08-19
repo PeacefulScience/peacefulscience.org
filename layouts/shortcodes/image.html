@@ -12,7 +12,13 @@
 
 {{ if replaceRE "(\\s)" "" .Inner }}
 <figcaption class="text-smaller text-muted" style="padding-top: 0">
+{{ if findRE `\[\^[^\]]+\]` .Inner }}
+
+{{ .Inner }}
+
+{{ else }}
    {{ .Inner  | $.Page.RenderString  }}
+{{ end }}
 </figcaption>
 {{ end }}
 
