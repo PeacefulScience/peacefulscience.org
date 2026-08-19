@@ -1,3 +1,6 @@
+# Print HTML is Prince input only. Not a public page. (Lambda/Prince ignore this.)
+/_prince/*
+  X-Robots-Tag: noindex, nofollow, noarchive
 /wp-content/plugins/onesignal-free-web-push-notifications/sdk_files/*.js.php
   Service-Worker-Allowed: /
   content-type: application/javascript; charset=utf-8

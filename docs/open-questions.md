@@ -13,7 +13,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 - **AMP is defunct.** No AMP output. Safe to delete `layouts/_default/baseof.amp.html` and `config/amp/`.
 - **CSS: Tailwind.** Prefer Tailwind; migrate all remaining CSS (today production is still Bootstrap 4 SCSS). The Tailwind toolchain is the destination, not leftover.
 - **Discourse integration is defunct.** Do not restore `share_discourse.py` / `DISCOURSE` postbuild / auto-`commenturl`. Historical forum links in content can remain until cleaned up.
-- **Page PDFs:** Prince of `_prince` HTML. Lambda until **~6 MB**; larger files → local Prince + LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the site and in Prince.
+- **Page PDFs:** Prince of `_prince` HTML. Lambda until **~6 MB**; larger files → local Prince + LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the site and in Prince. **`/_prince/` must not be indexed** (robots Disallow + `noindex` + `X-Robots-Tag`); it is the Prince intermediate, not a public URL.
 - **Tracking (near-term):** remove defunct Universal Analytics (`ga('send')`, `update_analytics.py`, `byviews.html`). Improve remaining GTM/GA4 so Turbo navigations count.
 - **Crossref account is active.** Admins mint DOIs (today: `make doi` → `data/doi.json`). Deposit remains DAILY + `TODAY`.
 - **Algolia** index `PeacefulScience` is still the live search backend. Daily hook still runs and is wanted.
@@ -33,7 +33,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 4. **Which editor UI is canonical?** **Today: GitHub.** **Direction: a working admin UI.** Stack **not chosen**. Candidate to evaluate: **Decap + GitHub Actions** (Decap for markdown commits; Actions for processes on update: `imginfo`, explicit DOI mint, later citation/entity sidecars). Decap as-is still cannot encode per-folder schemas or Prince shortcodes; Actions would have to own generated `data/` files. Forestry: leftover, delete when convenient.
 5. **Are newsletters still sent from this repo** (`make news` / `python -m code.newsletter`)? Confirmed: that path is **not** in the Netlify build. Remaining: is the CLI still how campaigns are composed, or has that moved into Mailchimp’s UI?
 6. **Who assigns DOIs, and to which content?** **Answered:** Crossref is **active**. **Admins mint** (CLI `make doi` today). Deposit is DAILY Netlify. Minting stays an explicit admin action, not a save side effect. Which sections get DOIs remains an editorial choice per page.
-7. **On-demand Prince PDFs?** **Answered: yes.** `/pdf/articles/…` is still the download URL. Typical pages: Lambda from `_prince` HTML. **If the PDF would be > ~6 MB**, generate locally with Prince of that same HTML and commit LFS at `static/pdf/<section>/<slug>.pdf` (Tonto Group articles already do this). Do not use the main site HTML. `code/pdf` is missing though `make pdf` still calls it.
+7. **On-demand Prince PDFs?** **Answered: yes.** `/pdf/articles/…` is still the download URL. Typical pages: Lambda from `_prince` HTML. **If the PDF would be > ~6 MB**, generate locally with Prince of that same HTML and commit LFS at `static/pdf/<section>/<slug>.pdf` (Tonto Group articles already do this). Do not use the main site HTML. **`/_prince/` is blocked from indexing** (Prince-only). `code/pdf` is missing though `make pdf` still calls it.
 
 ## Integrations that may be dead
 

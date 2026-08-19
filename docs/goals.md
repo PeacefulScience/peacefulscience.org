@@ -28,7 +28,7 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 - **CSS: Tailwind.** Prefer Tailwind for all styling. Production still compiles Bootstrap 4 via `assets/css/main.scss`; the Tailwind pipeline (`sources/tailwind.css` → `assets/css/tw.css`) exists but is commented out of `code/production` and `head.html`. A cleanup should **migrate remaining CSS to Tailwind**, not delete the Tailwind tooling. Print/Prince CSS in `single.print.html` is a separate sheet and must keep working (or be ported deliberately).
 - **AMP is defunct.** Do not emit AMP pages. `layouts/_default/baseof.amp.html` and `config/amp/outputs.yml` are deletion candidates.
 - **Discourse integration is defunct.** Do not restore `share_discourse.py`, the `DISCOURSE` postbuild task, or auto-`commenturl`. Historical forum URLs in article bodies and existing `commenturl` values can stay as ordinary links until a later content pass. Goal 5 (social posts) does **not** include Discourse.
-- **Page PDFs are Prince of `_prince` HTML.** On-demand Lambda for typical pages; if the PDF would be **> ~6 MB**, generate locally and commit Git LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the main site **and** in that Prince HTML.
+- **Page PDFs are Prince of `_prince` HTML.** On-demand Lambda for typical pages; if the PDF would be **> ~6 MB**, generate locally and commit Git LFS at `static/pdf/<section>/<slug>.pdf`. Shortcodes must work on the main site **and** in that Prince HTML. **`/_prince/` is not a public page:** block indexing (robots + `noindex` + `X-Robots-Tag`). The public artifact is `/pdf/…`.
 - **Image dimensions live in `data/imgsize.json`.** Netlify does not download LFS; `make imginfo` is local (or a worker that has the bytes).
 - **Near-term: tracking.** Remove defunct Universal Analytics. Keep (and fix) live tag loading so Turbo navigations count.
 - **Crossref is active; admins mint DOIs** (CLI today). Deposit is DAILY + `TODAY`.
@@ -287,7 +287,7 @@ This is **not** a new structured-data stack. Keep the JSON-LD mini-language (`= 
 - Head already has canonical, OG/Twitter, Highwire `citation_*`, DOI metas, PDF alternate, `Googlebot-News` via `notnews`.
 - `mentions` = markdown links on scratch `"Links"` only (same limitation as Crossref).
 - DOI is stuffed into the `sameas` directive list, not emitted as `identifier`.
-- Robots allow all agents except `**/page/*`. Sitemap lists HTML and PDF URLs; print `/_prince/` is `noindex`.
+- Robots: `**/page/*` (pagination) and **`/_prince/`** (Prince input; not a public page). Sitemap lists HTML and PDF URLs, not print HTML. Print layout + `X-Robots-Tag` also `noindex`.
 
 ### Gaps that block both ranking and AI
 
@@ -319,7 +319,7 @@ Generated abstracts/entities still go in sidecar JSON so git lastmod stays hones
 
 ## Cross-cutting constraints
 
-- **Page PDFs are Prince of `_prince` HTML**, not the main site and not Word export. Lambda for normal sizes; **> ~6 MB → local Prince + `static/pdf/<section>/<slug>.pdf` (LFS)**. Shortcodes must render in both HTML outputs.
+- **Page PDFs are Prince of `_prince` HTML**, not the main site and not Word export. Lambda for normal sizes; **> ~6 MB → local Prince + `static/pdf/<section>/<slug>.pdf` (LFS)**. Shortcodes must render in both HTML outputs. **`/_prince/` is not indexed** (Prince intermediate). Public download is `/pdf/…`.
 - **Sidecar data for generated fields:** follow `data/doi.json`. Auto topics, resolved citations, social ids, image metrics, and similar must not be written into article markdown. That keeps `.Lastmod` (git info) as “the prose last changed.” First-time Word ingest **creates** the article, so that commit *should* set lastmod. Later enrichment must not. Baked PDFs go in `static/pdf/`, not the article. **New images always update `data/imgsize.json`** — Netlify never sees LFS bytes.
 - **DOI minting is two-phase:** write `data/doi.json` (or successor store), then deposit XML. The admin and any S3 pipeline must not collapse those phases. The DOI never needs to live in front matter (`getdoi` already warns `DOI.OLD` when it does).
 - **Per-folder schemas and shortcodes are the publication format.** Word ingest and any new backend emit that format; they do not invent a parallel CMS schema.
@@ -328,7 +328,7 @@ Generated abstracts/entities still go in sidecar JSON so git lastmod stays hones
 - **AMP and Discourse integration are defunct.** Do not spend implementation time reviving them.
 - **Universal Analytics is defunct.** Remove it in the near-term tracking pass; do not rebuild features on UA Reporting API v3.
 - **Git remains the audit log** until a port says otherwise. Suggest Changes / pull requests should keep working for readers even after editors get an admin.
-- **JSON-LD stays the mini-language.** Goal 9 improves cascades and directives; it does not restore `layouts/partials/seo/structured/`. Print `/_prince/` stays `noindex`.
+- **JSON-LD stays the mini-language.** Goal 9 improves cascades and directives; it does not restore `layouts/partials/seo/structured/`. **`/_prince/` print HTML is Prince-only** — keep it out of the index (`robots.txt` Disallow, meta `noindex`, `X-Robots-Tag`). Do not sitemap it, do not add JSON-LD or canonical-as-self, do not treat it as an AMP-style alternate.
 
 ## Decisions still needed
 
