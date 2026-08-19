@@ -41,7 +41,7 @@ Books, newsletters, author/category/series terms, and `prints/deleted/` do not f
 
 ## Content types in more detail
 
-**Articles** (`content/articles/`) are the public blog. ~140 files. Index cascade enables HTML + print output and Article JSON-LD.
+**Articles** (`content/articles/`) are the public blog. ~140 files. Index cascade enables HTML + print output and Article JSON-LD (live graph has known key bugs; [seo.md](seo.md)).
 
 **Prints** (`content/prints/`) are scholarly pre/post-prints. They get print output and ScholarlyArticle JSON-LD. **Subfolders are different types:** `prints/*.md` (talks/preprints), `prints/excerpts/` (book excerpts with `partof`), `prints/deleted/` (fair-use republications with `deletiondate` and `rss: false`).
 

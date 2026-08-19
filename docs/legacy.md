@@ -39,6 +39,7 @@ This is a **candidate list** for a later cleanup. Items marked **confirmed defun
 | `package.json` `"directories": { "test": "test" }` | No `test/` tree in repo (`test*` is gitignored) |
 | `layouts/_default/index.precompute` | `precompute` output format is defined but not listed in default `outputs` |
 | `layouts/partials/lastmod.html` + empty `data/lastmod.json` | Override helper; `single.html` uses `.Lastmod` (git info) directly |
+| `layouts/partials/seo/structured/*.html`, `seo/main.html` | Unused by `head.html`. Wrong field names (`author` singular, `tags`). Goal 9: delete in cleanup; do not merge into the live jsonld mini-language |
 
 ## Migration-era static paths
 

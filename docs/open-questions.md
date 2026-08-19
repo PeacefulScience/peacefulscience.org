@@ -20,11 +20,12 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 - **Netlify Large Media / LFS is in use.** Optional later: store binaries on S3 and point ImageEngine at S3 instead of the Netlify origin. `imgsize.json` stays either way.
 - **Word ingest format** (`.docx` vs Google Docs API): decide when that implementation starts; not a blocker for other work.
 - **Admin stack: undecided.** Candidate: Decap (or similar Git CMS) plus GitHub Actions to run sidecar processes on updates (`imginfo`, optional explicit DOI mint). Not chosen yet.
+- **SEO / JSON-LD:** live path is the jsonld mini-language, not `seo/structured`. Goal 9 recorded: fix `sameas`/`sameAs`, DOI `identifier`, author `notnews`, AI utilization. Policy still open: `llms.txt`, training crawlers, PDFs in sitemap.
 
 ## Product and ownership
 
 1. **Who is actively maintaining the site today?** Is this still the primary publishing workflow, or is the site mostly archival?
-2. **What should a refactor optimize for?** **Answered as product direction** in [goals](goals.md): hosted admin, Word ingest, Crossref, Algolia, Tailwind, sidecar data. **Near-term:** remove defunct Universal Analytics and fix Turbo pageview tracking. AMP and Discourse integration are out of scope (delete, do not revive).
+2. **What should a refactor optimize for?** **Answered as product direction** in [goals](goals.md): hosted admin, Word ingest, Crossref, Algolia, SEO/JSON-LD/AI, Tailwind, sidecar data. **Near-term:** remove defunct Universal Analytics and fix Turbo pageview tracking; JSON-LD hygiene (goal 9). AMP and Discourse integration are out of scope (delete, do not revive).
 3. **Discourse comments / auto-post?** **Answered: integration is defunct.** Do not restore auto-posting. `commenturl` / “Discuss on Forum” are leftover UI. The forum site may still exist independently; this repo should not treat it as a publishing dependency.
 
 ## Publishing workflow
@@ -73,3 +74,12 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 30. **`partials/lastmod.html` / `data/lastmod.json`:** unused override path. Keep for correcting bad git dates, or delete once sidecar enrichment is the norm?
 31. **Newsletter `mailchimp.campaign_id`:** move to sidecar like DOIs, or leave the six existing front-matter values as a one-off?
 32. **Restore `code/pdf`?** Makefile still expects it. Until then, local `prince` on the live `_prince` URL is the documented oversized-PDF path.
+
+## SEO / JSON-LD / AI ([goal 9](goals.md#9-seo-json-ld-and-ai-utilization), [seo.md](seo.md))
+
+33. **`llms.txt` and/or a markdown alternate** for AI crawlers? Ranking work does not require it; utilization might. If yes, keep generated text in sidecar or a committed static file — do not rewrite article markdown on a schedule.
+34. **Training vs retrieval crawlers:** allow `GPTBot` / `Google-Extended` / `CCBot` as today (robots allows `*`), or restrict training while leaving Googlebot alone?
+35. **PDF URLs in `sitemap.xml`:** keep (Scholar/PDF search), lower priority, or drop and rely on `rel="alternate"` + `citation_pdf_url` so HTML stays canonical?
+36. **Keep Highwire `citation_*` metas** after JSON-LD `identifier`/`sameAs` is correct, or treat them as Scholar-only and trim on non-scholarly pages (books, authors)?
+37. **BreadcrumbList** in the live jsonld system? The unused `seo/structured/breadcrumb.html` is wrong (skips position 2) and should not be copied.
+38. **How far should ScholarlyArticle `citation` go** before goal 2’s sidecar exists — outbound `doi.org` links only, or wait for resolved CSL?

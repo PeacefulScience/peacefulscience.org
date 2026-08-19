@@ -94,7 +94,7 @@ Newsletter index uses `hide: image authors date` as a **single string**, not a Y
 
 Values that are strings starting with `= ` are directives resolved by `layouts/partials/jsonld/<token>.html` (e.g. `= permalink`, `= authors`, `= copy /jsonld/peacefulscience`). Maps merge. `jsonld-template: /articles` copies the articles cascade template. `jsonld-extend` deep-merges extra nodes (conference series).
 
-Live JSON-LD is this system. Older `layouts/partials/seo/structured/*.html` and `social/*.html` look unused by `head.html`.
+Live JSON-LD is this system. Older `layouts/partials/seo/structured/*.html` and `social/*.html` look unused by `head.html`. Goal 9 / [seo.md](seo.md): cascade keys must be Schema.org camelCase (`sameAs`, not `sameas`); DOI belongs in `identifier` as well as `sameAs`; do not put page-level flags like `notnews` inside the `jsonld:` map.
 
 ### DOI and PDF (not really front matter anymore)
 

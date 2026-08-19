@@ -1,6 +1,6 @@
 # Product goals
 
-These are the intended direction for the site, recorded so later work (admin UI, citation quality, search, Word ingest, and any backend change) can be judged against the same list. They come from maintainers; this file maps each goal onto **what the repo does today** and **what has to change**.
+These are the intended direction for the site, recorded so later work (admin UI, citation quality, search, SEO/JSON-LD, Word ingest, and any backend change) can be judged against the same list. They come from maintainers; this file maps each goal onto **what the repo does today** and **what has to change**.
 
 Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI split are documented in the rest of this folder and should be treated as constraints, not optional style.
 
@@ -14,9 +14,10 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 | 6 | Possibly **split content into its own git repo** | Architectural; after ingest is stable |
 | 7 | Consider a **different backend** (processed content on S3, no daily full rebuild) | Architectural; see tradeoffs |
 | 8 | Automated **Word → publication format** | **Highest near-term** among implementation work |
+| 9 | **SEO review**: search rankings, **AI utilization**, better **JSON-LD** | **Near-term** hygiene is template-only; richer graphs wait on 2 and 4 |
 | — | **Tracking: remove defunct GA, fix remaining tags** | **Near-term**; independent of Word/admin |
 
-**Suggested order of implementation** (not calendar time): **tracking cleanup can ship first** (small, independent). Then **8 → pieces of 1 (DOI + validation as services) → 2 and 3 in parallel → 4 → 5**. **6 and 7** after the ingest/admin contract is clear, because a content-repo split or S3 site only helps if Word/admin already emit the same files the site expects.
+**Suggested order of implementation** (not calendar time): **tracking cleanup and JSON-LD hygiene (goal 9 slice 1)** can ship first (small, independent). Then **8 → pieces of 1 (DOI + validation as services) → 2 and 3 in parallel → 4 → 5**. Goal 9’s citation/entity JSON-LD rides on 2 and 4. **6 and 7** after the ingest/admin contract is clear, because a content-repo split or S3 site only helps if Word/admin already emit the same files the site expects.
 
 **Sidecar data (DOI pattern):** auto-generated fields belong in `data/*.json` (or an equivalent store), keyed by page path or URL, **not** written back into the article’s front matter or body. `config.yml` has `enableGitInfo: true`, so Hugo `.Lastmod` (page “modified” date, sitemap, Algolia `lastmod`, JSON-LD `dateModified`) is the last **git commit of that markdown file**. Touching the article to store a DOI, detected entities, resolved citations, or a social-post id would bump “modified” even when the prose did not change. See [architecture](architecture.md) § Sidecar data.
 
@@ -34,6 +35,7 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 - **Algolia `PeacefulScience` is the live search index.** Daily upload hook is still wanted.
 - **Netlify LFS / Large Media is in use.** Optional later: S3 for binaries; point ImageEngine origin at the bucket. `imgsize.json` stays.
 - **Admin stack undecided.** Candidate: Decap + GitHub Actions for sidecar jobs on update (not auto-DOI on every save).
+- **JSON-LD: keep the mini-language; fix it.** Do not revive unused `seo/structured` partials. Highest-leverage bugs: `sameas` vs `sameAs`, DOI `identifier`, author `notnews` inside Person graphs. See [seo.md](seo.md).
 
 ---
 
@@ -144,20 +146,20 @@ DOI **assignment** stays a separate, gated action (goal 1). Improving XML must n
 | Corpus | Books, authors, series, and maybe forum marketing pages are omitted. Prints excerpts/deleted may need different ranking. |
 | Ranking / snippet | Huge `content` field vs `summary` / `description`; HTML `render` in the index is large. Consider searchable attributes + highlight, not shipping a full card blob. |
 | Facets | Add section, date, series, and later **topics/entities** (goal 4). |
-| UI | Restore pagination or keep infinite scroll but add URL routing; don’t hardcode keys if they rotate; mobile layout (filters are `d-none d-lg-block`). |
+| UI | Restore pagination or keep infinite scroll but add URL routing (required for home `SearchAction` / goal 9); don’t hardcode keys if they rotate; mobile layout (filters are `d-none d-lg-block`). |
 | Privacy | `private` is already excluded; drafts are excluded. Confirm deleted/fair-use prints should be searchable. |
 
 ---
 
 ## 4. Automatically generated topics / entity detection
 
-**Intent:** detect people, works, organizations, and topic labels from the body so category suggestion, internal linking, search facets, and maybe JSON-LD mentions are not purely manual.
+**Intent:** detect people, works, organizations, and topic labels from the body so category suggestion, internal linking, search facets, and JSON-LD `about` / `mentions` (goal 9) are not purely manual.
 
 ### What exists
 
 - `@google-cloud/language` is in `package.json` and **never imported**.
 - `tags` taxonomy is configured and unused.
-- JSON-LD `mentions` already walks scratch `"Links"`.
+- JSON-LD `mentions` already walks scratch `"Links"` (same bag as Crossref; see [SEO](seo.md)).
 - Homepage topic slices are hard-coded, not data-driven.
 
 ### Design notes
@@ -273,6 +275,48 @@ Zotero is already recommended to authors; if the Word file contains a Zotero bib
 
 ---
 
+## 9. SEO, JSON-LD, and AI utilization
+
+**Intent:** improve **Google (and Scholar) rankings** and make pages easier for **AI systems** to retrieve, cite, and ground on — including fixing the live JSON-LD so parsers actually see DOIs, authors, and citations. Full inventory: [seo.md](seo.md).
+
+This is **not** a new structured-data stack. Keep the JSON-LD mini-language (`= permalink`, cascade templates). Delete unused `layouts/partials/seo/structured/` in a cleanup; do not revive it.
+
+### What exists
+
+- One JSON-LD blob per page from `layouts/partials/jsonld.html`. Section indexes cascade Schema.org types: `Article`, `ScholarlyArticle`, `Book`, `Person`, `CreativeWorkSeries`, home `WebSite` + `SearchAction`, publisher `Organization` in `content/jsonld/peacefulscience.md`.
+- Head already has canonical, OG/Twitter, Highwire `citation_*`, DOI metas, PDF alternate, `Googlebot-News` via `notnews`.
+- `mentions` = markdown links on scratch `"Links"` only (same limitation as Crossref).
+- DOI is stuffed into the `sameas` directive list, not emitted as `identifier`.
+- Robots allow all agents except `**/page/*`. Sitemap lists HTML and PDF URLs; print `/_prince/` is `noindex`.
+
+### Gaps that block both ranking and AI
+
+| Gap | Effect |
+| --- | --- |
+| Cascade key `sameas` (lowercase) on articles/books/WebPage | Schema.org / Google expect `sameAs`. DOI, aliases, Amazon, ISBN on those types are **ignored**. Person/Organization already use `sameAs`. |
+| `notnews: true` inside authors `cascade.jsonld` | Invalid Person property; author pages also miss page-level `Googlebot-News` `noindex` (books set `notnews` correctly, beside `jsonld`). |
+| No JSON-LD `identifier` for DOI | Scholar/AI have to infer identity from a misspelled `sameas` list. Head `citation_doi` is not a substitute. |
+| `image` is a bare CDN URL | Prefer `ImageObject` + width/height from `data/imgsize.json`. |
+| `SearchAction` URL vs InstantSearch `routing: false` | Sitelinks search and nav `?PeacefulScience[query]=` do not populate the search UI (shared with goal 3). |
+| Organization `@id` is the homepage URL | Collides with `WebSite` `@id`. |
+| Description fallback to `.Kind` | `"page"` / `"section"` as meta description. |
+| Authors without a slug page | Dropped from JSON-LD `author` and from Highwire `citation_author`. |
+| `mentions` / no `citation` | Link bag, not works cited. Goal 2 sidecar should feed ScholarlyArticle `citation`. |
+| No `llms.txt` / markdown alternate | Optional AI copy; policy decision (open questions). |
+
+### What to do
+
+1. **JSON-LD hygiene** (near-term, templates only): rename `sameas` → `sameAs` in cascades; move author `notnews` out of `jsonld`; distinct Organization `@id`; DOI as `identifier`; `ImageObject`; stop `htmlEscape` before `jsonify` in jsonld string partials; empty `twitter:creator`.
+2. **SearchAction + InstantSearch routing** with goal 3.
+3. **Snippets / sitemap:** never fall back to `.Kind`; consistent OG/Twitter images; decide whether PDF URLs belong in the sitemap at article priority.
+4. **Richer graphs** after goals 2 and 4: `citation` from resolved references; `about` / `mentions` as `Thing`s from the entity sidecar — not from rewriting article `tags:`.
+5. **AI copies** (`llms.txt`, optional markdown output) only if maintainers want them. Do not block Googlebot as a side effect.
+6. Validate with Rich Results Test + Schema Markup Validator on **article, print, book, author, home**.
+
+Generated abstracts/entities still go in sidecar JSON so git lastmod stays honest.
+
+---
+
 ## Cross-cutting constraints
 
 - **Page PDFs are Prince of `_prince` HTML**, not the main site and not Word export. Lambda for normal sizes; **> ~6 MB → local Prince + `static/pdf/<section>/<slug>.pdf` (LFS)**. Shortcodes must render in both HTML outputs.
@@ -284,6 +328,7 @@ Zotero is already recommended to authors; if the Word file contains a Zotero bib
 - **AMP and Discourse integration are defunct.** Do not spend implementation time reviving them.
 - **Universal Analytics is defunct.** Remove it in the near-term tracking pass; do not rebuild features on UA Reporting API v3.
 - **Git remains the audit log** until a port says otherwise. Suggest Changes / pull requests should keep working for readers even after editors get an admin.
+- **JSON-LD stays the mini-language.** Goal 9 improves cascades and directives; it does not restore `layouts/partials/seo/structured/`. Print `/_prince/` stays `noindex`.
 
 ## Decisions still needed
 
@@ -294,5 +339,6 @@ See [open questions](open-questions.md). What still blocks a large implementatio
 3. Content-repo split: before admin, or after Word ingest.
 4. Keep Hugo vs S3-processed-HTML / Next (media-on-S3 can happen first without a port).
 5. Tracking snippet: GTM+GA4 vs single `gtag` (UA is out either way).
+6. SEO/AI: `llms.txt` / markdown alternate or not; allow vs restrict training crawlers; PDF URLs in the sitemap.
 
 **Deferred to the Word-ingest implementation start:** `.docx` vs Google Docs API.

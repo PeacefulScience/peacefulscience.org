@@ -4,7 +4,7 @@ Peaceful Science is a content site about science, faith, and the question *what 
 
 The published site is **static HTML** hosted on **Netlify**. Hugo renders Markdown into `public/`. A post-render Node step mutates that HTML. Netlify also runs a few on-demand functions. There is **no working front-end admin**; the source of edits is this git repo.
 
-Intended direction (admin UI, Word ingest, Crossref/Algolia, possible S3/backend change) is in [goals](goals.md).
+Intended direction (admin UI, Word ingest, Crossref/Algolia, SEO/JSON-LD, possible S3/backend change) is in [goals](goals.md). Live crawler/structured-data inventory is in [seo.md](seo.md).
 
 ```mermaid
 flowchart LR
@@ -163,7 +163,7 @@ The PDF function only allows sections `articles`, `about`, and `prints`. Netlify
 
 **Lastmod:** with `enableGitInfo`, `.Lastmod` is the content file’s last commit. Do not bump it by writing generated fields into the article; use sidecar `data/` files ([goals](goals.md)).
 
-**JSON-LD** is data-driven. Front matter `jsonld:` maps (and `= permalink`-style directives) are resolved by `layouts/partials/jsonld/`. Articles cascade a Schema.org `Article` template from `content/articles/_index.md`.
+**JSON-LD** is data-driven. Front matter `jsonld:` maps (and `= permalink`-style directives) are resolved by `layouts/partials/jsonld/`. Articles cascade a Schema.org `Article` template from `content/articles/_index.md`. Known defects (wrong `sameas` key, DOI not an `identifier`, SearchAction vs InstantSearch routing) are in [seo.md](seo.md) / [goal 9](goals.md#9-seo-json-ld-and-ai-utilization). Unused `layouts/partials/seo/structured/` is not on this path.
 
 **Related content** uses Hugo `related` (categories, authors, section) plus optional `series` union.
 
