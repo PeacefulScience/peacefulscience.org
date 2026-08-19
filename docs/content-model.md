@@ -97,7 +97,7 @@ Skipping that step ships pages with no `width`/`height` on `<img>` even if the p
 
 PDFs:
 
-- **Page PDFs** (the download chip on articles/prints/about): always Prince of the `_prince` HTML. Typical pages: on-demand Lambda. If the PDF would be **> ~6 MB**, generate locally with Prince and commit Git LFS at `static/pdf/<section>/<slug>.pdf` (same URL). Then `make pdfinfo`. See [build-and-deploy](build-and-deploy.md#article-pdfs-prince). Examples: Tonto Group articles. **`/_prince/` is not indexed** — Prince intermediate only.
+- **Page PDFs** (the download chip on articles/prints/about): always Prince of the `_prince` HTML **after production `render.js`**. Typical pages: on-demand Lambda. If the PDF would be **> ~6 MB**, generate locally with Prince and commit Git LFS at `static/pdf/<section>/<slug>.pdf` (same URL). Then `make pdfinfo`. See [build-and-deploy](build-and-deploy.md#article-pdfs-prince). Examples: Tonto Group articles. **`/_prince/` is not indexed** — Prince intermediate only.
 - **Uploaded documents** (errata, letters, scans): `static/pdf/…` as well, but **not** named like `articles/<slug>.pdf`. Linked from markdown / the `pdf` shortcode.
 
 Do not round-trip a page PDF into the article file.
