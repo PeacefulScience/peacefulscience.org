@@ -33,7 +33,7 @@ This is a **candidate list** for a later cleanup, not a deletion plan. Confirm e
 | `content/news/` | Single 2019 staff note; not in the main nav |
 | `package.json` `"directories": { "test": "test" }` | No `test/` tree in repo (`test*` is gitignored) |
 | `layouts/_default/index.precompute` | `precompute` output format is defined but not listed in default `outputs` |
-| Duplicate `path:` key in `config.yml` `print` outputformat | YAML duplicate; last value wins, harmless but messy |
+| `layouts/partials/lastmod.html` + empty `data/lastmod.json` | Override helper; `single.html` uses `.Lastmod` (git info) directly |
 
 ## Migration-era static paths
 

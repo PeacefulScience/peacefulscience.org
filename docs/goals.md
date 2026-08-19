@@ -17,6 +17,8 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 
 **Suggested order of implementation** (not calendar time): **8 → pieces of 1 (DOI + validation as services) → 2 and 3 in parallel → 4 → 5**. **6 and 7** after the ingest/admin contract is clear, because a content-repo split or S3 site only helps if Word/admin already emit the same files the site expects.
 
+**Sidecar data (DOI pattern):** auto-generated fields belong in `data/*.json` (or an equivalent store), keyed by page path or URL, **not** written back into the article’s front matter or body. `config.yml` has `enableGitInfo: true`, so Hugo `.Lastmod` (page “modified” date, sitemap, Algolia `lastmod`, JSON-LD `dateModified`) is the last **git commit of that markdown file**. Touching the article to store a DOI, detected entities, resolved citations, or a social-post id would bump “modified” even when the prose did not change. See [architecture](architecture.md) § Sidecar data.
+
 ---
 
 ## 1. Admin UI (no local repo)
@@ -33,17 +35,17 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 
 | Concern | Why it is hard in this repo | What an admin must do |
 | --- | --- | --- |
-| **DOI control** | `code/doi.py` mints `10.54739/xxxx` into `data/doi.json`. Deposit is a **later** DAILY Netlify step, and only if Hugo logged `TODAY`. Assigning twice, assigning the wrong path, or depositing without a commit all break Crossref. | Explicit “assign DOI” with preview of the path key (`/articles/foo/`), collision check, and a commit of `doi.json` **before** the page is treated as published. Never mint as a silent side effect of save. |
+| **DOI control** | `code/doi.py` mints `10.54739/xxxx` into `data/doi.json` (sidecar; not front matter). Deposit is a **later** DAILY Netlify step, and only if Hugo logged `TODAY`. Assigning twice, assigning the wrong path, or depositing without a commit all break Crossref. | Explicit “assign DOI” with preview of the path key (`/articles/foo/`), collision check, and a commit of `doi.json` **before** the page is treated as published. Never mint as a silent side effect of save. Never write the DOI into the article file. |
 | **Front matter** | Schemas differ by **section and subfolder** ([front-matter](front-matter.md)). Authors are **lists of strings** (slugs or display names), not `{role, slug}` maps. `prints/` vs `prints/excerpts/` vs `prints/deleted/` are three page types. | Form (or generated YAML) **per folder**, validated against the corpus schema. Cascade from `_index.md` must stay visible (e.g. `prints/deleted` sets `rss: false`). |
 | **Shortcodes** | Custom `amazon`, `image`, `youtube` (overrides Hugo), `mediatext`, `pdf`, `facebook`, `footnotes2refs`, plus built-in `tweet` / `vimeo`. One broken `twitter` tag. ([shortcodes](shortcodes.md)) | Palette / helpers that insert the **site** shortcodes, not generic Markdown. `amazon` must stash ASINs (book backrefs). `youtube` must use the site player overlay, not Hugo’s embed. |
-| **Autofill from the web** | Hard-to-find fields: Amazon ASIN, ISBN, Crossref/DOI metadata, YouTube IDs, author affiliations, book covers (`functions/bookcover.js`). `functions/cite.js` already resolves DOI.org + Manubot → CSL-JSON. `data/citation.json` is a cache. | Admin calls cite/Amazon/Crossref APIs and writes front matter + shortcodes. Human confirms before save. |
-| **Internal links** | Link render hook records destinations on page scratch. Related content uses Hugo `related` + `series`. Editorial policy already says editors may add related links without asking. | Suggest links to existing articles/prints/books from title, entities (goal 4), and `urlmap.json`. Insert as Markdown, not raw HTML. |
-| **Categories** | Taxonomy pages in `content/categories/`. `featured` and `gae` are `hidden: true`. `tags` is in `config.yml` but unused. Homepage buckets are **hard-coded** in `layouts/index.html`. | Suggest from existing category titles + entities. Do not invent slugs that have no `_index.md`. |
+| **Autofill from the web** | Hard-to-find fields: Amazon ASIN, ISBN, Crossref/DOI metadata, YouTube IDs, author affiliations, book covers (`functions/bookcover.js`). `functions/cite.js` already resolves DOI.org + Manubot → CSL-JSON. `data/citation.json` is a cache. | Lookups land in **sidecar** JSON (extend `citation.json` / new maps). The admin may *propose* shortcodes or ISBN in the article; committing those is an editorial save (and *should* bump lastmod). Do not silently patch published files with resolved metadata. |
+| **Internal links** | Link render hook records destinations on page scratch. Related content uses Hugo `related` + `series`. Editorial policy already says editors may add related links without asking. | Auto-suggested related URLs live in sidecar data; templates can inject a “related” module without touching the article. Inserting links **into the body** is an editorial accept and should update lastmod. |
+| **Categories** | Taxonomy pages in `content/categories/`. `featured` and `gae` are `hidden: true`. `tags` is in `config.yml` but unused. Homepage buckets are **hard-coded** in `layouts/index.html`. | Auto-suggest into sidecar (or an admin review queue). Editor-chosen `categories:` in front matter is editorial, not generated. Do not invent slugs that have no `_index.md`. |
 | **New authors** | Missing `content/authors/<slug>/` warns `AUTHOR.MISSING`. Corpus mixes slugs (`swamidass`) and display names (`Dennis Venema`, `Peaceful Science`). | Create author page (bio, affiliation, optional `orcid` / social) when a byline is new; keep display-name bylines valid until a slug exists. |
 
 ### Design implication
 
-The admin cannot be “Decap with the current `config.yml`.” It has to own **git writes** for `content/` **and** `data/doi.json` (and later entity/topic JSON), plus **hosted** equivalents of `make doi` / image metadata. Mailchimp campaign compose can stay out of v1 if newsletters remain rare; subscribe forms already work in the browser.
+The admin cannot be “Decap with the current `config.yml`.” It has to own **git writes** for human edits under `content/` **and** generated maps under `data/` (`doi.json` today; later entities, citations, social ids), plus **hosted** equivalents of `make doi` / image metadata. Mailchimp campaign compose can stay out of v1 if newsletters remain rare; subscribe forms already work in the browser. Campaign ids currently written into newsletter front matter (`mailchimp.campaign_id`) are the pattern **not** to copy — they belong in sidecar data too.
 
 A Word ingest (goal 8) is the primary **create** path; the admin is the **review / enrich / assign DOI / publish** path.
 
@@ -75,6 +77,8 @@ Citations today:
 - Internal PS links to prints/books (already partly handled).
 - Unstructured citations (author-year, journal names) via cite/Manubot/Crossref lookup, with a **review** step so wrong matches are not deposited.
 - Deduping the same work cited as both a link and a footnote.
+
+Resolved citation metadata (CSL-JSON, Crossref matches, Amazon → ISBN) belongs in sidecar data (`data/citation.json` already caches URL lookups). The deposit XML is generated at build time from that map plus the page’s links/footnotes — not by rewriting each article.
 
 DOI **assignment** stays a separate, gated action (goal 1). Improving XML must not auto-mint DOIs.
 
@@ -117,7 +121,8 @@ DOI **assignment** stays a separate, gated action (goal 1). Improving XML must n
 
 ### Design notes
 
-- Treat detected entities as **suggestions** first (admin UI), then optionally commit a `topics:` / `entities:` (or revived `tags:`) list once editors accept them.
+- Write detections to **sidecar** JSON keyed by page path (DOI pattern). Do not add `topics:` / `entities:` / `tags:` to the article on every re-run.
+- The admin shows suggestions; an editor may copy a subset into front matter (`categories:`) only when they are making an editorial choice (that save may bump lastmod — that is intended).
 - Reuse the same entity store for Crossref unstructured-citation matching and Algolia facets.
 - Do not require Google Cloud specifically; the unused package is only a hint that this was already considered.
 
@@ -139,6 +144,7 @@ DOI **assignment** stays a separate, gated action (goal 1). Improving XML must n
 - Pick networks (Discourse, X, Facebook, Bluesky, Mastodon, Mailchimp “campaign is live”) explicitly; do not revive OneSignal-as-Twitter.
 - Same gate as DOI: **publish** is distinct from **announce**. Drafts and `private` must not post.
 - Copy should be editable in the admin (title + description + permalink + image). Auto-generated text is a draft.
+- Store remote post ids / Discourse topic URLs in sidecar data, not `commenturl` rewrites on every share. (`commenturl` in front matter is fine when an editor sets the canonical thread.)
 - Daily full-site rebuild is a bad trigger; post on the publish event (git merge, admin “publish”, or S3 object create).
 
 ---
@@ -157,7 +163,7 @@ One repo. Build-time coupling is tight:
 
 ### Tradeoffs
 
-A submodule, sparse checkout, or “content repo → GitHub Action that opens a PR here” all work **if** the admin writes the same paths (`content/articles/...`, `data/doi.json`). Splitting **before** Word ingest and DOI-as-a-service just moves the laptop requirement to two clones.
+A submodule, sparse checkout, or “content repo → GitHub Action that opens a PR here” all work **if** the admin writes the same paths (`content/articles/...` for editorial files, `data/doi.json` and other sidecars for generated maps). Splitting **before** Word ingest and DOI-as-a-service just moves the laptop requirement to two clones. Generated sidecars can live in the code repo even if prose lives elsewhere.
 
 Images/PDFs are the painful part (LFS / Large Media). A content repo that still LFS-stores binaries is only a partial split; S3 for media (goal 7) is the cleaner cut.
 
@@ -178,7 +184,7 @@ Metalsmith and Next.js have been considered in other Peaceful Science repos. Thi
 | Capability | Today | After a port |
 | --- | --- | --- |
 | Markdown + per-folder front matter + shortcodes | Hugo | Parser + the same shortcode semantics (`amazon`, `youtube`, `image`, …) |
-| DOI map | `data/doi.json` | Same map, hosted mint |
+| DOI / citation / entity maps | `data/*.json` sidecars | Same: generated maps stay off the article files so source lastmod stays honest |
 | Print/PDF | Prince from `/_prince/` HTML | Still need print CSS or a print pipeline |
 | Cite / book covers | Netlify functions | Any origin (Lambda, S3+CloudFront functions) |
 | Redirects, aliases, ImageEngine | Hugo + `_redirects` | Equivalent routing |
@@ -191,7 +197,7 @@ Stay on Hugo if the admin + Word pipeline can commit markdown here and only the 
 
 Port (Next, Metalsmith, or S3+JS) if the goal is **true incremental publish** and avoiding Hugo’s full graph (related pages, taxonomy lists, Crossref batches, Algolia dump). That is a large rewrite of templates and shortcodes; do it **after** the content contract (front matter + shortcodes + DOI + citations) is encoded so the new engine cannot drift.
 
-Processed-content-on-S3 is compatible with **keeping** Hugo as the processor: Hugo (or a worker) renders **one** page → upload HTML/JSON → the public app does not rebuild. Related-article modules and homepage slices then need a small index document, not a full site generate.
+Processed-content-on-S3 is compatible with **keeping** Hugo as the processor: Hugo (or a worker) renders **one** page → upload HTML/JSON → the public app does not rebuild. Related-article modules and homepage slices then need a small index document, not a full site generate. Those derived objects are sidecars too: do not round-trip generated topics/citations back into the source markdown.
 
 ---
 
@@ -216,9 +222,9 @@ A file that would pass a future admin validator:
 1. Accept `.docx` (and optionally a Google Doc export).
 2. Convert to markdown (pandoc or equivalent), preserving footnotes and heading levels.
 3. Classify figures vs inline images; emit `{{< image ... >}}`.
-4. Detect ISBNs, Amazon URLs, DOIs, YouTube URLs → shortcodes / cite lookup (goal 2 autofill).
-5. Draft YAML from the author’s guide fields (bio → author page; topic areas → category suggestions).
-6. Open in the admin for human edit, DOI assign, and publish.
+4. Detect ISBNs, Amazon URLs, DOIs, YouTube URLs → shortcodes in the **new** file (first ingest) and citation lookups in sidecar JSON.
+5. Draft YAML from the author’s guide fields (bio → author page; topic areas → category suggestions in the admin, not a generated `tags:` rewrite loop).
+6. Open in the admin for human edit, DOI assign (sidecar), and publish.
 
 Zotero is already recommended to authors; if the Word file contains a Zotero bibliography, prefer that over regex for Crossref (goal 2).
 
@@ -226,7 +232,8 @@ Zotero is already recommended to authors; if the Word file contains a Zotero bib
 
 ## Cross-cutting constraints
 
-- **DOI minting is two-phase:** write `data/doi.json` (or successor store), then deposit XML. The admin and any S3 pipeline must not collapse those phases.
+- **Sidecar data for generated fields:** follow `data/doi.json`. Auto topics, resolved citations, social ids, image metrics, and similar must not be written into article markdown. That keeps `.Lastmod` (git info) as “the prose last changed.” First-time Word ingest **creates** the article, so that commit *should* set lastmod. Later enrichment must not.
+- **DOI minting is two-phase:** write `data/doi.json` (or successor store), then deposit XML. The admin and any S3 pipeline must not collapse those phases. The DOI never needs to live in front matter (`getdoi` already warns `DOI.OLD` when it does).
 - **Per-folder schemas and shortcodes are the publication format.** Word ingest and any new backend emit that format; they do not invent a parallel CMS schema.
 - **TODAY-gated DAILY tasks** are the current way to avoid depositing/indexing on every push. Incremental side effects should replace that gate rather than adding more full-site rebuilds.
 - **Git remains the audit log** until a port says otherwise. Suggest Changes / pull requests should keep working for readers even after editors get an admin.

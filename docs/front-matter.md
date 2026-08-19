@@ -98,7 +98,9 @@ Live JSON-LD is this system. Older `layouts/partials/seo/structured/*.html` and 
 
 ### DOI and PDF (not really front matter anymore)
 
-`partials/getdoi.html` prefers `data/doi.json[RelPermalink]`, then `.Params.doi` (warns `DOI.OLD`). `getpdf.html` synthesizes `/pdf<path>.pdf` for sections `articles`, `prints`, `about`. A page-level `pdf:` key is **absent** from the corpus.
+`partials/getdoi.html` prefers `data/doi.json[RelPermalink]`, then `.Params.doi` (warns `DOI.OLD`). That sidecar pattern is the rule for **all** auto-generated page metadata ([goals](goals.md)): do not write DOIs, detected topics, citation resolution, or social ids back into the article, or git last-modified (`enableGitInfo`) will move on every enrichment pass.
+
+`getpdf.html` synthesizes `/pdf<path>.pdf` for sections `articles`, `prints`, `about`. A page-level `pdf:` key is **absent** from the corpus.
 
 ---
 
@@ -239,7 +241,7 @@ No subfolders. Book pages use `layouts/books/single.html`. Related articles come
 | `title` `description` `authors` `date` | 29/29 | `authors` is always the string `Peaceful Science` (no author page) |
 | `layers` | 27/29 | List of `{type: body}` and `{type: pages, heading: ...}`. `type: pages` renders the `pages` list as cards (`single.html`) |
 | `pages` | 27/29 | Permalinks of included articles/prints. Newsletter CLI and `render/newsletter_detail.html` |
-| `mailchimp.campaign_id` | 6/29 | Written back by `python -m code.newsletter` |
+| `mailchimp.campaign_id` | 6/29 | Written back by `python -m code.newsletter`. **Do not extend this pattern**; new generated ids belong in sidecar `data/` so the issue’s lastmod does not move. |
 | `aliases` | 1 | |
 
 Two issues (`aaas-fellow-swamidass.md`, `wheaton-fellows.md`) have **no** `layers`/`pages` — body-only.

@@ -6,7 +6,8 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 
 - **Hosting:** the live site is deployed on **Netlify** (site `peacefulscience`). Production git deploys run `make production` → `code/production` with `TASKS=BUILD` (Hugo + `render.js` only).
 - **No working front-end admin:** Decap (`/admin/`) and Forestry are in the repo but **not operational**. Publishing and corrections go through **Git / GitHub**.
-- **DOI assign vs deposit:** minting IDs is local `make doi` (writes `data/doi.json`). Crossref *deposit* is the DAILY Netlify hook, and only if Hugo logged `TODAY`.
+- **DOI assign vs deposit:** minting IDs is local `make doi` (writes `data/doi.json`, **not** the article file). Crossref *deposit* is the DAILY Netlify hook, and only if Hugo logged `TODAY`.
+- **Sidecar data:** auto-generated fields follow the DOI pattern (`data/*.json` keyed by path/URL) so they do not clobber the article’s git last-modified (`enableGitInfo`). Editorial body/front-matter edits are supposed to change lastmod.
 - **Mailchimp campaigns:** local `make news` only. The Netlify build does not call Mailchimp. Subscribe forms on the site are separate (browser POST to Mailchimp).
 
 ## Product and ownership
@@ -57,4 +58,6 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 26. **Content-repo split:** required before admin ships, or only after Word ingest + DOI-as-a-service exist?
 27. **Backend:** keep Hugo and move only side effects (Algolia/Crossref/social) off the daily rebuild vs processed content on S3 + dynamic JS vs Next/Metalsmith?
 28. **Word ingest:** `.docx` upload only, or Google Docs API as well (editors already work in Docs)?
-29. **Entity detection provider:** reuse `@google-cloud/language`, or another NLP/LLM path that writes suggested `topics` / `tags` for human accept?
+29. **Entity detection provider:** reuse `@google-cloud/language`, or another NLP/LLM path that writes suggested topics into **sidecar** JSON (not into the article on each run)?
+30. **`partials/lastmod.html` / `data/lastmod.json`:** unused override path. Keep for correcting bad git dates, or delete once sidecar enrichment is the norm?
+31. **Newsletter `mailchimp.campaign_id`:** move to sidecar like DOIs, or leave the six existing front-matter values as a one-off?

@@ -37,6 +37,8 @@ categories:
 
 Books, newsletters, author/category/series terms, and `prints/deleted/` do not follow that block. Optional keys and frequencies: [front-matter.md](front-matter.md).
 
+**Generated fields do not belong in the article file.** DOIs live in `data/doi.json`; citation caches, image sizes, and (planned) auto topics / social ids follow the same sidecar pattern so git last-modified stays “the prose changed.” See [architecture](architecture.md) and [goals](goals.md). Editor-chosen `categories`, bylines, and body links *are* editorial and may live in the markdown.
+
 ## Content types in more detail
 
 **Articles** (`content/articles/`) are the public blog. ~140 files. Index cascade enables HTML + print output and Article JSON-LD.
