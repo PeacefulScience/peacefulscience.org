@@ -97,7 +97,7 @@ Organization `sameAs` lists Facebook, YouTube, Twitter only. Nav also links Patr
 | BreadcrumbList | Unused old partial is also wrong (skips position 2). Add a correct one in the live system if wanted |
 | `speakable` | Low value; Google support is narrow — skip unless there is a specific product need |
 
-JSON-LD `description` / `title` are still `markdownify | plainify | htmlEscape` then `jsonify`. Leave that pipeline alone until a follow-up shows a concrete broken string and that changing it does not create new ones.
+JSON-LD `description` / `title` are `markdownify | plainify | htmlUnescape` then `jsonify`. `htmlEscape` after `plainify` was double-encoding Goldmark entities (`Art &amp;amp; Ancestry`). Meta descriptions use the same unescape on the `description:` branch only (`subtitle` / `Summary` fallbacks are untouched).
 
 ---
 

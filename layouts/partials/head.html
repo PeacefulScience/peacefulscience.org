@@ -1,4 +1,4 @@
-{{- $.Scratch.Set "Description" ( (.Description | markdownify |  plainify  ) | default .Params.subtitle | default .Summary ) -}}
+{{- $.Scratch.Set "Description" ( (.Description | markdownify |  plainify | htmlUnescape ) | default .Params.subtitle | default .Summary ) -}}
 
 {{- $.Scratch.Set "Title" ( .Title | default .Site.Title | markdownify | plainify | htmlUnescape  ) -}}
 
