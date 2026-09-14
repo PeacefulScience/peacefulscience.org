@@ -1,0 +1,49 @@
+---
+description:
+globs: *.mjml,**/newsletter*.html,**/email*.html
+alwaysApply: true
+---
+
+# Newsletter Management Rules
+
+Newsletter templates use MJML for email-compatible HTML generation.
+Newsletters are created from content and sent via Mailchimp.
+Templates must be responsive and follow email best practices.
+
+<RULES>
+1. Use MJML syntax for email template structure
+2. Follow Mailchimp merge tag conventions
+3. Ensure mobile responsiveness
+4. Include required sections: header, content, footer
+5. Use proper image handling for email clients
+6. Include unsubscribe links and legal requirements
+7. Test across multiple email clients
+</RULES>
+
+<EXAMPLES>
+```mjml
+<mjml>
+  <mj-head>
+    <mj-title>Newsletter Title</mj-title>
+    <mj-preview>Preview text</mj-preview>
+  </mj-head>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text>
+          Content with *|MERGE|* tags
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
+```
+</EXAMPLES>
+
+<VALIDATION>
+- Verify MJML syntax
+- Check Mailchimp merge tags
+- Test responsive layout
+- Validate email client compatibility
+- Ensure all required sections are present
+</VALIDATION>
