@@ -3,46 +3,64 @@ description:
 globs: content/articles/*.md
 alwaysApply: false
 ---
+---
+description: 
+globs: content/articles/*.md
+alwaysApply: false
+---
 
 # Article Writing Rules
 
-Rules for new and edited Peaceful Science articles under `content/articles/`.
-Follow nearby published articles and `content/articles/_index.md` rather than inventing fields.
+Rules for writing articles on Peaceful Science, based on common patterns and requirements.
 
-<RULES>
-1. Required front matter: `title`, `authors`, `date`, `description`, `categories`, and `headerimage.src`.
-2. `authors` is a list of existing author slugs under `content/authors/`, not display names. Use the add-author skill when a slug is missing.
-3. `categories` is a list of existing category slugs under `content/categories/`. Prefer the smallest accurate set. Do not invent new categories.
-4. `description` is one concise sentence (about 15-30 words) that states the article's specific claim or question. Do not start with "An article about".
-5. `headerimage.src` is a site path such as `/img/YYYY/MM/filename.ext`. Optional `credit` and `youtube` live under `headerimage`.
-6. Optional fields used in this repo: `publishdate` for scheduled posts, `series`, `about` (related page paths), `interview`, `aliases`, `commenturl`.
-7. Put editor context in a `<div class="editor-note">` block, then start the body at H2 (`##`).
-8. Cite with DOI or durable URLs as footnotes. Keep paragraphs short.
-9. Do not overwrite an existing `content/articles/<slug>.md`. Confirm the slug first.
-</RULES>
+1. Required Front Matter
+   - title: Article title
+   - authors: List using author slugs
+   - date: Publication date (YYYY-MM-DD)
+   - description: 1-2 sentence summary
+   - headerimage: Featured image with src
+   - categories: Topic categories
 
-<EXAMPLES>
-```yaml
-title: When Did Sin Begin?
-authors:
-- ken-keathley
-- swamidass
-date: "2024-11-27"
-description: Reviewing Haarsma's book, there are indeed "many ways" to reconcile evolution with the doctrine of sin.
-categories:
-- ancestry
-- evolution
-headerimage:
-  src: /img/2024/11/when-sin-begin-review.png
-about:
-- /books/when-sin-begin/
-```
-</EXAMPLES>
+2. Optional Front Matter
+   ```yaml
+   # Future publication scheduling
+   publishdate: 2025-03-05  # Article won't appear until this date
+   
+   # Series identification
+   series: series-slug  # Groups articles in a series together
+   
+   # Interview articles
+   interview:
+   - interviewee-slug  # Marks interviewed people
+   
+   # Related content
+   about:
+   - /books/book-slug/  # Links to related content
+   
+   # Header image with video
+   headerimage:
+     src: /img/path/image.jpg
+     youtube: VIDEO_ID  # Adds video preview
+   
+   # Multiple authors with roles
+   authors:
+   - primary-author
+   - role: editor
+     slug: editor-name
+   
+   egories
+   categories:
+   - primary-category
+   - subcategory
+   ```
 
-<VALIDATION>
-- Front matter includes title, authors, date, description, categories, and headerimage.src
-- Author and category values are existing repo slugs
-- Description is a single specific sentence
-- Header image path exists under static/ or is confirmed before publish
-- Destination markdown path does not already exist
-</VALIDATION>
+3. Article Structure
+   - Editor's note in <div class="editor-note"> for context
+   - Start content with H2 (##) headings
+   - Use clear section breaks
+   - Include citations with DOI links as footnotes
+   - Break text into readable paragraphs
+
+4. You cannot write mdc files yet, so prompt user to manually copy over.
+
+[Rest of file remains unchanged...]
