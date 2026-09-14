@@ -1,0 +1,4 @@
+interface:
+  display_name: "Convert DOCX"
+  short_description: "Convert Word manuscripts into repo article drafts"
+  default_prompt: "Use $convert-docx to turn a Word manuscript into a publishable Peaceful Science article draft."

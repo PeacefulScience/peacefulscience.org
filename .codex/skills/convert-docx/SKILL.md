@@ -1,6 +1,6 @@
 ---
 name: convert-docx
-description: Convert raw Word .docx manuscripts into Peaceful Science article markdown, then generate repo-matching metadata: title, description, authors, categories, and new-author records when needed. Use when a Word document needs to become a publishable article file in this repo.
+description: "Convert raw Word .docx manuscripts into Peaceful Science article markdown, then generate repo-matching metadata: title, description, authors, categories, and new-author records when needed. Use when a Word document needs to become a publishable article file in this repo."
 ---
 
 # Peaceful Science DOCX Article
