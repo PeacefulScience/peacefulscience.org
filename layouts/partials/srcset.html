@@ -1,14 +1,19 @@
-{{ $url := .Url | absURL }}
+{{ $url := .Url }}
 {{ $width := .Width }}
 {{ $height := .Height }}
 {{ $mode := .Mode | default "smartcrop" }}
+{{ $fit := "contain" }}
+{{ if eq $mode "smartcrop" }}
+  {{ $fit = "cover" }}
+{{ end }}
 {{ $out := slice }}
 
 
 {{ range (slice 1 2 4 ) }}
   {{ $w := mul $width . }}
   {{ $h := mul $height . }}
-  {{ $out = $out | append ( printf "%s?%s %dw" $url (querify "h" $h "w" $w "nf_resize" $mode) $w   ) }}
+  {{ $cdn := partial "imgcdn" (dict "src" $url "w" $w "h" $h "fit" $fit) }}
+  {{ $out = $out | append ( printf "%s %dw" $cdn $w ) }}
 {{ end }}
 
 

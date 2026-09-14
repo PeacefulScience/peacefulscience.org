@@ -57,15 +57,19 @@
   {{ end }}
 {{ end }}
 
-{{ $amazonimg := default nil }}
-{{ with .Params.amazon }}
- {{ $amazonimg = partial `imgcdn`  ( printf `/img/bookcover/%s`  (index . 0) )  }}
+{{ $ogsrc := .Params.headerimage.src | default "" }}
+{{ if not $ogsrc }}
+  {{ with .Params.amazon }}
+    {{ $ogsrc = printf `/img/bookcover/%s` (index . 0) }}
+  {{ end }}
 {{ end }}
+{{ $ogsrc = $ogsrc | default .Params.defaultimg | default site.Params.logo }}
+{{ $ogimg := partial `imgcdn` (dict `src` $ogsrc `w` 1200 `fm` `jpg`) }}
 
-{{ with .Params.headerimage.src | default $amazonimg | default .Params.defaultimg | default site.Params.logo -}}
-<meta property="og:image" content="{{- . | partial `imgcdn` -}}"/>
+{{ with $ogsrc }}
+<meta property="og:image" content="{{ $ogimg }}"/>
 <meta name="twitter:card" content={{ if eq . site.Params.logo }}"summary"{{ else }}"summary_large_image"{{ end }}>
-<meta name="twitter:image" content="{{- . | partial `imgcdn` -}}">
+<meta name="twitter:image" content="{{ $ogimg }}"/>
 {{- end }}
 
 
@@ -98,7 +102,6 @@
 <meta name="prism.publicationName" content="{{ $publisher }}"/>
 <meta name="citation_journal_title" content="{{ $publisher }}"/>
 
-<link rel="preconnect" href="https://{{ site.Params.imagecdn }}">
 <link crossorigin
   rel="preload" 
   href="https://peacefulscience.org/font/alveratasb-webfont.woff2"
@@ -106,8 +109,8 @@
   
 <link rel="search" href="/os.xml" type="application/opensearchdescription+xml" title="Peaceful Science">
 <link rel="manifest" href="/manifest.json">
-<link href='https://8l2ic7fx.cdn.imgeng.in/ps-initials.png?imgeng=/w_64' rel='shortcut icon'/>
-<link rel="apple-touch-icon" sizes="180x180" href="https://8l2ic7fx.cdn.imgeng.in/ps-initials.png?imgeng=/w_180">
+<link href='{{ partial `imgcdn` (dict `src` `/ps-initials.png` `w` 64) }}' rel='shortcut icon'/>
+<link rel="apple-touch-icon" sizes="180x180" href="{{ partial `imgcdn` (dict `src` `/ps-initials.png` `w` 180) }}">
 
  <script defer src="{{ (resources.Get "js/turbo.js" | js.Build (dict "minify" true ) | resources.Fingerprint ).Permalink }}"> </script>     
      

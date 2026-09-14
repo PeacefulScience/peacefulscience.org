@@ -24,10 +24,10 @@
           
           
 -def header()
-  mj-section (background-size="cover" background-url="https://8l2ic7fx.cdn.imgeng.in/img/design/green-hex.png" background-color="#020" padding="20px 0 20px 0"  full-width="full-width")
+  mj-section (background-size="cover" background-url="https://peacefulscience.org/.netlify/images?url=/img/design/green-hex.png" background-color="#020" padding="20px 0 20px 0"  full-width="full-width")
     mj-column 
       mj-image (align="center" width="420px" href="https://peacefulscience.org/" alt="Peaceful Science"
-       src="https://8l2ic7fx.cdn.imgeng.in/img/design/PS-logo-long-white.png?w=696&nf_resize=fit")
+       src="https://peacefulscience.org/.netlify/images?url=/img/design/PS-logo-long-white.png&w=696&fm=png")
 
 
 
@@ -65,7 +65,7 @@
     -for article in articles
       mj-column padding="0px 0px 0px 0px" width="35%"
         
-          mj-image (href=article["permalink"] align="left" padding="10px 10px 5px 0px" src=${article["image"]+"?w=320&h=180&nf_resize=smartcrop"}
+          mj-image (href=article["permalink"] align="left" padding="10px 10px 5px 0px" src=${article["image"]+"&w=320&h=180&fit=cover&fm=jpg"}
             border-radius="5px"  )
 
       mj-column padding="0px" width="65%"

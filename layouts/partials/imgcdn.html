@@ -1,10 +1,57 @@
-{{ $out :=  printf "https://%s/%s"  site.Params.imagecdn . }}
-{{ $file := printf "static/%s"  . }}
+{{- $src := "" -}}
+{{- $w := "" -}}
+{{- $h := "" -}}
+{{- $fit := "" -}}
+{{- $fm := "" -}}
+{{- $quality := "" -}}
+{{- $original := false -}}
 
-{{ if site.IsServer }}
-  {{ if fileExists $file }}
-    {{ $out = . | absURL }}
-  {{ end }}
-{{ end }}
+{{- if reflect.IsMap . -}}
+  {{- $src = .src | default "" -}}
+  {{- $w = .w | default .width | default "" -}}
+  {{- $h = .h | default .height | default "" -}}
+  {{- $fit = .fit | default "" -}}
+  {{- $fm = .fm | default .format | default "" -}}
+  {{- $quality = .q | default .quality | default "" -}}
+  {{- $original = .original | default false -}}
+{{- else -}}
+  {{- $src = printf "%s" . -}}
+{{- end -}}
 
-{{ return $out }} 
+{{- $src = trim $src " " -}}
+{{- $src = replaceRE "^https://8l2ic7fx\\.cdn\\.imgeng\\.in/+" "/" $src -}}
+
+{{- $out := "" -}}
+{{- if $src -}}
+  {{- if in $src "/.netlify/images" -}}
+    {{- $out = $src -}}
+  {{- else -}}
+    {{- if not (hasPrefix $src "http") -}}
+      {{- $src = index (split $src "?") 0 -}}
+      {{- if not (hasPrefix $src "/") -}}
+        {{- $src = printf "/%s" $src -}}
+      {{- end -}}
+      {{- if hasPrefix $src "/img/bookcover/" -}}
+        {{- $src = absURL $src -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- if or $original site.IsServer (findRE `(?i)\.svg$` $src) -}}
+      {{- if hasPrefix $src "http" -}}
+        {{- $out = $src -}}
+      {{- else -}}
+        {{- $out = $src | absURL -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $q := printf "url=%s" ($src | urlquery) -}}
+      {{- if $w -}}{{- $q = printf "%s&w=%v" $q $w -}}{{- end -}}
+      {{- if $h -}}{{- $q = printf "%s&h=%v" $q $h -}}{{- end -}}
+      {{- if $fit -}}{{- $q = printf "%s&fit=%s" $q ($fit | urlquery) -}}{{- end -}}
+      {{- if $fm -}}{{- $q = printf "%s&fm=%s" $q ($fm | urlquery) -}}{{- end -}}
+      {{- if $quality -}}{{- $q = printf "%s&q=%v" $q $quality -}}{{- end -}}
+      {{- $out = printf "%s?%s" (absURL "/.netlify/images") $q -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{ return $out }}

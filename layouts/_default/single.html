@@ -64,7 +64,7 @@
             {{- with .Params.headerImage }}
               {{- $startsec := .startsec | default 0 }}
               {{- $src := partial "imgurl" (dict "src"  .src "loc" $.File.Path ) -}}
-              {{- $cdnsrc := partial `imgcdn` $src  }}
+              {{- $cdnsrc := partial `imgcdn` (dict `src` $src `w` 800) }}
               {{- $headerclass := "" }}
               {{- with .youtube }}
                  <div class="">
@@ -73,7 +73,7 @@
                  {{ $headerclass = "d-none d-print-block" }}
               {{- end -}}              
                 <img 
-                  src="{{ $cdnsrc }}?imgeng=/w_auto,800/"
+                  src="{{ $cdnsrc }}"
                   class="webfeedsFeaturedVisual {{ $headerclass }}"
                   style="width: 100%; height: auto"
                   sizes="(max-width: 768px) calc(100vw - 32px), (min-width: 768px) 768px"
@@ -354,7 +354,7 @@ accessed
             <div class="col-lg-4 text-center text-lg-right">
               {{ $src := `/img/design/wood-chair-transparent.png` }}
               <img
-                src="{{ partial `imgcdn` $src }}"
+                src="{{ partial `imgcdn` (dict `src` $src `h` 240) }}"
                 height="240"
                 loading="lazy"
                 {{- with (index site.Data.imgsize $src) }}
