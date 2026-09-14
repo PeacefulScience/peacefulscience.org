@@ -14,15 +14,16 @@
 {{- $containerclass := "py-3 text-smaller" -}}
 {{- $imageclass := "mb-1  d-print-none d-block" -}}
 {{- $imagestyle := "width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover;" }}
-{{- $imgeng:= "?imgeng=/w_auto,360/" }}
+{{- $imgw := 360 }}
 
 {{- if eq  $style  "horizontal" -}}
   {{- $containerclass = printf "%s %s" "d-flex" $containerclass -}}
   {{- $imageclass = "flex-shrink-0 mr-3  mb-1 d-print-none rounded" -}}
   {{- $imagestyle = "width: 160px; height: 90px; object-fit: cover;" | safeCSS  -}}
-  {{- $imgeng = "?imgeng=/w_auto,160/" }}
+  {{- $imgw = 160 }}
   {{- $sizes = "160px" }}
 {{- end -}}
+{{- $cdnsrc := partial `imgcdn` (dict `src` $src `w` $imgw) }}
 
 <article {{with .CStyle }}style="{{ . | safeCSS }}"{{ end }} {{with .Id }}id="{{ . }}"{{ end }} 
   class="{{ $containerclass }} {{ $layout }} " resource="{{ $page.Permalink }}">
@@ -35,7 +36,7 @@
 
 {{ with $page.Params.Headerimage.Youtube }}
 
-  {{ partial `youtube` (dict `Image` ($src | partial `imgcdn` ) `Link` $page.Permalink `Youtube` . `StartSec`  $startsec `Class` $imageclass   `Style` $imagestyle `Sizes` $sizes ) }}
+  {{ partial `youtube` (dict `Image` $cdnsrc `Link` $page.Permalink `Youtube` . `StartSec`  $startsec `Class` $imageclass   `Style` $imagestyle `Sizes` $sizes ) }}
   {{ $rendered = true }}
 
 {{ end }}
@@ -43,7 +44,7 @@
 {{ if not $rendered }}
   <a href="{{$page.Permalink}}">   
   <img class="{{- $imageclass -}}" property="image" style="{{ $imagestyle | safeCSS }}" 
-  src="{{ $src  | partial `imgcdn` }}{{ $imgeng }}" alt="{{ $page.Title | htmlEscape }}" 
+  src="{{ $cdnsrc }}" alt="{{ $page.Title | htmlEscape }}" 
   {{- with $sizes }} sizes="{{ . }}"{{ end }}
   {{- if (in .Elements "lazy") }} loading="lazy" {{- end }}>
   </a>

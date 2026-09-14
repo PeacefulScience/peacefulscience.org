@@ -95,7 +95,6 @@ params:
   algolia:
     vars: ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
     params: ["categories", "tags"]
-  imagecdn: 8l2ic7fx.cdn.imgeng.in
   logo: /img/design/logo-black-square.png
   doiprefix: 10.54739
 

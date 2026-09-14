@@ -11,7 +11,3 @@
   content-type:  application/opensearchdescription+xml
 /opensearch.xml
   content-type:  application/opensearchdescription+xml
-/*
-  accept-ch: viewport-width, width, device-memory, dpr, downlink, ect
-  link: <https://8l2ic7fx.cdn.imgeng.in>; rel=preconnect
-  permissions-policy: ch-viewport-width=("https://8l2ic7fx.cdn.imgeng.in"), ch-width=("https://8l2ic7fx.cdn.imgeng.in"), ch-dpr=("https://8l2ic7fx.cdn.imgeng.in"), ch-device-memory=("https://8l2ic7fx.cdn.imgeng.in"), ch-ect=("https://8l2ic7fx.cdn.imgeng.in"), ch-downlink=("https://8l2ic7fx.cdn.imgeng.in")

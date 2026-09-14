@@ -38,7 +38,7 @@
     <item>
      <title>{{ .Title }}</title>
       {{- with .Params.headerImage.Src }}
-		<media:content url="{{ .  | partial "imgcdn" }}" width="400" height="210" medium="image" type="" />
+		<media:content url="{{ partial `imgcdn` (dict `src` . `w` 400 `h` 210 `fit` `cover` `fm` `jpg`) }}" width="400" height="210" medium="image" type="" />
       {{- end }}      
 
       <link>{{ .Permalink }}</link>

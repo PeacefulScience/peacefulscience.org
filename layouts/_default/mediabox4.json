@@ -1,8 +1,7 @@
 {{- $src := true -}}
 {{- with .Params.headerImage.Src -}}
 
-  {{- $args := querify  "nf_resize" "fit" "w" 696 "h" 392 -}}
-  {{- $src = printf "%s?%s" (. | absURL) $args  -}}
+  {{- $src = partial `imgcdn` (dict `src` . `w` 696 `h` 392 `fit` `contain`) -}}
   
 {{- end -}}  
 

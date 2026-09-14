@@ -10,7 +10,7 @@
 {{ end }}
 
 {{ with $src }}
-  {{ $out = dict "@type" "ImageObject" "url" (. | partial "imgcdn") }}
+  {{ $out = dict "@type" "ImageObject" "url" (partial "imgcdn" (dict "src" . "w" 1200 "fm" "jpg")) }}
   {{ with index site.Data.imgsize . }}
     {{ $out = merge $out (dict "width" .width "height" .height) }}
   {{ end }}

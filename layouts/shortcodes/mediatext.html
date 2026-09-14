@@ -10,7 +10,7 @@
 <figure class="{{ $class }}">
 
 <img
-  src="{{ $src  | partial `imgcdn` }}?imgeng=/w_auto,800/"
+  src="{{ partial `imgcdn` (dict `src` $src `w` 800) }}"
   style="width: 100%; height: auto"
   loading="lazy"
   {{- with (index site.Data.imgsize $src) }}

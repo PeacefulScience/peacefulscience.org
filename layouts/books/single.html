@@ -71,10 +71,10 @@ width: 100%
 
          {{ with  index  .Params.amazon 0  }}
           <aside class="float-right text-center ml-3 mb-3" style="width: 300px; max-width: 40%;">
-{{ $img :=  partial `imgcdn`  ( printf `/img/bookcover/%s` . )  }}
+{{ $img := partial `imgcdn` (dict `src` (printf `/img/bookcover/%s` .) `w` 400) }}
 
 <a href="#related-articles">
-  <img src='{{ $img }}?imgeng=/w_auto,400/' 
+  <img src='{{ $img }}' 
        style="width:100%; height: auto" 
        width=336 height=550 
        class="shadow"/>

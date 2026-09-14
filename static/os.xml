@@ -3,5 +3,5 @@
   <Description>Search all content.</Description>
   <Url type="text/html" method="get" template="https://peacefulscience.org/search/?PeacefulScience[query]={searchTerms}"/>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image height="64" width="64" type="image/png">/ps-initials.png?h=64&#38;w=64&#38;nf_resize=fit</Image>
+  <Image height="64" width="64" type="image/png">/.netlify/images?url=/ps-initials.png&amp;w=64&amp;h=64</Image>
 </OpenSearchDescription>

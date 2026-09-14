@@ -28,6 +28,21 @@ command = "hugo -b $DEPLOY_PRIME_URL --buildDrafts -F"
 [context.deploy-preview]
 command = "hugo -b $DEPLOY_PRIME_URL --buildDrafts -F"
 
+
+[images]
+  remote_images = [
+    'https://peacefulscience\.org/img/bookcover/.*',
+    'https://.*\.netlify\.app/img/bookcover/.*',
+    'https://images\.amazon\.com/.*',
+    'https://m\.media-amazon\.com/.*'
+  ]
+
+[[headers]]
+  for = "/img/bookcover/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, s-maxage=31536000"
+
+
 [dev]
 command =  "make -j 10 dev"
 framework = "#static"

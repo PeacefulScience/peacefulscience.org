@@ -15,8 +15,8 @@
       <div class="d-none d-md-block" style="position: absolute; top:0px; width: 100%; height: 100%;"></div>
      
       {{- with .Params.headerImage.Src }}
-          {{  $src := partial "imgurl" (dict "src"  . "loc" $.File.Path ) | partial `imgcdn`   }}
-          <img src="{{ $src | partial `imgcdn` }}" class="w-100 position-sticky" style="top:100px"> </img>
+          {{  $src := partial "imgurl" (dict "src"  . "loc" $.File.Path ) }}
+          <img src="{{ partial `imgcdn` (dict `src` $src `w` 800) }}" class="w-100 position-sticky" style="top:100px"> </img>
       {{- end }}
    <!--    <div class="d-none d-md-block" style="position: absolute; top:20%; width: 100%; height: 81%; background-image: linear-gradient(#f3f3f300,#f3f3f3ff); pointer-events: none"></div> -->
   </div>
