@@ -17,9 +17,9 @@ const Prince = require("prince");
 const baseurl = "https://peacefulscience.org/";
 const pdfBucket = process.env.PDF_S3_BUCKET || "";
 const pdfRegion = process.env.PDF_S3_REGION || "us-east-1";
-// Default matches the Peaceful Science PDF CloudFront distribution; override via Doppler.
+// Default custom CDN hostname; override via Doppler PDF_CDN_BASE if needed.
 const pdfCdnBase = (
-  process.env.PDF_CDN_BASE || "https://d24ue1rso6h0f2.cloudfront.net"
+  process.env.PDF_CDN_BASE || "https://cdn.peacefulscience.org"
 ).replace(/\/$/, "");
 // Prefer PDF-specific creds so we do not override Netlify's own AWS_* runtime env.
 const pdfAccessKey =

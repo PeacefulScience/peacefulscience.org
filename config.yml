@@ -92,8 +92,8 @@ outputs:
 params:
   baseGitHub: "https://github.com/PeacefulScience/peacefulscience.org/"
   sitemap_min_date: "2021-09-10"
-  # CloudFront in front of Netlify for image transforms (default *.cloudfront.net hostname).
-  imageCDN: "https://d98hbmqu0lqul.cloudfront.net"
+  # CloudFront CDN (images via Netlify origin; PDFs via S3).
+  imageCDN: "https://cdn.peacefulscience.org"
   algolia:
     vars: ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
     params: ["categories", "tags"]
