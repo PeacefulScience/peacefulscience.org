@@ -1,6 +1,10 @@
 require("dotenv").config();
 const { builder } = require("@netlify/functions");
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const {
+  S3Client,
+  PutObjectCommand,
+  HeadObjectCommand,
+} = require("@aws-sdk/client-s3");
 const axios = require("axios");
 const urljoin = require("url-join");
 const util = require("util");
@@ -13,6 +17,10 @@ const Prince = require("prince");
 const baseurl = "https://peacefulscience.org/";
 const pdfBucket = process.env.PDF_S3_BUCKET || "";
 const pdfRegion = process.env.PDF_S3_REGION || "us-east-1";
+// Default matches the Peaceful Science PDF CloudFront distribution; override via Doppler.
+const pdfCdnBase = (
+  process.env.PDF_CDN_BASE || "https://d24ue1rso6h0f2.cloudfront.net"
+).replace(/\/$/, "");
 // Prefer PDF-specific creds so we do not override Netlify's own AWS_* runtime env.
 const pdfAccessKey =
   process.env.PDF_AWS_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID || "";
@@ -47,7 +55,22 @@ async function renderPdf(url) {
   return buffer;
 }
 
-async function savePdfToS3({ key, buffer, princeEtag }) {
+async function headPdfFromS3(key) {
+  if (!s3 || !pdfBucket) return null;
+  try {
+    const out = await s3.send(
+      new HeadObjectCommand({ Bucket: pdfBucket, Key: key })
+    );
+    return out;
+  } catch (error) {
+    if (error && (error.name === "NotFound" || error.$metadata?.httpStatusCode === 404)) {
+      return null;
+    }
+    throw error;
+  }
+}
+
+async function savePdfToS3({ key, buffer, princeEtag, cacheControl }) {
   if (!s3 || !pdfBucket) {
     console.warn("PDF_S3_BUCKET unset; skipping S3 upload");
     return;
@@ -58,6 +81,9 @@ async function savePdfToS3({ key, buffer, princeEtag }) {
       Key: key,
       Body: buffer,
       ContentType: "application/pdf",
+      CacheControl:
+        cacheControl ||
+        "public, max-age=2592000, stale-while-revalidate=31536000",
       Metadata: {
         "prince-etag": princeEtag || "",
       },
@@ -66,6 +92,31 @@ async function savePdfToS3({ key, buffer, princeEtag }) {
   console.info(
     `s3 put s3://${pdfBucket}/${key} prince-etag=${princeEtag} bytes=${buffer.length}`
   );
+}
+
+function cdnUrl(s3Key, princeEtag) {
+  if (!pdfCdnBase) return null;
+  const v = encodeURIComponent(princeEtag || "0");
+  return `${pdfCdnBase}/${s3Key}?v=${v}`;
+}
+
+function redirectToCdn({ s3Key, princeEtag, name, canurl, path }) {
+  const location = cdnUrl(s3Key, princeEtag);
+  if (!location) return null;
+  return {
+    statusCode: 302,
+    headers: {
+      Location: location,
+      "Cache-Control": "no-store",
+      "Content-Disposition": `filename="${name}"`,
+      Link: `<${canurl}>; rel="alternate"; type="text/html", <${
+        "https://peacefulscience.org/" + path
+      }>; rel="canonical"`,
+      Etag: `"${princeEtag}"`,
+      "x-pdf-s3-key": s3Key,
+      "x-pdf-cdn": location,
+    },
+  };
 }
 
 function replaceAll(str, find, replace) {
@@ -123,6 +174,27 @@ async function handler(event, context) {
       }
     }
 
+    // Serve from CloudFront when S3 already has a PDF matching the Prince HTML etag.
+    try {
+      const head = await headPdfFromS3(s3Key);
+      const stored = head && head.Metadata && head.Metadata["prince-etag"];
+      if (stored && stored === res_etag) {
+        const out = redirectToCdn({
+          s3Key,
+          princeEtag: res_etag,
+          name,
+          canurl,
+          path: event.path.toLowerCase(),
+        });
+        if (out) {
+          console.info(`${out.statusCode}:\t${url}\tcdn-hit\t${s3Key}`);
+          return out;
+        }
+      }
+    } catch (error) {
+      console.error(`s3 head failed for ${s3Key}: ${util.inspect(error)}`);
+    }
+
     let buffer;
     try {
       buffer = await renderPdf(url);
@@ -133,12 +205,31 @@ async function handler(event, context) {
     }
 
     try {
-      await savePdfToS3({ key: s3Key, buffer, princeEtag: res_etag });
+      await savePdfToS3({
+        key: s3Key,
+        buffer,
+        princeEtag: res_etag,
+        cacheControl: res.headers["cache-control"],
+      });
     } catch (error) {
-      // Phase 1: still return the PDF even if upload fails; log for debugging.
       console.error(`s3 put failed for ${s3Key}: ${util.inspect(error)}`);
     }
 
+    const redirected = redirectToCdn({
+      s3Key,
+      princeEtag: res_etag,
+      name,
+      canurl,
+      path: event.path.toLowerCase(),
+    });
+    if (redirected) {
+      console.info(
+        `${redirected.statusCode}:\t${url}\tbytes=${buffer.length}\tcdn-miss\t${s3Key}`
+      );
+      return redirected;
+    }
+
+    // Fallback when PDF_CDN_BASE is unset: return the body (may hit Lambda size limits).
     const out = {
       statusCode: 200,
       isBase64Encoded: true,
@@ -157,7 +248,7 @@ async function handler(event, context) {
       },
     };
     console.info(
-      `${out.statusCode}:\t${url}\tbytes=${buffer.length}\ts3=${s3Key}`
+      `${out.statusCode}:\t${url}\tbytes=${buffer.length}\ts3=${s3Key}\tno-cdn`
     );
     return out;
   } catch (error) {
