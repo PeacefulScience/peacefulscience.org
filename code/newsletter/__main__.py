@@ -47,6 +47,17 @@ def plim_mjml(plm, *args, **kwargs):
     return mjml2html(pm)
 
 
+def _cdn_image_url(url):
+    """Prefer CloudFront for Netlify Image CDN URLs (Mailchimp opens)."""
+    if not url:
+        return url
+    return url.replace(
+        "https://peacefulscience.org/.netlify/images",
+        "https://cdn.peacefulscience.org/.netlify/images",
+        1,
+    )
+
+
 def newsletter_data(doc):
     pages = doc.frontmatter.get("pages", [])
     _INDEX = json.load(open("public/algolia.json"))
@@ -54,7 +65,12 @@ def newsletter_data(doc):
 
     for n, P in enumerate(pages):
         P = re.sub("/$", "", P) + "/"
-        PAGES += [p for p in _INDEX if p["relpermalink"] == P]
+        for p in _INDEX:
+            if p["relpermalink"] == P:
+                p = dict(p)
+                if p.get("image"):
+                    p["image"] = _cdn_image_url(p["image"])
+                PAGES.append(p)
 
     DATE = iso8601.parse_date(str(doc.frontmatter["date"]))
     TITLE = doc.frontmatter["title"]

@@ -17,7 +17,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 - **Tracking:** `turbo:load` pushes `page_view` on `dataLayer`. Universal Analytics leftovers (`update_analytics.py`, `byviews.html`, `ANALYTICS` / `GA_SERVICE`) are deleted. Confirm GTM triggers on that event.
 - **Crossref account is active.** Admins mint DOIs (today: `make doi` → `data/doi.json`). Deposit remains DAILY + `TODAY`.
 - **Algolia** index `PeacefulScience` is still the live search backend. Daily hook still runs and is wanted.
-- **Netlify Large Media / LFS is in use.** Optional later: store binaries on S3 and point ImageEngine at S3 instead of the Netlify origin. `imgsize.json` stays either way.
+- **Netlify Large Media / LFS is in use.** Live image CDN is **`cdn.peacefulscience.org`** (CloudFront → Netlify origin). Optional later: S3 originals + AWS image transform so Netlify is not the image origin. `imgsize.json` stays either way.
 - **Word ingest format** (`.docx` vs Google Docs API): decide when that implementation starts; not a blocker for other work.
 - **Admin stack: undecided.** Candidate: Decap (or similar Git CMS) plus GitHub Actions to run sidecar processes on updates (`imginfo`, optional explicit DOI mint). Not chosen yet.
 - **SEO / JSON-LD:** live path is the jsonld mini-language, not `seo/structured`. Goal 9 recorded: fix `sameas`/`sameAs`, DOI `identifier`, author `notnews`, AI utilization. Policy still open: `llms.txt`, training crawlers, PDFs in sitemap.
@@ -41,7 +41,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 9. **OneSignal:** Should web push stay? The implementation still points at WordPress plugin paths.
 10. **Analytics?** **Answered: UA leftovers deleted.** `turbo:load` already pushes `page_view` on `dataLayer`. Remaining: keep GTM+GA4 vs a single `gtag` snippet; confirm GTM listens for `page_view`.
 11. **MathJax, cite/bookcover functions:** which of these are still required in production? (**AMP: defunct.** **Tailwind: keep and migrate all CSS onto it.**)
-12. **Netlify Large Media / Git LFS?** **Answered: still in use.** Build still does not download LFS (`imgsize.json` required). Open to **S3 for binaries** later if helpful; ImageEngine can then origin from S3 instead of the Netlify live site. Sidecar dimensions stay.
+12. **Netlify Large Media / Git LFS?** **Answered: still in use.** Build still does not download LFS (`imgsize.json` required). ImageEngine is retired; CloudFront `cdn.peacefulscience.org` fronts Netlify Image CDN. Open to **S3 + AWS resizer** later if Large Media or bandwidth becomes painful again. Sidecar dimensions stay.
 
 ## Build behavior
 
@@ -74,6 +74,7 @@ These are the unknowns that should be settled before a clarity/cleanup refactor.
 30. **`partials/lastmod.html` / `data/lastmod.json`:** unused override path. Keep for correcting bad git dates, or delete once sidecar enrichment is the norm?
 31. **Newsletter `mailchimp.campaign_id`:** move to sidecar like DOIs, or leave the six existing front-matter values as a one-off?
 32. **Restore `code/pdf`?** Makefile still expects it. Until then, local `prince` on the live `_prince` URL is the documented oversized-PDF path.
+32b. **`static/pdf/` sorting:** page-PDF shadows (`static/pdf/articles|prints/…`) vs distinct uploads (errata, ASA, preprints, `deleted-biologos/`, flyers). Only the former relate to the Prince/S3 path; do not bulk-move uploads into the PDF function cache without an inventory.
 
 ## SEO / JSON-LD / AI ([goal 9](goals.md#9-seo-json-ld-and-ai-utilization), [seo.md](seo.md))
 

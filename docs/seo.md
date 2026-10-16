@@ -29,7 +29,7 @@ Emitted on every HTML page:
 
 Description fallback chain: `description` → `subtitle` → `.Summary` → **`.Kind`** (`page` / `section` / `home`). The last fallback is unusable as a snippet.
 
-Twitter image uses the raw `absURL`; OG image goes through ImageEngine (`imgcdn`). Authors without a `content/authors/<slug>/` page emit **no** `citation_author` / `og:author`. `twitter:creator` is rewritten per author and becomes `@` when `twitter` is empty.
+Twitter image uses the raw `absURL`; OG image goes through `imgcdn` → `cdn.peacefulscience.org`. Authors without a `content/authors/<slug>/` page emit **no** `citation_author` / `og:author`. `twitter:creator` is rewritten per author and becomes `@` when `twitter` is empty.
 
 ### Robots and sitemap
 
@@ -113,7 +113,7 @@ JSON-LD `description` / `title` are `markdownify | plainify | htmlUnescape` then
 | Pagination | Disallowed in robots; good. |
 | Internal links | Related module + series help. Entity detection (goal 4) should suggest links into sidecar data, not rewrite bodies on a loop. |
 | Author E-E-A-T | Strong when a slug page exists (ORCID, sameAs). Weak for display-name bylines. |
-| Core Web Vitals | ImageEngine + width/height from `imgsize.json` help CLS. Turbo SPA: `turbo:load` pushes `page_view` on `dataLayer` (GTM). Universal Analytics leftovers are deleted. Font preload is a single face from the live origin. |
+| Core Web Vitals | CloudFront image CDN + width/height from `imgsize.json` help CLS. Turbo SPA: `turbo:load` pushes `page_view` on `dataLayer` (GTM). Universal Analytics leftovers are deleted. Font preload is a single face from the live origin. |
 | News | `notnews` on books and authors (page-level cascade). |
 | Scholar | `citation_journal_title` is always “Peaceful Science”, including books. Fine for essays; noisy for Book pages. Highwire dates use `.Date`, JSON-LD `datePublished` uses `PublishDate` — keep those aligned. |
 
@@ -147,7 +147,7 @@ Independent of Word ingest. Order is technical, not calendar.
 
 1. **JSON-LD hygiene:** done for cascade `sameAs`, DOI `identifier`, Organization `@id`, author `notnews`, `ImageObject`, empty `twitter:creator`, title/description unescape then `jsonify`.
 2. **SearchAction + InstantSearch routing** (shared with goal 3).
-3. **Head/snippet quality:** description no longer falls back to `.Kind`; OG/Twitter images both use ImageEngine. Optional BreadcrumbList; PDF sitemap policy still open.
+3. **Head/snippet quality:** description no longer falls back to `.Kind`; OG/Twitter images both use `imgcdn` / CloudFront. Optional BreadcrumbList; PDF sitemap policy still open.
 4. **Delete unused** `layouts/partials/seo/structured/` (and `seo/main.html` if still unreferenced).
 5. **Scholarly `citation` + entity `about`:** after goals 2 and 4 have a sidecar to read.
 6. **`llms.txt` / markdown alternate** only if maintainers want AI-specific copies.

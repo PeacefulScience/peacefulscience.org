@@ -26,7 +26,7 @@ flowchart LR
     NF[Netlify CDN]
     FN[Functions: pdf, cite, bookcover]
     ALG[Algolia]
-    CDN[ImageEngine CDN]
+    CDN[CloudFront cdn.peacefulscience.org]
   end
 
   MD --> HUGO
@@ -87,8 +87,8 @@ Homepage and cards use `partial "render"` which picks `layouts/partials/render/_
 
 - **CSS:** **Destination is Tailwind.** Today production still compiles Bootstrap 4 SCSS from `assets/css/main.scss` (plus Font Awesome) through Hugo `resources.ToCSS` + PostCSS (PurgeCSS, autoprefixer, cssnano). A parallel Tailwind pipeline exists (`sources/tailwind.css`, `tailwind.config.js`, `npm run tailwind` → `assets/css/tw.css`) but is **commented out** of `code/production` and `head.html`, and `tw.css` is gitignored. Cleanup should turn Tailwind on and migrate remaining Bootstrap/custom SCSS onto it — not delete the Tailwind files.
 - **JS:** `assets/js/turbo.js` is the entry. Hugo `js.Build` bundles Hotwired Turbo, navbar, TOC progress, YouTube player, and (empty) subscribe helpers. Search is a separate InstantSearch bundle on the search layout.
-- **Images / PDFs:** `static/img` and `static/pdf` are **Git LFS** (Netlify Large Media as the LFS store). **Netlify builds do not download LFS objects** — the clone has pointer files, not pixels. Hugo therefore cannot read image dimensions at build time. **`data/imgsize.json` is required sidecar:** keys like `/img/2024/07/foo.jpg` → `{width, height}`. Templates (`render-image.html`, `image` / `mediatext` shortcodes, header images) set `width`/`height` from that map. Adding or replacing an image is incomplete until `make imginfo` runs **where the real files exist** and the JSON is committed. Do not regenerate this file on Netlify (`imgsize.py` would skip pointers and empty the map). `data/pdfinfo.json` is git lastmod for uploaded PDFs (does not need file bytes). **Page PDFs** are Prince of `_prince` HTML — Lambda, or LFS at `static/pdf/<section>/<slug>.pdf` when over ~6 MB. See [build-and-deploy](build-and-deploy.md#article-pdfs-prince) and [images](build-and-deploy.md#git-lfs-and-image-sizes).
-- **Image CDN:** Production templates rewrite image URLs to ImageEngine (`8l2ic7fx.cdn.imgeng.in`) via `partials/imgcdn.html`. **Origin is the Netlify live site** (Large Media). If binaries move to S3, point ImageEngine at that bucket instead. Local `hugo server` serves files from `static/` when they exist.
+- **Images / PDFs:** `static/img` and `static/pdf` are **Git LFS** (Netlify Large Media as the LFS store). **Netlify builds do not download LFS objects** — the clone has pointer files, not pixels. Hugo therefore cannot read image dimensions at build time. **`data/imgsize.json` is required sidecar:** keys like `/img/2024/07/foo.jpg` → `{width, height}`. Templates (`render-image.html`, `image` / `mediatext` shortcodes, header images) set `width`/`height` from that map. Adding or replacing an image is incomplete until `make imginfo` runs **where the real files exist** and the JSON is committed. Do not regenerate this file on Netlify (`imgsize.py` would skip pointers and empty the map). `data/pdfinfo.json` is git lastmod for uploaded PDFs (does not need file bytes). **Page PDFs** are Prince of `_prince` HTML via the Netlify `pdf` function (S3 + CloudFront redirect when cached), or a committed file under `static/pdf/` for oversized page PDFs and for distinct uploaded documents. See [build-and-deploy](build-and-deploy.md#article-pdfs-prince) and [images](build-and-deploy.md#git-lfs-and-image-sizes).
+- **Image CDN:** Production templates rewrite transformed image URLs through **`https://cdn.peacefulscience.org`** (`partials/imgcdn.html` → `/.netlify/images?…`). CloudFront distribution `EFGG2EW0VP39A` fronts Netlify for `/img/*` and `/.netlify/images*`, and S3 for `/pdf/*`. **Image origin is still Netlify/Large Media** on cache miss; ImageEngine is retired. Local `hugo server` serves files from `static/` when they exist. Moving originals to S3 + an AWS image transformer (e.g. Dynamic Image Transformation) is optional and deferred while CloudFront keeps Netlify bandwidth under the free tier.
 
 ### Data files (`data/`) — sidecar pattern
 
@@ -132,7 +132,7 @@ Routed from `layouts/partials/redirects.html` / `_redirects`:
 
 | Function | Path | What it does |
 | --- | --- | --- |
-| `pdf/index.js` | `/pdf/*` | On-demand Prince PDF from live `/_prince/...` HTML (**after `render.js`**). Fails if the PDF is over ~**6 MB**; those pages need a committed LFS file at `static/pdf/<section>/<slug>.pdf` |
+| `pdf/index.js` | `/pdf/*` | On-demand Prince PDF from live `/_prince/...` HTML (**after `render.js`**). Uploads to S3 (`peacefulscience-pdfs-use1`) keyed by Prince HTML etag; **302** to `cdn.peacefulscience.org/pdf/…` when cached. Still fails to *generate* over ~**6 MB** in Lambda — those pages need a committed file at `static/pdf/<section>/<slug>.pdf`. Env: `PDF_S3_*`, `PDF_AWS_*`, optional `PDF_CDN_BASE` (Doppler → Netlify). |
 | `cite.js` | `/cite/*` | Citation JSON from DOI.org or Manubot |
 | `bookcover.js` | `/img/bookcover/*` | Proxy Amazon cover images |
 | `daily-build.js` | scheduled `0 14 * * *` | POST `"DAILY"` to `BUILD_HOOK` to rebuild |

@@ -24,10 +24,10 @@
           
           
 -def header()
-  mj-section (background-size="cover" background-url="https://peacefulscience.org/.netlify/images?url=/img/design/green-hex.png" background-color="#020" padding="20px 0 20px 0"  full-width="full-width")
+  mj-section (background-size="cover" background-url="https://cdn.peacefulscience.org/.netlify/images?url=/img/design/green-hex.png" background-color="#020" padding="20px 0 20px 0"  full-width="full-width")
     mj-column 
       mj-image (align="center" width="420px" href="https://peacefulscience.org/" alt="Peaceful Science"
-       src="https://peacefulscience.org/.netlify/images?url=/img/design/PS-logo-long-white.png&w=696&fm=png")
+       src="https://cdn.peacefulscience.org/.netlify/images?url=/img/design/PS-logo-long-white.png&w=696&fm=png")
 
 
 

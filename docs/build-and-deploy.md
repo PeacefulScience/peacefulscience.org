@@ -116,17 +116,21 @@ Do not print the main site HTML. Do not use a second stylesheet or Word’s PDF 
 
 **`/_prince/` is not for humans or crawlers.** It exists so Prince (Lambda or local) can fetch that cleaned print HTML. Search and AI must not index it. Blocking: `layouts/robots.txt` `Disallow: /_prince/`, meta `noindex` on `baseof.print.html`, `X-Robots-Tag` on `/_prince/*` in `static/_headers`. Not in the sitemap. Print output is `notAlternative` (Hugo must not advertise it as `rel=alternate`). **Schema.org microdata stays** on `baseof.print.html` (`itemscope` / `itemtype`); Prince uses it. The PDF Lambda and local `prince` fetch that URL directly and ignore robots.
 
-**On-demand (typical pages):** `_redirects` has `/pdf/* /.netlify/builders/pdf 200`. `functions/pdf` fetches `https://peacefulscience.org/_prince/<section>/<slug>/`, runs Prince, returns the PDF. Allowed sections: `articles`, `prints`, `about`. Netlify/AWS Lambda **response bodies max out at 6 MB**. Long, image-heavy articles produce PDFs larger than that and the function fails. The handler also base64-encodes the file, so a PDF near 6 MB can fail even if slightly under.
+**On-demand (typical pages):** `_redirects` has `/pdf/* /.netlify/builders/pdf 200`. `functions/pdf` HEADs `https://peacefulscience.org/_prince/<section>/<slug>/`, compares the Prince HTML etag to S3 object metadata, and either **302**s to `https://cdn.peacefulscience.org/pdf/…?v=<etag>` or runs Prince, `PutObject`s to `s3://peacefulscience-pdfs-use1/`, then redirects. Allowed sections: `articles`, `prints`, `about`. Generation still happens in Lambda, so responses over ~**6 MB** fail before upload — use the oversized fallback below.
 
-**Oversized fallback (commit to LFS):** run Prince **locally** on the same `_prince` HTML, write the PDF to Git LFS at the URL path under `static/`:
+**Two kinds of files under `static/pdf/` (do not conflate):**
+
+1. **Oversized page PDFs (Prince, committed):** same URL path as on-demand, shadows the function rewrite:
 
 ```text
 static/pdf/<section>/<slug>.pdf
 ```
 
-Example already in the repo: the Tonto Group series (`static/pdf/articles/examining-yec-claims-tonto-group-cambrian-{1,2,3}.pdf`). Hugo copies that to `public/pdf/...`. Netlify serves the static file **instead of** the function rewrite, so `/pdf/articles/<slug>.pdf` still matches `getpdf` / `citation_pdf_url`.
+Example: Tonto Group series (`static/pdf/articles/examining-yec-claims-tonto-group-cambrian-{1,2,3}.pdf`), Adam/Alien/Ape excerpt (`static/pdf/prints/excerpts/…`). Hugo copies to `public/pdf/…`; Netlify serves the static file **instead of** the function.
 
-After adding or replacing a baked PDF:
+2. **Distinct uploads (not Prince of a page):** linked from markdown as documents — errata, ASA letters, preprints, flyers, BioLogos captures under `static/pdf/deleted-biologos/`, etc. These are **not** candidates for the S3/Prince cache path; treat them as ordinary static assets (still LFS today).
+
+After adding or replacing a baked *page* PDF:
 
 ```bash
 # Prefer the live print HTML (same input the Lambda uses):
@@ -136,7 +140,7 @@ make pdfinfo   # updates data/pdfinfo.json (sidecar lastmod for the sitemap)
 # commit the PDF (LFS) and data/pdfinfo.json — not the article markdown
 ```
 
-That keeps article last-modified honest ([sidecar pattern](goals.md)). Other files under `static/pdf/` (errata, ASA letters, deleted-BioLogos captures) are **uploaded documents** linked from markdown, not Prince output of a page. Do not mix those paths with `static/pdf/articles/<slug>.pdf`.
+That keeps article last-modified honest ([sidecar pattern](goals.md)).
 
 `make pdf INPUT=...` is supposed to wrap this but `code/pdf` is missing from the tree.
 
@@ -190,15 +194,15 @@ make imginfo          # python code/imgsize.py → data/imgsize.json
 # commit the image (LFS pointer) AND data/imgsize.json
 ```
 
-Keys are site paths (`/img/YYYY/MM/foo.jpg`). Templates that consume the map: `layouts/_default/_markup/render-image.html`, `layouts/shortcodes/image.html`, `mediatext.html`, header images in `single.html`. Without a row, `width`/`height` are omitted (layout shift). ImageEngine still serves the file at request time via Large Media; the sidecar is what the **build** can see.
+Keys are site paths (`/img/YYYY/MM/foo.jpg`). Templates that consume the map: `layouts/_default/_markup/render-image.html`, `layouts/shortcodes/image.html`, `mediatext.html`, header images in `single.html`. Without a row, `width`/`height` are omitted (layout shift). At request time, `partials/imgcdn.html` points browsers at **`cdn.peacefulscience.org/.netlify/images?…`** (CloudFront → Netlify Image CDN / Large Media on miss). The sidecar is what the **build** can see.
 
 `imgurl.html` `fileExists` can still succeed on a pointer file, so it will **not** catch a forgotten `imginfo`. `imgsize.py` silently skips unreadable files (`except: pass`).
 
-`pdfinfo` only runs `git log` on paths, so it does not need PDF bytes. Page-PDF LFS files still need to be uploaded so the Netlify CDN can serve them; that is separate from measuring images.
+`pdfinfo` only runs `git log` on paths, so it does not need PDF bytes. Page-PDF LFS files still need to be uploaded so Netlify can serve the static shadow path; that is separate from measuring images.
 
 A hosted admin or Word ingest must run the equivalent of `imginfo` on a worker that has the actual image bytes, then commit `data/imgsize.json` (sidecar — do not write dimensions into the article).
 
-**Optional later:** store binaries on **S3** instead of Netlify Large Media. ImageEngine can origin from the bucket rather than `peacefulscience.org`. `data/imgsize.json` is still required for the Hugo build. This is not the same as hosting the whole site from processed HTML on S3.
+**Optional later:** store image binaries on **S3** and add an AWS on-demand resizer (e.g. Dynamic Image Transformation) so CloudFront no longer pulls originals from Netlify. Deferred while `cdn.` keeps bandwidth inside Netlify Starter. `data/imgsize.json` stays either way. This is not the same as hosting the whole site from processed HTML on S3.
 
 ## Environment variables
 
@@ -215,6 +219,11 @@ Used by Make, functions, or Python (typically Netlify UI + local `.env`):
 | `BUILD_HOOK` | Daily rebuild function |
 | `DISCOURSE_API` | **Defunct** (was forum posting) |
 | `MAILCHIMP_*` / `MJML_*` | **CLI only** (`make news`), not the Netlify build |
+| `PDF_S3_BUCKET`, `PDF_S3_REGION` | PDF function → S3 cache (`peacefulscience-pdfs-use1`, `us-east-1`) |
+| `PDF_AWS_ACCESS_KEY_ID`, `PDF_AWS_SECRET_ACCESS_KEY` | IAM user `netlify-pdf-writer` (prefer these over Netlify’s own `AWS_*`) |
+| `PDF_CDN_BASE` | Optional override; default `https://cdn.peacefulscience.org` |
+
+PDF secrets are managed in **Doppler** and synced to Netlify. Do not commit them. Newsletter MJML templates and `make news` should load images via `cdn.peacefulscience.org`, not the apex host.
 
 The Algolia **search-only** app id / key are hardcoded in `assets/js/search.js` (normal for a public InstantSearch client).
 

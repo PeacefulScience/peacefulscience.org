@@ -47,7 +47,7 @@ Almost all uses are in `articles/` and `prints/` (`prints` is heavy on `amazon`)
 | 0 | ASIN (sometimes unquoted, e.g. `B00JUC6PL2`) |
 | 1 | Optional caption (205 calls have only the ASIN; 10 have a caption) |
 
-Renders `partials/amazon.html`: cover from `/img/bookcover/<ASIN>` (Netlify function + ImageEngine) linking to Amazon with `tag=swamidass-20`. Floats as `amazon-xl-right`.
+Renders `partials/amazon.html`: cover from `/img/bookcover/<ASIN>` (Netlify function; URLs via `imgcdn` / CloudFront) linking to Amazon with `tag=swamidass-20`. Floats as `amazon-xl-right`.
 
 ### `amazon-caption`
 
@@ -198,7 +198,7 @@ Page PDFs are Prince of `/_prince/…` HTML, not Chrome “print this page.” T
 
 | Shortcode | Site | Prince today |
 | --- | --- | --- |
-| `image`, `mediatext` | Figure + ImageEngine | Same HTML; print CSS floats `aside-xl-*`. Images must be fetchable URLs (CDN). |
+| `image`, `mediatext` | Figure + `imgcdn` (CloudFront) | Same HTML; print CSS floats `aside-xl-*`. Images must be fetchable URLs (CDN). |
 | `amazon`, `amazon-caption` | Cover + affiliate link | Print CSS for `.amazon-xl-right`. Cover comes from `/img/bookcover/` (function). |
 | `footnotes2refs` | Marker; both templates rewrite footnotes | Same rewrite in `single.print.html`. |
 | `youtube`, `youtube-two` | Click-to-play overlay (`PlayVideo`) | Wrapper is `d-print-none` — **omitted from the PDF**. Needs a print fallback (poster + URL). |

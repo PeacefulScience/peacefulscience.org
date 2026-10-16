@@ -21,7 +21,7 @@ Nothing here is implemented yet. Schemas, shortcodes, and the Netlify vs CLI spl
 
 **Sidecar data (DOI pattern):** auto-generated fields belong in `data/*.json` (or an equivalent store), keyed by page path or URL, **not** written back into the article’s front matter or body. `config.yml` has `enableGitInfo: true`, so Hugo `.Lastmod` (page “modified” date, sitemap, Algolia `lastmod`, JSON-LD `dateModified`) is the last **git commit of that markdown file**. Touching the article to store a DOI, detected entities, resolved citations, or a social-post id would bump “modified” even when the prose did not change. See [architecture](architecture.md) § Sidecar data.
 
-This is also **load-bearing for images:** Netlify **does not download Git LFS files** during the Hugo build. Templates cannot open `static/img/…` to read width/height. Adding an image **requires** updating `data/imgsize.json` (`make imginfo` locally, where the real files exist) and committing that JSON with the LFS pointer. Skipping the sidecar means missing `width`/`height` on the live site (layout shift) even if ImageEngine still serves the file. Never regenerate `imgsize.json` on Netlify — Pillow would see pointer files, skip them, and wipe the map.
+This is also **load-bearing for images:** Netlify **does not download Git LFS files** during the Hugo build. Templates cannot open `static/img/…` to read width/height. Adding an image **requires** updating `data/imgsize.json` (`make imginfo` locally, where the real files exist) and committing that JSON with the LFS pointer. Skipping the sidecar means missing `width`/`height` on the live site (layout shift) even if the CDN still serves the file. Never regenerate `imgsize.json` on Netlify — Pillow would see pointer files, skip them, and wipe the map.
 
 ### Confirmed stack decisions
 
@@ -33,7 +33,7 @@ This is also **load-bearing for images:** Netlify **does not download Git LFS fi
 - **Near-term: tracking.** Universal Analytics leftovers are deleted. Keep (and fix) live GTM tag loading so Turbo navigations count.
 - **Crossref is active; admins mint DOIs** (CLI today). Deposit is DAILY + `TODAY`.
 - **Algolia `PeacefulScience` is the live search index.** Daily upload hook is still wanted.
-- **Netlify LFS / Large Media is in use.** Optional later: S3 for binaries; point ImageEngine origin at the bucket. `imgsize.json` stays.
+- **Netlify LFS / Large Media is in use.** Live CDN is `cdn.peacefulscience.org` (CloudFront → Netlify). Optional later: S3 + AWS resizer. `imgsize.json` stays.
 - **Admin stack undecided.** Candidate: Decap + GitHub Actions for sidecar jobs on update (not auto-DOI on every save).
 - **JSON-LD: keep the mini-language; fix it.** Cascade keys are Schema.org camelCase (`sameAs`). DOI `identifier`, Organization `@id` `#organization`, author `notnews` is page-level. See [seo.md](seo.md).
 
@@ -79,7 +79,7 @@ This does not need Word ingest or an admin UI.
 | **Categories** | Taxonomy pages in `content/categories/`. `featured` and `gae` are `hidden: true`. `tags` is in `config.yml` but unused. Homepage buckets are **hard-coded** in `layouts/index.html`. | Auto-suggest into sidecar (or an admin review queue). Editor-chosen `categories:` in front matter is editorial, not generated. Do not invent slugs that have no `_index.md`. |
 | **New authors** | Missing `content/authors/<slug>/` warns `AUTHOR.MISSING`. Corpus mixes slugs (`swamidass`) and display names (`Dennis Venema`, `Peaceful Science`). | Create author page (bio, affiliation, optional `orcid` / social) when a byline is new; keep display-name bylines valid until a slug exists. |
 | **Page PDFs** | Lambda Prince of `_prince` HTML fails when the PDF is **> ~6 MB**. Those files must be generated locally and committed to LFS at `static/pdf/<section>/<slug>.pdf`. | Host Prince or a worker that writes LFS; do not invent a second layout. Same `_prince` HTML as the Lambda. |
-| **Images** | Files in `static/img/` are Git LFS (**Netlify Large Media, still in use**). **Netlify does not download LFS** in the build. Templates read `data/imgsize.json`. Optional later: S3 + ImageEngine origin on the bucket. | Upload must write the object **and** patch `imgsize.json`. Do not run `make imginfo` in the Netlify Hugo build. GitHub Actions (admin candidate) need smudged LFS or an S3 fetch. |
+| **Images** | Files in `static/img/` are Git LFS (**Netlify Large Media, still in use**). **Netlify does not download LFS** in the build. Templates read `data/imgsize.json`. CDN: `cdn.peacefulscience.org`. Optional later: S3 + AWS resizer. | Upload must write the object **and** patch `imgsize.json`. Do not run `make imginfo` in the Netlify Hugo build. GitHub Actions (admin candidate) need smudged LFS or an S3 fetch. |
 
 ### Design implication
 
@@ -227,7 +227,7 @@ Metalsmith and Next.js have been considered in other Peaceful Science repos. Thi
 | DOI / citation / entity maps | `data/*.json` sidecars | Same: generated maps stay off the article files so source lastmod stays honest |
 | Print/PDF | Prince from `/_prince/` HTML **after `render.js`**; LFS override when >6 MB | Same print HTML + same `render.js` pass (scripts stripped; math **rendered** to SVG). Lambda 6 MB limit still applies unless PDFs are stored as objects. |
 | Cite / book covers | Netlify functions | Any origin (Lambda, S3+CloudFront functions) |
-| Redirects, aliases, ImageEngine | Hugo + `_redirects` | Equivalent routing |
+| Redirects, aliases, CloudFront `cdn.` | Hugo + `_redirects` | Equivalent routing |
 | MathJax / dropcaps / sidenotes | `render.js` | Same post-process or a component |
 | Incremental Crossref + Algolia + social | Full XML + full index, gated on TODAY | Per-document deposit and partial index update |
 
@@ -237,7 +237,7 @@ Stay on Hugo if the admin + Word pipeline can commit markdown here and only the 
 
 Port (Next, Metalsmith, or S3+JS) if the goal is **true incremental publish** and avoiding Hugo’s full graph (related pages, taxonomy lists, Crossref batches, Algolia dump). That is a large rewrite of templates and shortcodes; do it **after** the content contract (front matter + shortcodes + DOI + citations) is encoded so the new engine cannot drift.
 
-Media can move to **S3** (with ImageEngine origin pointed at the bucket) **without** porting the site off Hugo. That is a separate, smaller cut than “processed HTML on S3 + dynamic JS.”
+Media can move to **S3** (with an AWS image transformer on CloudFront) **without** porting the site off Hugo. That is a separate, smaller cut than “processed HTML on S3 + dynamic JS.”
 
 ---
 
@@ -257,7 +257,7 @@ A file that would pass a future admin validator:
 - Body as Goldmark markdown (`unsafe` HTML only where the site already allows it).
 - Shortcodes: `image` for figures, `amazon` for books, `youtube` / `vimeo` for video, footnotes that match **both** `single.html` sidenotes and `single.print.html` (Prince). JS embeds need a print fallback.
 - Internal links suggested, not silently rewritten.
-- Images extracted, named, placed under `static/img/`, and **`data/imgsize.json` updated from the real files** (Netlify will not have LFS bytes to measure). Then ImageEngine / `imgcdn`.
+- Images extracted, named, placed under `static/img/`, and **`data/imgsize.json` updated from the real files** (Netlify will not have LFS bytes to measure). Then `imgcdn` / CloudFront.
 
 ### Pipeline sketch
 

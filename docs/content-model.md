@@ -93,7 +93,7 @@ Put images in `static/img/` (often `static/img/YYYY/MM/`). They are Git LFS obje
 make imginfo    # writes data/imgsize.json from the real files on your machine
 ```
 
-Skipping that step ships pages with no `width`/`height` on `<img>` even if the picture appears via ImageEngine. Never run `make imginfo` on Netlify.
+Skipping that step ships pages with no `width`/`height` on `<img>` even if the picture appears via the CDN. Never run `make imginfo` on Netlify.
 
 PDFs:
 
