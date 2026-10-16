@@ -12,7 +12,7 @@ const Prince = require("prince");
 
 const baseurl = "https://peacefulscience.org/";
 const pdfBucket = process.env.PDF_S3_BUCKET || "";
-const pdfRegion = process.env.PDF_S3_REGION || "us-east-2";
+const pdfRegion = process.env.PDF_S3_REGION || "us-east-1";
 // Prefer PDF-specific creds so we do not override Netlify's own AWS_* runtime env.
 const pdfAccessKey =
   process.env.PDF_AWS_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID || "";
