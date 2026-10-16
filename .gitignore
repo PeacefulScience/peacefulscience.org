@@ -67,3 +67,4 @@ venv/
 *.swp
 *.swo
 *~
+_wip/

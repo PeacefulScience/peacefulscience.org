@@ -49,7 +49,12 @@
       {{- if $fit -}}{{- $q = printf "%s&fit=%s" $q ($fit | urlquery) -}}{{- end -}}
       {{- if $fm -}}{{- $q = printf "%s&fm=%s" $q ($fm | urlquery) -}}{{- end -}}
       {{- if $quality -}}{{- $q = printf "%s&q=%v" $q $quality -}}{{- end -}}
-      {{- $out = printf "%s?%s" (absURL "/.netlify/images") $q -}}
+      {{- $cdn := trim (site.Params.imageCDN | default "") " /" -}}
+      {{- if and $cdn (not site.IsServer) -}}
+        {{- $out = printf "%s/.netlify/images?%s" $cdn $q -}}
+      {{- else -}}
+        {{- $out = printf "%s?%s" (absURL "/.netlify/images") $q -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
